@@ -1,0 +1,1 @@
+export type Agent = "civilian" | "ambulance" | "fire" | "police";
