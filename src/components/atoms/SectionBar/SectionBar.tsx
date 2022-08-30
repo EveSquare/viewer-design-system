@@ -1,16 +1,18 @@
+import { Box, Divider } from "@chakra-ui/react";
 import React from "react";
-import { chakra, useColorModeValue } from "@chakra-ui/react";
 
-export const SectionBar: React.FC = () => {
-  const color = useColorModeValue("black", "white");
+interface Props {
+  m?: number | string | Array<string>;
+}
+
+export const SectionBar: React.FC<Props> = (props) => {
   return (
-    <chakra.div
-      height="1px"
-      backgroundColor={color}
-      m="0rem 1.2rem"
-    >
-    </chakra.div>
+    <>
+      <Box w="100%" m={props.m}>
+        <Divider orientation='horizontal' />
+      </Box>
+    </>
   );
 }
 
-SectionBar.displayName = "SectionBar";
+SectionBar.displayName = "SECTIONBAR";

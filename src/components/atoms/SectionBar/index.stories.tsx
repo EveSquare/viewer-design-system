@@ -21,8 +21,4 @@ export const Default = Template.bind({})
 Default.args = {}
 
 Default.parameters = {
-  design: {
-    type: 'figma',
-    url: '',
-  },
 }
