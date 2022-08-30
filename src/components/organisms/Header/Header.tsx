@@ -1,39 +1,49 @@
-import React, { memo } from "react";
-import { Flex } from "@chakra-ui/layout";
-import { Heading } from "@chakra-ui/layout";
-import {} from "@/components/organisms/Header/module.style";
+import { SettingsIcon } from "@chakra-ui/icons";
+import { Box, Flex, Tooltip, Text, HStack, Spacer } from "@chakra-ui/react";
+import React from "react";
+import { Props } from './type'
 
-import { HEADER_TITLE } from "./const";
-import { Props } from "./type";
-import { Button } from "@/components/atoms/Button";
-
-export const Header: React.FC<Props> = memo(({ isLogined, onLogout }) => {
-  return (
-    <Flex
-      align="center"
-      justify="space-between"
-      wrap="wrap"
-      w="100%"
-      h="14"
-      mb={8}
-      px={4}
-      bg="primary"
-    >
-      <Heading as="h2" size="lg" color="white">
-        {HEADER_TITLE}
-      </Heading>
-      {isLogined ? (
-        <Button
-          type="logout"
-          size="small"
-          label="ログアウト"
-          onClick={onLogout}
-        ></Button>
-      ) : (
-        <></>
-      )}
-    </Flex>
-  );
-});
+export const Header: React.FC<Props> = ({ stepCount, stepTooltip, score, scoreTooltip, onOpenSetting }) => {
+    return (
+        <>
+            <Flex
+                justify="space-between"
+                alignItems="center"
+                wrap="nowrap"
+                w="100%"
+                h="65px"
+                p={['0', '1rem']}
+                bg="bg"
+                userSelect="none"
+            >
+                <Box>
+                    <Tooltip
+                        label={stepTooltip}
+                        aria-label={stepTooltip}
+                        closeDelay={500}
+                    >
+                        <Text fontSize="2xl" as="b">STEP: {stepCount}</Text>
+                    </Tooltip>
+                </Box>
+                <Spacer />
+                <HStack spacing={4}>
+                    <Tooltip
+                        label={scoreTooltip}
+                        aria-label={scoreTooltip}
+                        closeDelay={500}
+                    >
+                        <Text fontSize="2xl" as="b">SCORE: {score}</Text>
+                    </Tooltip>
+                    <SettingsIcon
+                        w="24px"
+                        h="24px"
+                        _hover={{ color: 'primary' }}
+                        onClick={onOpenSetting}
+                    />
+                </HStack>
+            </Flex>
+        </>
+    );
+}
 
 Header.displayName = "HEADER";
