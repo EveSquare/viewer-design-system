@@ -18,15 +18,15 @@ import { Props } from './type'
 
 <% if (memoize) { -%>
 export const <%= component_name %>: <%- type_annotate %> = memo(<%= props %> => {
-  return (
-    <></>
-  );
+    return (
+        <></>
+    );
 })
 <% } else { -%>
 export const <%= component_name %>: <%- type_annotate %> = <%= props %> => {
-  return (
-    <></>
-  );
+    return (
+        <></>
+    );
 }
 <% } -%>
 
