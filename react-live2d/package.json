@@ -4,8 +4,6 @@
     "build": "webpack -d --hide-modules",
     "build:prod": "webpack -p --hide-modules",
     "test": "tsc --noEmit",
-    "lint": "eslint src -f codeframe --ext .ts",
-    "lint:fix": "eslint src -f codeframe --ext .ts --fix",
     "serve": "serve ../../.. -p 5000",
     "clean": "rimraf dist",
     "transpile": "babel src -d dist --copy-files",
@@ -13,7 +11,7 @@
   },
   "main": "dist/bundle.js",
   "name": "react-live2d",
-  "version": "1.0.31",
+  "version": "1.0.30",
   "description": "live2D 看板娘",
   "author": {
     "name": "DS",

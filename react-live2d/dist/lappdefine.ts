@@ -44,16 +44,16 @@ export let ModelDir: string[] = ['Hiyori', 'Haru', 'Rice'];
 // 外部定義ファイル（json）と合わせる
 export const MotionGroupDefault = ''; // 默认的其他模型
 export const MotionGroupIdle = 'Idle'; // アイドリング
-export const MotionGroupTapBody = 'TapBody'; // 体をタップしたとき
+export const MotionGroupTap = 'Tap'; // 体をタップしたとき
 
 // 外部定義ファイル（json）と合わせる
 export const HitAreaNameHead = 'Head';
 export const HitAreaNameBody = 'Body';
 
 // 对话内容
-export let HitBodyList: string[] = ['啊呀，你的手在摸哪里嘛~','哼，坏人'];
-export let HitHeadList: string[] = ['讨厌~不要掐人家的脸嘛~','希望明天也能感受到你的触摸呢'];
-export let HitDefaultList: string[] = ['今天又是开心的一天呢~','真是元气满满呀'];
+export let HitBodyList: string[] = [];
+export let HitHeadList: string[] = [];
+export let HitDefaultList: string[] = [];
 
 // モーションの優先度定数
 export const PriorityNone = 0;
@@ -75,23 +75,30 @@ export const RenderTargetHeight = 1000;
 // 外部传入动态参数
 export class lappdefineSet {
     // 模型列表
-    public static setModelDir(modelDir:Array<string>): void {
-        ModelDir = modelDir.length>0 ? modelDir : ModelDir
+    public static setModelDir(modelDir: Array<string>): void {
+        ModelDir = modelDir.length > 0 ? modelDir : ModelDir
     }
     // 身体点击语言
-    public static setHitBody(hitBodyList:Array<string>): void {
-        HitBodyList = hitBodyList.length>0 ? hitBodyList : HitBodyList
+    public static setHitBody(hitBodyList: Array<string>): void {
+        HitBodyList = hitBodyList.length > 0 ? hitBodyList : HitBodyList
     }
     // 头部点击语言
-    public static setHitHead(hitHeadList:Array<string>): void {
-        HitHeadList = hitHeadList.length>0 ? hitHeadList : HitHeadList
+    public static setHitHead(hitHeadList: Array<string>): void {
+        HitHeadList = hitHeadList.length > 0 ? hitHeadList : HitHeadList
     }
     // 默认点击语言
-    public static setHitDefault(hitDefaultList:Array<string>): void {
-        HitDefaultList = hitDefaultList.length>0 ? hitDefaultList : HitDefaultList
+    public static setHitDefault(hitDefaultList: Array<string>): void {
+        HitDefaultList = hitDefaultList.length > 0 ? hitDefaultList : HitDefaultList
     }
     // 模型绝对路径
-    public static setPathFull(pathfull:string): void {
-        ResourcesPath = pathfull.length>0 ? pathfull : ResourcesPath
+    public static setPathFull(pathfull: string): void {
+        ResourcesPath = pathfull.length > 0 ? pathfull : ResourcesPath
     }
 }
+
+export const UseTapedMotions: Array<any> = [
+    [MotionGroupTap, 1],
+    [MotionGroupTap, 2],
+    [MotionGroupIdle, 1],
+    [MotionGroupIdle, 2],
+]
