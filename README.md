@@ -1,5 +1,6 @@
 # viewer-design-system
 
+
 ## セットアップ
 
 ```
@@ -27,3 +28,8 @@ yarn storybook
 ```
 yarn hygen
 ```
+
+## 動作環境
+
+- node v16.14.2
+- yarn v1.22.19
