@@ -54,18 +54,18 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
-            loader: "babel-loader"
+          loader: "babel-loader"
         }
       },
       {
-        test:/\.(png|jpe?g|gif|svg|ttf|eot|woff|woff2)(\?.*)?$/,
+        test: /\.(png|jpe?g|gif|svg|ttf|eot|woff|woff2)(\?.*)?$/,
         exclude: /node_modules/,
         use: {
-            loader: "url-loader"
+          loader: "url-loader"
         }
       },
       {
-        test:/\.css$/,
+        test: /\.css$/,
         exclude: /node_modules/,
         use: ['style-loader', 'css-loader']
       }
