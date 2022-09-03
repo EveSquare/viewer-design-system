@@ -84,15 +84,20 @@ function ReactLive2d(props) {
       _lappdelegate.LAppDelegate.getInstance().run(); // window.onbeforeunload = () => LAppDelegate.releaseInstance();
 
     }
+
+    ;
+    window.addEventListener("live2dOnTap", function (event) {
+      var s_instance = _lapplive2dmanager.LAppLive2DManager.getInstance();
+
+      s_instance.onTap(event.detail.x || 0, event.detail.y || 0);
+    });
   }, []);
   (0, _react.useEffect)(function () {
     if (props.release == true) {
       _lappdelegate.LAppDelegate.releaseInstance();
     }
   }, [props.release]);
-  return /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("button", {
-    onClick: _lapplive2dmanager.LAppLive2DManager.onTap()
-  }, "onTap"), /*#__PURE__*/_react["default"].createElement("div", {
+  return /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("div", {
     style: containerStyle,
     id: "live2d-container"
   }, /*#__PURE__*/_react["default"].createElement("div", {
