@@ -27,13 +27,16 @@ function ReactLive2d(props) {
   // DeepBlue: '#5B8DBE',
   // LightBlue: '#C8E6FE',
   // pink: '#F9B8BE'
-  // 容器样式
+  var width = props.width ? props.width : '300';
+  var height = props.height ? props.height : '500'; // 容器样式
+
   var containerStyle = {
     position: 'fixed',
     top: props.top ? props.top : '',
     right: props.right ? props.right : '0',
     bottom: props.bottom ? props.bottom : '0',
-    left: props.left ? props.left : ''
+    left: props.left ? props.left : '',
+    width: width
   }; // canvas样式
 
   var canvasStyle = {
@@ -41,7 +44,8 @@ function ReactLive2d(props) {
     top: props.top ? props.top : '',
     right: props.right ? props.right : '0',
     bottom: props.bottom ? props.bottom : '0',
-    left: props.left ? props.left : ''
+    left: props.left ? props.left : '',
+    height: height
   }; // 面板主题样式
   // let Theme = {
   //     color: props.color ? props.color : '#C8E6FE',
@@ -67,11 +71,10 @@ function ReactLive2d(props) {
   // }
 
   (0, _react.useEffect)(function () {
-    props.ModelList ? LAppDefine.lappdefineSet.setModelDir(props.ModelList) : LAppDefine.lappdefineSet.setModelDir([]);
-    props.TouchBody ? LAppDefine.lappdefineSet.setHitBody(props.TouchBody) : LAppDefine.lappdefineSet.setHitBody([]);
-    props.TouchHead ? LAppDefine.lappdefineSet.setHitHead(props.TouchHead) : LAppDefine.lappdefineSet.setHitHead([]);
-    props.TouchDefault ? LAppDefine.lappdefineSet.setHitDefault(props.TouchDefault) : LAppDefine.lappdefineSet.setHitDefault([]);
-    props.PathFull ? LAppDefine.lappdefineSet.setPathFull(props.PathFull) : LAppDefine.lappdefineSet.setPathFull('');
+    props.ModelList ? LAppDefine.lappdefineSet.setModelDir(props.ModelList) : LAppDefine.lappdefineSet.setModelDir([]); // props.TouchBody ? LAppDefine.lappdefineSet.setHitBody(props.TouchBody) : LAppDefine.lappdefineSet.setHitBody([])
+    // props.TouchHead ? LAppDefine.lappdefineSet.setHitHead(props.TouchHead) : LAppDefine.lappdefineSet.setHitHead([])
+    // props.TouchDefault ? LAppDefine.lappdefineSet.setHitDefault(props.TouchDefault) : LAppDefine.lappdefineSet.setHitDefault([])
+    // props.PathFull ? LAppDefine.lappdefineSet.setPathFull(props.PathFull) : LAppDefine.lappdefineSet.setPathFull('')
 
     if (!navigator.userAgent.match(/mobile/i) || props.MobileShow == true) {
       if (_lappdelegate.LAppDelegate.getInstance().initialize() == false) {
@@ -87,10 +90,10 @@ function ReactLive2d(props) {
       _lappdelegate.LAppDelegate.releaseInstance();
     }
   }, [props.release]);
-  return /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("div", {
+  return /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("button", {
+    onClick: _lapplive2dmanager.LAppLive2DManager.onTap()
+  }, "onTap"), /*#__PURE__*/_react["default"].createElement("div", {
     style: containerStyle,
-    width: props.width ? props.width : '300',
-    height: props.height ? props.height : '500',
     id: "live2d-container"
   }, /*#__PURE__*/_react["default"].createElement("div", {
     id: "live2d-hidden",
@@ -105,8 +108,8 @@ function ReactLive2d(props) {
   }), /*#__PURE__*/_react["default"].createElement("canvas", {
     id: "live2d",
     style: canvasStyle,
-    width: props.width ? props.width : '300',
-    height: props.height ? props.height : '500',
+    width: width,
+    height: height,
     className: "live2d" // onMouseEnter={cvMouseOver}
     // onMouseLeave={cvMouseOut}
 

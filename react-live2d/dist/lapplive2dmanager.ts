@@ -116,13 +116,7 @@ export class LAppLive2DManager {
                 group,
                 no,
                 LAppDefine.PriorityForce,
-                // Math.floor(Math.random() * 2 + 1),
             );
-            // this._models.at(i).startRandomMotion(
-            //     LAppDefine.MotionGroupDefault,
-            //     LAppDefine.PriorityNormal,
-            //     this._finishedMotion
-            // );
         }
     }
 
