@@ -1,3 +1,4 @@
+import { Button } from "@chakra-ui/react"
 import { ComponentMeta, ComponentStory } from "@storybook/react"
 import { withDesign } from "storybook-addon-designs"
 import { Live2d } from "./"
@@ -14,7 +15,25 @@ export default {
 
 
 
-const Template: ComponentStory<typeof Live2d> = (args) => <Live2d {...args} />
+const Template: ComponentStory<typeof Live2d> = (args) => {
+  function onClickHandler() {
+    window.dispatchEvent(new CustomEvent('live2dOnTap', {
+      detail: {
+        x: 0,
+        y: 0,
+      }
+    }));
+  }
+  return (
+    <>
+      <Button
+        onClick={onClickHandler}
+        m={2}
+      >イベント発火</Button>
+      <Live2d {...args} />
+    </>
+  )
+}
 
 export const Default = Template.bind({})
 
