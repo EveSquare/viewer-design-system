@@ -7,6 +7,7 @@ import { Props } from './type'
 export const MessageArea: React.FC<Props> = (props) => {
 
     const width = 300;
+    const margin = 50;
     const offset = "100px";
 
     return (
@@ -16,7 +17,9 @@ export const MessageArea: React.FC<Props> = (props) => {
                     <Box
                         position="fixed"
                         bottom="30"
-                        width="calc(100vw - 300px - 100px)"
+                        maxWidth="calc(100% - 350px - 100px)"
+                        width="calc(100vw - 350px - 350px)" // live2d - sidebar
+                        right={width + margin}
                     >
                         <SpeechBubbles />
                     </Box>

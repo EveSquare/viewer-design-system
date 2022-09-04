@@ -3,6 +3,7 @@ import React from "react";
 import { Props } from './type'
 import { SideBar } from "@/components/organisms/SideBar";
 import { Header } from "@/components/organisms/Header";
+import { MessageArea } from "@/components/organisms/MessageArea";
 
 export const MainViewerTemplate: React.FC<Props> = ({ children, agentDatas, linkDatas, headerInfo }) => {
     return (
@@ -21,6 +22,11 @@ export const MainViewerTemplate: React.FC<Props> = ({ children, agentDatas, link
                         onOpenSetting={headerInfo.onOpenSetting}
                     />
                 </Flex>
+            </Box>
+            <Box zIndex={2}>
+                <MessageArea
+                    isShowing={true}
+                />
             </Box>
             <Box zIndex={-1} w="100vw" h="100vh">
                 {children}
