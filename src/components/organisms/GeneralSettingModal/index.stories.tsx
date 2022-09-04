@@ -22,7 +22,7 @@ const Template: ComponentStory<typeof GeneralSettingModal> = (args) => {
     colorMode: "dark",
     headerVisibility: "show",
     sideBarVisibility: "show",
-    charactorVisibility: "show",
+    characterVisibility: "show",
   });
   return (
     <>

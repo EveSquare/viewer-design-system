@@ -72,8 +72,8 @@ export const GeneralSettingModal: React.FC<Props> = ({ onClose, isOpen, size, st
                             <FormControl as='fieldset'>
                                 <FormLabel as='legend'>{t("キャラクターの表示設定")}</FormLabel>
                                 <RadioGroup
-                                    onChange={value => setState({ ...state, charactorVisibility: value })}
-                                    value={state.charactorVisibility}
+                                    onChange={value => setState({ ...state, characterVisibility: value })}
+                                    value={state.characterVisibility}
                                 >
                                     <Stack>
                                         <Radio value='show'>{t('表示')}</Radio>

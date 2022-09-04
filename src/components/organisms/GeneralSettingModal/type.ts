@@ -4,7 +4,7 @@ export interface State {
     colorMode: string;
     headerVisibility: string;
     sideBarVisibility: string;
-    charactorVisibility: string;
+    characterVisibility: string;
 }
 
 export interface Props {
