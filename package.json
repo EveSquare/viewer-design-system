@@ -19,9 +19,11 @@
     "@emotion/styled": "^11",
     "babel-plugin-styled-components": "^2.0.7",
     "framer-motion": "^6",
+    "i18next": "^21.9.1",
     "next": "12.1.6",
     "react": "18.1.0",
     "react-dom": "18.1.0",
+    "react-i18next": "^11.18.5",
     "react-icons": "^4.4.0",
     "styled-components": "^5.3.5"
   },
@@ -49,6 +51,7 @@
     "sb": "6.5.10",
     "storybook-addon-designs": "^6.2.1",
     "storybook-addon-performance": "^0.16.1",
+    "storybook-i18n": "^1.1.4",
     "tsconfig-paths-webpack-plugin": "^3.5.2",
     "typescript": "4.7.3"
   }
