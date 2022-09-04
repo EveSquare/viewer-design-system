@@ -9,7 +9,12 @@ export default {
     (story: any) => <div style={{ padding: '0 2rem' }}>{story()}</div>,
     withDesign,
   ],
-  argTypes: {}
+  argTypes: {
+    agentType: {
+      options: ['civilian', 'ambulance', 'fire', 'police'],
+      control: { type: "select" },
+    }
+  }
 } as ComponentMeta<typeof AgentIcon>
 
 
