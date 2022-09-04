@@ -5,27 +5,22 @@ import { SideBar } from "@/components/organisms/SideBar";
 import { Header } from "@/components/organisms/Header";
 import { MessageArea } from "@/components/organisms/MessageArea";
 
-export const MainViewerTemplate: React.FC<Props> = ({ children, agentDatas, linkDatas, headerInfo }) => {
+export const MainViewerTemplate: React.FC<Props> = ({ children, sideBarInfo, headerInfo, characterIsShowing }) => {
     return (
         <>
             <Box zIndex={1} position="absolute">
                 <Flex w="100vw">
                     <SideBar
-                        agentDatas={agentDatas}
-                        linkDatas={linkDatas}
+                        {...sideBarInfo}
                     />
                     <Header
-                        stepCount={headerInfo.stepCount}
-                        stepTooltip={headerInfo.stepTooltip}
-                        score={headerInfo.score}
-                        scoreTooltip={headerInfo.scoreTooltip}
-                        onOpenSetting={headerInfo.onOpenSetting}
+                        {...headerInfo}
                     />
                 </Flex>
             </Box>
             <Box zIndex={2}>
                 <MessageArea
-                    isShowing={true}
+                    isShowing={characterIsShowing}
                 />
             </Box>
             <Box zIndex={-1} w="100vw" h="100vh">
