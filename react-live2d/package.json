@@ -1,13 +1,9 @@
 {
   "scripts": {
-    "start": "webpack-dev-server --open",
     "build": "webpack -d --hide-modules",
     "build:prod": "webpack -p --hide-modules",
-    "test": "tsc --noEmit",
-    "serve": "serve ../../.. -p 5000",
     "clean": "rimraf dist",
-    "transpile": "babel src -d dist --copy-files",
-    "prepublishOnly": "npm run transpile"
+    "transpile": "babel src -d dist --copy-files"
   },
   "main": "dist/bundle.js",
   "name": "react-live2d",
