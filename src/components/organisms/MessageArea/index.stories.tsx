@@ -19,7 +19,7 @@ const Template: ComponentStory<typeof MessageArea> = (args) => <MessageArea {...
 export const Default = Template.bind({})
 
 Default.args = {
-  isShowing: true,
+  isShowing: "show",
 }
 
 Default.parameters = {

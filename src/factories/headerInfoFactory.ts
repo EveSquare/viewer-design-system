@@ -7,4 +7,5 @@ export const headerInfo: HeaderProps = {
     score: 100,
     scoreTooltip: 'ここには、スコアが表示されます',
     onOpenSetting: action("onOpenSettingClicked"),
+    isShowing: "show",
 }

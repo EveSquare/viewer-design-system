@@ -21,6 +21,7 @@ export const Default = Template.bind({})
 Default.args = {
   agentDatas: agentDatas,
   linkDatas: linkDatas,
+  isShowing: "show",
 }
 
 Default.parameters = {
