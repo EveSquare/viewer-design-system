@@ -32,7 +32,6 @@ const Template: ComponentStory<typeof GeneralSettingModal> = (args) => {
       <GeneralSettingModal
         {...args}
         isOpen={isOpen}
-        onOpen={onOpen}
         onClose={onClose}
         state={state}
         setState={setState}

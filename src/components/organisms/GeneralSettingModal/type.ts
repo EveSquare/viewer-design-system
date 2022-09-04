@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 
-interface State {
+export interface State {
     colorMode: string;
     headerVisibility: string;
     sideBarVisibility: string;
@@ -12,14 +12,10 @@ export interface Props {
      * モーダルの状態管理
      */
     isOpen: boolean;
-    /** 
-     * モーダルを開く
-    */
-    onOpen: () => void;
     /**
      * モーダルを閉じる
      */
-    onClose: () => void;
+    onClose?: () => void;
     /**
      * モーダルのサイズ
      */

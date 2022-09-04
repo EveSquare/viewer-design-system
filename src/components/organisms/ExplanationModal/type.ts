@@ -8,7 +8,7 @@ export interface Props {
     /**
      * モーダル下部にある閉じるボタンのテキスト
      */
-    closeButtonText: string;
+    closeButtonText?: string;
     /**
      * モーダルボディに入る内容
      */
@@ -17,10 +17,6 @@ export interface Props {
      * モーダルの状態管理
      */
     isOpen: boolean;
-    /** 
-     * モーダルを開く
-    */
-    onOpen: () => void;
     /**
      * モーダルを閉じる
      */
