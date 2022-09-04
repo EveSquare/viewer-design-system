@@ -16,6 +16,10 @@ export interface Props {
      */
     scoreTooltip?: string;
     /**
+     * 表示状態
+     */
+    isShowing: string;
+    /**
      * 設定ボタン押下時のコールバック
      */
     onOpenSetting: () => void;

@@ -10,4 +10,8 @@ export interface Props {
      * リンクカードデータ
      */
     linkDatas: Array<LinkCardProps>;
+    /**
+     * 表示状態
+     */
+    isShowing: string;
 }

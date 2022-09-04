@@ -12,7 +12,7 @@ export const MessageArea: React.FC<Props> = (props) => {
 
     return (
         <>
-            {props.isShowing ?
+            {props.isShowing == "show" ?
                 <Box>
                     <Box
                         position="fixed"
