@@ -10,7 +10,7 @@ export const GeneralSettingModal: React.FC<Props> = ({ onClose, isOpen, size, st
     return (
         <>
             <Modal
-                onClose={onClose}
+                onClose={onClose || (() => { })}
                 isOpen={isOpen}
                 scrollBehavior="inside"
                 size={size || "3xl"}
@@ -85,7 +85,7 @@ export const GeneralSettingModal: React.FC<Props> = ({ onClose, isOpen, size, st
                         </Box>
                     </ModalBody>
                     <ModalFooter>
-                        <Button onClick={onClose}>{t('閉じる')}</Button>
+                        <Button onClick={onClose || (() => { })}>{t('閉じる')}</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
