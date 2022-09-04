@@ -11,6 +11,7 @@ import * as React from "react"
 import { FaMoon, FaSun } from "react-icons/fa"
 import { withPerformance } from "storybook-addon-performance"
 import chkraTheme from '../chkraTheme'
+import "../i18n.js";
 
 /**
  * Add global context for RTL-LTR switching
@@ -77,5 +78,12 @@ export const parameters = {
         },
       ],
     },
+  },
+  // i18n
+  locale: "en",
+  locales: {
+    en: { title: "English", left: '🇺🇸' },
+    fr: { title: "Français", left: '🇫🇷' },
+    ja: { title: "日本語", left: '🇯🇵' },
   },
 };
