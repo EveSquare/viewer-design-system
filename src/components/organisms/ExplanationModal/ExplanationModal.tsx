@@ -2,8 +2,11 @@ import { AgentIcon } from "@/components/atoms/AgentIcon";
 import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text } from "@chakra-ui/react";
 import React from "react";
 import { Props } from './type'
+import { useTranslation } from 'react-i18next';
 
-export const ExplanationModal: React.FC<Props> = ({ title, closeButtonText, children, isOpen, onOpen, onClose, size, agentType }) => {
+export const ExplanationModal: React.FC<Props> = ({ title, closeButtonText, children, isOpen, onClose, size, agentType }) => {
+    const { t, i18n } = useTranslation();
+
     return (
         <>
             <Modal
@@ -32,12 +35,12 @@ export const ExplanationModal: React.FC<Props> = ({ title, closeButtonText, chil
                                 (<>{title}</>)
                         }
                     </ModalHeader>
-                    <ModalCloseButton title="説明を閉じる" />
+                    <ModalCloseButton title={t("説明を閉じる")} />
                     <ModalBody>
                         {children}
                     </ModalBody>
                     <ModalFooter>
-                        <Button onClick={onClose}>{closeButtonText}</Button>
+                        <Button onClick={onClose}>{closeButtonText || t('閉じる')}</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
