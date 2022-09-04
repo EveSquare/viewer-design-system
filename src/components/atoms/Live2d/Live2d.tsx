@@ -7,7 +7,8 @@ export const Live2d: React.FC<Props> = (props) => {
         <>
             <ReactLive2d
                 width={300}
-                height={500}
+                height={350}
+                bottom={20}
                 ModelList={["unitychan"]}
             />
         </>
