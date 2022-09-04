@@ -560,7 +560,6 @@ export class LAppModel extends CubismUserModel {
     onFinishedMotionHandler?: FinishedMotionCallback
   ): CubismMotionQueueEntryHandle {
 
-    console.log("startMotion lappmodel", group, no, priority)
     if (priority == LAppDefine.PriorityForce) {
       this._motionManager.setReservePriority(priority);
     } else if (!this._motionManager.reserveMotion(priority)) {
@@ -576,7 +575,6 @@ export class LAppModel extends CubismUserModel {
     const name = `${group}_${no}`;
     let motion: CubismMotion = this._motions.getValue(name) as CubismMotion;
     let autoDelete = false;
-    console.log("lets start", name, motion);
     if (motion == null) {
       fetch(`${this._modelHomeDir}${motionFileName}`)
         .then(response => response.arrayBuffer())
@@ -647,7 +645,6 @@ export class LAppModel extends CubismUserModel {
    */
   public setExpression(expressionId: string): void {
     const motion: ACubismMotion = this._expressions.getValue(expressionId);
-    console.log(motion, expressionId);
 
     if (this._debugMode) {
       LAppPal.printMessage(`[APP]expression: [${expressionId}]`);
@@ -679,7 +676,6 @@ export class LAppModel extends CubismUserModel {
     for (let i = 0; i < this._expressions.getSize(); i++) {
       if (i == no) {
         const name: string = this._expressions._keyValues[i].first;
-        console.log("ランダムに選ばれた表情モーションをセットする", name);
         this.setExpression(name);
         return;
       }
@@ -690,7 +686,6 @@ export class LAppModel extends CubismUserModel {
    * イベントの発火を受け取る
    */
   public motionEventFired(eventValue: csmString): void {
-    console.log("全てのイベント発火監視？？")
     CubismLogInfo('{0} is fired on LAppModel!!', eventValue.s);
   }
 

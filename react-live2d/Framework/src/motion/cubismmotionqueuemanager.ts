@@ -72,8 +72,6 @@ export namespace Live2DCubismFramework {
         return InvalidMotionQueueEntryHandleValue;
       }
 
-      console.log("startMotion", motion, autoDelete, userTimeSeconds);
-
       let motionQueueEntry: CubismMotionQueueEntry = null;
 
       // アクションが既にある場合は、終了記号を設定します

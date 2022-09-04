@@ -44,7 +44,6 @@ export class LAppDelegate {
    * クラスのインスタンス（シングルトン）を解放する。
    */
   public static releaseInstance(): void {
-    console.log("释放实例")
     if (s_instance != null) {
       s_instance.release();
     }
@@ -76,7 +75,7 @@ export class LAppDelegate {
       }
 
       // 如果不存在live2d,不进行操作
-      if(document.getElementById("live2d")){
+      if (document.getElementById("live2d")) {
         //这里id的值与上方的 cavans 变量保持一致
         let rect = document.getElementById("live2d").getBoundingClientRect();
         let posX: number = e.clientX - rect.left;

@@ -55,14 +55,13 @@ export namespace Live2DCubismFramework {
   }
 
   function linearEvaluate(points: CubismMotionPoint[], time: number): number {
-    // console.log('linearEvaluate',points)
     // let t: number = (time - points[0].time) / (points[1].time - points[0].time);
     let t: number;
-    if(points[0] && points[0].time != 0){
+    if (points[0] && points[0].time != 0) {
       t = (time - points[0].time) / (points[1].time - points[0].time);
-    }else if(points[2] && points[2].time){
+    } else if (points[2] && points[2].time) {
       t = (time - points[1].time) / (points[2].time - points[1].time);
-    }else if(points.length>0){
+    } else if (points.length > 0) {
       t = (time - points[0].time) / (points[1].time - points[0].time);
     }
 
@@ -119,7 +118,7 @@ export namespace Live2DCubismFramework {
       pointPosition = motionData.segments.at(i).basePointIndex + (motionData.segments.at(i).segmentType == CubismMotionSegmentType.CubismMotionSegmentType_Bezier ? 3 : 1);
 
       // 部分模型点位超出最大值
-      if(pointPosition>=motionData.points._size){
+      if (pointPosition >= motionData.points._size) {
         pointPosition = motionData.points._size - 3
       }
 
@@ -234,17 +233,17 @@ export namespace Live2DCubismFramework {
         this._fadeInSeconds <= 0.0
           ? 1.0
           : CubismMath.getEasingSine(
-              (userTimeSeconds - motionQueueEntry.getFadeInStartTime()) /
-                this._fadeInSeconds
-            );
+            (userTimeSeconds - motionQueueEntry.getFadeInStartTime()) /
+            this._fadeInSeconds
+          );
 
       const tmpFadeOut: number =
         this._fadeOutSeconds <= 0.0 || motionQueueEntry.getEndTime() < 0.0
           ? 1.0
           : CubismMath.getEasingSine(
-              (motionQueueEntry.getEndTime() - userTimeSeconds) /
-                this._fadeOutSeconds
-            );
+            (motionQueueEntry.getEndTime() - userTimeSeconds) /
+            this._fadeOutSeconds
+          );
       let value: number;
       let c: number, parameterIndex: number;
 
@@ -264,7 +263,7 @@ export namespace Live2DCubismFramework {
         c = 0;
         c < this._motionData.curveCount &&
         curves.at(c).type ==
-          CubismMotionCurveTarget.CubismMotionCurveTarget_Model;
+        CubismMotionCurveTarget.CubismMotionCurveTarget_Model;
         ++c
       ) {
         // Evaluate curve and call handler.
@@ -284,7 +283,7 @@ export namespace Live2DCubismFramework {
         ;
         c < this._motionData.curveCount &&
         curves.at(c).type ==
-          CubismMotionCurveTarget.CubismMotionCurveTarget_Parameter;
+        CubismMotionCurveTarget.CubismMotionCurveTarget_Parameter;
         ++c
       ) {
         parameterMotionCurveCount++;
@@ -351,9 +350,9 @@ export namespace Live2DCubismFramework {
               curves.at(c).fadeInTime == 0.0
                 ? 1.0
                 : CubismMath.getEasingSine(
-                    (userTimeSeconds - motionQueueEntry.getFadeInStartTime()) /
-                      curves.at(c).fadeInTime
-                  );
+                  (userTimeSeconds - motionQueueEntry.getFadeInStartTime()) /
+                  curves.at(c).fadeInTime
+                );
           }
 
           if (curves.at(c).fadeOutTime < 0.0) {
@@ -361,12 +360,12 @@ export namespace Live2DCubismFramework {
           } else {
             fout =
               curves.at(c).fadeOutTime == 0.0 ||
-              motionQueueEntry.getEndTime() < 0.0
+                motionQueueEntry.getEndTime() < 0.0
                 ? 1.0
                 : CubismMath.getEasingSine(
-                    (motionQueueEntry.getEndTime() - userTimeSeconds) /
-                      curves.at(c).fadeOutTime
-                  );
+                  (motionQueueEntry.getEndTime() - userTimeSeconds) /
+                  curves.at(c).fadeOutTime
+                );
           }
 
           const paramWeight: number = this._weight * fin * fout;
@@ -428,7 +427,7 @@ export namespace Live2DCubismFramework {
         ;
         c < this._motionData.curveCount &&
         curves.at(c).type ==
-          CubismMotionCurveTarget.CubismMotionCurveTarget_PartOpacity;
+        CubismMotionCurveTarget.CubismMotionCurveTarget_PartOpacity;
         ++c
       ) {
         // Find parameter index.
@@ -722,13 +721,13 @@ export namespace Live2DCubismFramework {
         this._motionData.curves.at(
           curveCount
         ).fadeInTime = json.isExistMotionCurveFadeInTime(curveCount)
-          ? json.getMotionCurveFadeInTime(curveCount)
-          : -1.0;
+            ? json.getMotionCurveFadeInTime(curveCount)
+            : -1.0;
         this._motionData.curves.at(
           curveCount
         ).fadeOutTime = json.isExistMotionCurveFadeOutTime(curveCount)
-          ? json.getMotionCurveFadeOutTime(curveCount)
-          : -1.0;
+            ? json.getMotionCurveFadeOutTime(curveCount)
+            : -1.0;
 
         // Segments
         for (
@@ -740,7 +739,7 @@ export namespace Live2DCubismFramework {
             this._motionData.segments.at(
               totalSegmentCount
             ).basePointIndex = totalPointCount;
-            if(this._motionData.points.at(totalPointCount)){
+            if (this._motionData.points.at(totalPointCount)) {
               this._motionData.points.at(
                 totalPointCount
               ).time = json.getMotionCurveSegment(curveCount, segmentPosition);
@@ -772,7 +771,7 @@ export namespace Live2DCubismFramework {
               ).evaluate = linearEvaluate;
 
               // 修改最后点
-              if(this._motionData.points.at(totalPointCount)){
+              if (this._motionData.points.at(totalPointCount)) {
                 this._motionData.points.at(
                   totalPointCount
                 ).time = json.getMotionCurveSegment(
@@ -798,9 +797,9 @@ export namespace Live2DCubismFramework {
               this._motionData.segments.at(
                 totalSegmentCount
               ).evaluate = bezierEvaluate;
-              
+
               // 修改最后点
-              if(this._motionData.points.at(totalPointCount)){
+              if (this._motionData.points.at(totalPointCount)) {
                 this._motionData.points.at(
                   totalPointCount
                 ).time = json.getMotionCurveSegment(
@@ -814,9 +813,9 @@ export namespace Live2DCubismFramework {
                   segmentPosition + 2
                 );
               }
-              
+
               // 修改最后点
-              if(this._motionData.points.at(totalPointCount + 1)){
+              if (this._motionData.points.at(totalPointCount + 1)) {
                 this._motionData.points.at(
                   totalPointCount + 1
                 ).time = json.getMotionCurveSegment(
@@ -830,9 +829,9 @@ export namespace Live2DCubismFramework {
                   segmentPosition + 4
                 );
               }
-              
+
               // 修改最后点
-              if(this._motionData.points.at(totalPointCount + 2)){
+              if (this._motionData.points.at(totalPointCount + 2)) {
                 this._motionData.points.at(
                   totalPointCount + 2
                 ).time = json.getMotionCurveSegment(
@@ -846,7 +845,7 @@ export namespace Live2DCubismFramework {
                   segmentPosition + 6
                 );
               }
-              
+
 
               totalPointCount += 3;
               segmentPosition += 7;
@@ -862,7 +861,7 @@ export namespace Live2DCubismFramework {
               ).evaluate = steppedEvaluate;
 
               // 修改最后点
-              if(this._motionData.points.at(totalPointCount)){
+              if (this._motionData.points.at(totalPointCount)) {
                 this._motionData.points.at(
                   totalPointCount
                 ).time = json.getMotionCurveSegment(
@@ -891,7 +890,7 @@ export namespace Live2DCubismFramework {
               ).evaluate = inverseSteppedEvaluate;
 
               // 修改最后点
-              if(this._motionData.points.at(totalPointCount)){
+              if (this._motionData.points.at(totalPointCount)) {
                 this._motionData.points.at(
                   totalPointCount
                 ).time = json.getMotionCurveSegment(

@@ -109,7 +109,6 @@ export class LAppLive2DManager {
             }
         }));
 
-        console.log("ontap");
         for (let i = 0; i < this._models.getSize(); i++) {
             const [group, no] = LAppDefine.UseTapedMotions[Math.floor(Math.random() * LAppDefine.UseTapedMotions.length)]
             this._models.at(i).startMotion(
