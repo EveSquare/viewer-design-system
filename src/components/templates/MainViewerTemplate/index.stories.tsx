@@ -5,7 +5,6 @@ import { agentDatas } from "src/factories/agentDatasFactory"
 import { linkDatas } from "src/factories/linkDatasFactory"
 import { headerInfo } from "src/factories/headerInfoFactory"
 import { Box } from "@chakra-ui/react";
-import { action } from "@storybook/addon-actions";
 
 export default {
   title: "Design System/Templates/MainViewerTemplate",
