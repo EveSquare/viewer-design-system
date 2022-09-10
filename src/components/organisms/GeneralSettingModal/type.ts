@@ -5,6 +5,7 @@ export interface State {
     headerVisibility: string;
     sideBarVisibility: string;
     characterVisibility: string;
+    sliderKitVisibility: string;
 }
 
 export interface Props {

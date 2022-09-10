@@ -5,4 +5,5 @@ export const generalSettingState: State = {
     headerVisibility: "show",
     sideBarVisibility: "show",
     characterVisibility: "show",
+    sliderKitVisibility: "show",
 }
