@@ -24,6 +24,6 @@ export interface Props {
     /**
      * スライダーを終了したとき(離した時)に発火するイベント
      */
-    onChangeEndCallBack: () => void;
+    onChangeEnd: () => void;
 }
 

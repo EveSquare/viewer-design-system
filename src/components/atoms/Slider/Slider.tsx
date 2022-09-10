@@ -11,7 +11,7 @@ import {
     Tooltip,
 } from '@chakra-ui/react'
 
-export const Slider: React.FC<Props> = ({ min, max, value, onChange, isDisabled, onChangeEndCallBack }) => {
+export const Slider: React.FC<Props> = ({ min, max, value, onChange, isDisabled, onChangeEnd }) => {
     const [showTooltip, setShowTooltip] = React.useState(false)
 
     const { t, i18n } = useTranslation();
@@ -28,7 +28,7 @@ export const Slider: React.FC<Props> = ({ min, max, value, onChange, isDisabled,
                 onChange={(v) => onChange(v)}
                 onMouseEnter={() => setShowTooltip(true)}
                 onMouseLeave={() => setShowTooltip(false)}
-                onChangeEnd={() => onChangeEndCallBack()}
+                onChangeEnd={() => onChangeEnd()}
             >
                 <SliderTrack bg='primary.50'>
                     <SliderFilledTrack bg='primary' />

@@ -37,7 +37,7 @@ Default.args = {
   min: 0,
   max: 100,
   isDisabled: false,
-  onChangeEndCallBack: action("スライダーの選択が外されました"),
+  onChangeEnd: action("スライダーの選択が外されました"),
 }
 
 Default.parameters = {
