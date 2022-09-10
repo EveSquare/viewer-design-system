@@ -36,6 +36,7 @@ function ReactLive2d(props) {
     // canvas样式
     let canvasStyle = {
         position: 'fixed',
+        zIndex: 2,
         ...sizing
     }
 

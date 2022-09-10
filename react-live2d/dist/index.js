@@ -54,7 +54,8 @@ function ReactLive2d(props) {
 
 
   var canvasStyle = _objectSpread({
-    position: 'fixed'
+    position: 'fixed',
+    zIndex: 2
   }, sizing);
 
   (0, _react.useEffect)(function () {
