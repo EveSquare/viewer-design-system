@@ -8,6 +8,10 @@ export interface Props {
     */
     isDisabled: boolean;
     /**
+     * 表示切り替え
+     */
+    isShowing: string;
+    /**
      * スライダーの値
      */
     value: number;

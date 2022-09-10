@@ -37,12 +37,13 @@ export const Default = Template.bind({})
 Default.args = {
   max: 100,
   isDisabled: false,
+  isShowing: "show",
   onChangeEnd: action("スライダーの選択が外されました"),
 }
 
 Default.parameters = {
   design: {
     type: 'figma',
-    url: '',
+    url: 'https://www.figma.com/file/o7yfzbsUDC5opY59UovfFD/Slider?node-id=0%3A1',
   },
 }
