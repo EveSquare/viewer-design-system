@@ -9,8 +9,9 @@ import { GeneralSettingModal } from "@/components/organisms/GeneralSettingModal"
 import { generalSettingState as generalSettingStateInitial } from "@/factories/generalSettingStateFactory"
 import React, { useEffect } from "react"
 import { ExplanationModal } from "@/components/organisms/ExplanationModal";
+import { Props } from './type';
 
-export const MainViewer: React.FC = () => {
+export const MainViewer: React.FC<Props> = ({ children }) => {
 
     const [generalSettingState, setGeneralSettingState] = React.useState(generalSettingStateInitial);
     const [modalVisibilityState, setModalVisibilityState] = React.useState({
@@ -114,7 +115,7 @@ export const MainViewer: React.FC = () => {
                 characterIsShowing={generalSettingState.characterVisibility}
                 sliderArgs={sliderArgs}
             >
-                <Box bg="green.700" w="100vw" h="100vh"></Box>
+                {children ? children : <Box bg="green.700" w="100vw" h="100vh"></Box>}
             </MainViewerTemplate>
             <GeneralSettingModal
                 isOpen={modalVisibilityState.generalSettingModal}
