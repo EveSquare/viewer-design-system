@@ -1,11 +1,13 @@
 import React from "react";
 import { Props } from './type'
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
-import { Box, Button, Text, HStack, Icon, IconButton } from '@chakra-ui/react'
+import { Text, HStack, Icon, IconButton } from '@chakra-ui/react'
 import { Slider } from "@/components/atoms/Slider";
-import { t } from "i18next";
+import { useTranslation } from 'react-i18next';
 
 export const SliderKit: React.FC<Props> = ({ isPlaying, isDisabled, isShowing, value, max, onChange, onChangeEnd, onClickPlayButton }) => {
+    const { t, i18n } = useTranslation();
+
     const min = 0;
     return (
         <>
