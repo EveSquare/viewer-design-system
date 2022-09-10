@@ -28,12 +28,11 @@ const _SpeechBubbles = chakra(Box, {
     }
 })
 
-export const SpeechBubbles: React.FC<Props> = (props) => {
+export const SpeechBubbles = React.memo((props: Props) => {
 
     const [message, setMessage] = useState("")
     const [isAnimation, setIsAnimation] = useState(true)
 
-    // TODO: アニメーションが3回発火している
     useEffect(() => {
         window.addEventListener('speechMessage', (event: Event) => {
             console.log(event);
@@ -55,6 +54,6 @@ export const SpeechBubbles: React.FC<Props> = (props) => {
             </SlideFade>
         </>
     );
-}
+});
 
 SpeechBubbles.displayName = "SPEECHBUBBLES";
