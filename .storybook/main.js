@@ -26,6 +26,9 @@ module.exports = {
       ...(config.resolve.plugins || []),
       new TsconfigPathsPlugin(),
     ];
+    config.externals = {
+      Live2DCubismCore: 'Live2DCubismCore',
+    };
     return config;
   },
 };
