@@ -1,6 +1,6 @@
 import React from "react";
 import { QuestionOutlineIcon } from '@chakra-ui/icons'
-import { Box, Container, Heading, VStack } from "@chakra-ui/react";
+import { Box, Container, Heading, Link, VStack } from "@chakra-ui/react";
 import { Logo } from "@/components/organisms/Logo";
 import { SectionBar } from "@/components/atoms/SectionBar";
 import { AgentCard } from "@/components/molecules/AgentCard";
@@ -11,10 +11,11 @@ export const SideBar: React.FC<Props> = ({ agentDatas, linkDatas, isShowing }) =
     return (
         <>
             {isShowing == "show" ?
-
                 <Container w="300px" h="100vh" bg="bg">
                     <VStack>
-                        <Logo />
+                        <Box m={2}>
+                            <Logo />
+                        </Box>
                         <SectionBar />
                         <>
                             {
