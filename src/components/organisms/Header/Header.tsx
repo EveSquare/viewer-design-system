@@ -33,7 +33,7 @@ export const Header: React.FC<Props> = ({ stepCount, stepTooltip, score, scoreTo
                             aria-label={scoreTooltip}
                             closeDelay={500}
                         >
-                            <Text fontSize="2xl" as="b">SCORE: {score}</Text>
+                            <Text fontSize="2xl" as="b">SCORE: {score}/</Text>
                         </Tooltip>
                         <SettingsIcon
                             w="24px"
