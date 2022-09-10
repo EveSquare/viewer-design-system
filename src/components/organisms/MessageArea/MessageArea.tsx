@@ -16,7 +16,7 @@ export const MessageArea: React.FC<Props> = (props) => {
                 <Box>
                     <Box
                         position="fixed"
-                        bottom="30"
+                        bottom="70px"
                         maxWidth="calc(100% - 350px - 100px)"
                         width="calc(100vw - 350px - 350px)" // live2d - sidebar
                         right={width + margin}
@@ -26,7 +26,7 @@ export const MessageArea: React.FC<Props> = (props) => {
                     <Live2d
                         width={width}
                         height={350}
-                        bottom={20}
+                        bottom={50}
                         ModelList={["unitychan"]}
                     />
                 </Box>
