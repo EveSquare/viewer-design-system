@@ -9,102 +9,20 @@ import { GeneralSettingModal } from "@/components/organisms/GeneralSettingModal"
 import { generalSettingState as generalSettingStateInitial } from "@/factories/generalSettingStateFactory"
 import React, { useEffect } from "react"
 import { ExplanationModal } from "@/components/organisms/ExplanationModal";
+import { Props } from "./type";
 
-export const MainViewer: React.FC = () => {
-
-    const [generalSettingState, setGeneralSettingState] = React.useState(generalSettingStateInitial);
-    const [modalVisibilityState, setModalVisibilityState] = React.useState({
-        civilianExplanationModal: false,
-        ambulanceExplanationModal: false,
-        fireExplanationModal: false,
-        generalSettingModal: false,
-    });
-    const [sliderKitState, setSliderKitState] = React.useState({
-        isPlaying: true,
-        isDisabled: false,
-        value: 0,
-        max: 100,
-    });
-
-    const agentDatas: Array<AgentCardProps> = [
-        {
-            agentType: 'civilian',
-            title: '市民',
-            description: '市民の説明',
-            onClick: () => { setModalVisibilityState({ ...modalVisibilityState, civilianExplanationModal: true }) },
-        },
-        {
-            agentType: 'ambulance',
-            title: '救急隊',
-            description: '救急隊の説明',
-            onClick: () => { setModalVisibilityState({ ...modalVisibilityState, ambulanceExplanationModal: true }) },
-        },
-        {
-            agentType: 'fire',
-            title: '消防隊',
-            description: '消防隊の説明',
-            onClick: () => { setModalVisibilityState({ ...modalVisibilityState, fireExplanationModal: true }) },
-        },
-    ]
-
-    const sideBarInfo = {
-        agentDatas: agentDatas,
-        linkDatas: linkDatas,
-        isShowing: generalSettingState.sideBarVisibility,
-    }
-
-    const headerInfo: HeaderProps = {
-        stepCount: 10,
-        stepTooltip: 'ここには、ステップ数が表示されます',
-        score: 100,
-        scoreTooltip: 'ここには、スコアが表示されます',
-        isShowing: generalSettingState.headerVisibility,
-        onOpenSetting: () => { setModalVisibilityState({ ...modalVisibilityState, generalSettingModal: true }) },
-    }
-
-    const sliderArgs: SliderArgsProps = {
-        isPlaying: sliderKitState.isPlaying,
-        isDisabled: sliderKitState.isDisabled,
-        isShowing: generalSettingState.sliderKitVisibility,
-        value: sliderKitState.value,
-        max: sliderKitState.max,
-        onChange: (value: number) => { setSliderKitState({ ...sliderKitState, value: value }) },
-        onChangeEnd: () => { },
-        onClickPlayButton: () => { setSliderKitState({ ...sliderKitState, isPlaying: !sliderKitState.isPlaying }) },
-    }
-
-    const civilianExplanationData: ExplanationModalProps = {
-        title: '市民の説明',
-        children: <></>,
-        isOpen: modalVisibilityState.civilianExplanationModal,
-        onClose: () => { setModalVisibilityState({ ...modalVisibilityState, civilianExplanationModal: false }) },
-        agentType: 'civilian',
-    }
-
-    const ambulanceExplanationData: ExplanationModalProps = {
-        title: '救急隊の説明',
-        children: <></>,
-        isOpen: modalVisibilityState.ambulanceExplanationModal,
-        onClose: () => { setModalVisibilityState({ ...modalVisibilityState, ambulanceExplanationModal: false }) },
-        agentType: 'ambulance',
-    }
-
-    const fireExplanationData: ExplanationModalProps = {
-        title: '消防隊の説明',
-        children: <></>,
-        isOpen: modalVisibilityState.fireExplanationModal,
-        onClose: () => { setModalVisibilityState({ ...modalVisibilityState, fireExplanationModal: false }) },
-        agentType: 'fire',
-    }
-
-    const { toggleColorMode } = useColorMode()
-    const nextMode = useColorModeValue("dark", "light")
-
-    useEffect(() => {
-        if (nextMode === generalSettingState.colorMode) {
-            toggleColorMode();
-        }
-    }, [generalSettingState.colorMode, nextMode, toggleColorMode]);
+export const MainViewer: React.FC<Props> = ({
+    sideBarInfo,
+    headerInfo,
+    generalSettingState,
+    sliderArgs,
+    modalVisibilityState,
+    civilianExplanationData,
+    ambulanceExplanationData,
+    fireExplanationData,
+    setGeneralSettingState,
+    setModalVisibilityState,
+}) => {
 
     return (
         <>
