@@ -1,8 +1,9 @@
 import { MainViewerTemplate } from "@/components/templates/MainViewerTemplate"
 import { linkDatas } from "src/factories/linkDatasFactory"
-import { Props as HeaderProps } from "@/components/molecules/Header/type";
+import { Props as HeaderProps } from "@/components/organisms/Header/type";
 import { Props as AgentCardProps } from "@/components/molecules/AgentCard/type";
 import { Props as ExplanationModalProps } from "@/components/organisms/ExplanationModal/type";
+import { Props as SliderArgsProps } from "@/components/organisms/SliderKit/type";
 import { Box, useColorMode, useColorModeValue } from "@chakra-ui/react"
 import { GeneralSettingModal } from "@/components/organisms/GeneralSettingModal"
 import { generalSettingState as generalSettingStateInitial } from "@/factories/generalSettingStateFactory"
@@ -17,6 +18,12 @@ export const MainViewer: React.FC = () => {
         ambulanceExplanationModal: false,
         fireExplanationModal: false,
         generalSettingModal: false,
+    });
+    const [sliderKitState, setSliderKitState] = React.useState({
+        isPlaying: true,
+        isDisabled: false,
+        value: 0,
+        max: 100,
     });
 
     const agentDatas: Array<AgentCardProps> = [
@@ -53,6 +60,17 @@ export const MainViewer: React.FC = () => {
         scoreTooltip: 'ここには、スコアが表示されます',
         isShowing: generalSettingState.headerVisibility,
         onOpenSetting: () => { setModalVisibilityState({ ...modalVisibilityState, generalSettingModal: true }) },
+    }
+
+    const sliderArgs: SliderArgsProps = {
+        isPlaying: sliderKitState.isPlaying,
+        isDisabled: sliderKitState.isDisabled,
+        isShowing: generalSettingState.sliderKitVisibility,
+        value: sliderKitState.value,
+        max: sliderKitState.max,
+        onChange: (value: number) => { setSliderKitState({ ...sliderKitState, value: value }) },
+        onChangeEnd: () => { },
+        onClickPlayButton: () => { setSliderKitState({ ...sliderKitState, isPlaying: !sliderKitState.isPlaying }) },
     }
 
     const civilianExplanationData: ExplanationModalProps = {
@@ -94,6 +112,7 @@ export const MainViewer: React.FC = () => {
                 sideBarInfo={sideBarInfo}
                 headerInfo={headerInfo}
                 characterIsShowing={generalSettingState.characterVisibility}
+                sliderArgs={sliderArgs}
             >
                 <Box bg="green.700" w="100vw" h="100vh"></Box>
             </MainViewerTemplate>
