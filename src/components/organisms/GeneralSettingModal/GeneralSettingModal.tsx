@@ -83,6 +83,8 @@ export const GeneralSettingModal: React.FC<Props> = ({ onClose, isOpen, size, st
                                 <FormHelperText>{t('キャラクターの表示・非表示を切り替えます')}</FormHelperText>
                             </FormControl>
 
+                            <SectionBar my="1rem" />
+
                             <FormControl as='fieldset'>
                                 <FormLabel as='legend'>{t("スライダーの表示設定")}</FormLabel>
                                 <RadioGroup
