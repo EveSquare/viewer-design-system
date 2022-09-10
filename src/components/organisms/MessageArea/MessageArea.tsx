@@ -13,9 +13,9 @@ export const MessageArea: React.FC<Props> = (props) => {
     return (
         <>
             {props.isShowing == "show" ?
-                <Box>
+                <Box zIndex={2}>
                     <Box
-                        position="fixed"
+                        position="absolute"
                         bottom="70px"
                         maxWidth="calc(100% - 350px - 100px)"
                         width="calc(100vw - 350px - 350px)" // live2d - sidebar

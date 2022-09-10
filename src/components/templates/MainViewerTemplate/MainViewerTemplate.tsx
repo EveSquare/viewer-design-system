@@ -9,26 +9,18 @@ import { SliderKit } from "@/components/organisms/SliderKit";
 export const MainViewerTemplate: React.FC<Props> = ({ children, sideBarInfo, headerInfo, characterIsShowing, sliderArgs }) => {
     return (
         <>
-            <Box zIndex={1} position="absolute">
+            <Box position="fixed">
                 <Flex w="100vw">
-                    <SideBar
-                        {...sideBarInfo}
-                    />
-                    <Header
-                        {...headerInfo}
-                    />
+                    <SideBar {...sideBarInfo} />
+                    <Header {...headerInfo} />
                 </Flex>
             </Box>
             <Box zIndex={2}>
-                <MessageArea
-                    isShowing={characterIsShowing}
-                />
+                <MessageArea isShowing={characterIsShowing} />
             </Box>
-            <Box bg="bg" zIndex={1} position="absolute" bottom={"15px"} width="100vw">
+            <Box bg="bg" zIndex={1} position="absolute" bottom={0} width="100vw">
                 <Box px={10}>
-                    <SliderKit
-                        {...sliderArgs}
-                    ></SliderKit>
+                    <SliderKit {...sliderArgs} />
                 </Box>
             </Box>
             <Box zIndex={-1} w="100vw" h="100vh">
