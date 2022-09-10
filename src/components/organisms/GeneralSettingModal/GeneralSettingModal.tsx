@@ -82,6 +82,20 @@ export const GeneralSettingModal: React.FC<Props> = ({ onClose, isOpen, size, st
                                 </RadioGroup>
                                 <FormHelperText>{t('キャラクターの表示・非表示を切り替えます')}</FormHelperText>
                             </FormControl>
+
+                            <FormControl as='fieldset'>
+                                <FormLabel as='legend'>{t("スライダーの表示設定")}</FormLabel>
+                                <RadioGroup
+                                    onChange={value => setState({ ...state, sliderKitVisibility: value })}
+                                    value={state.sliderKitVisibility}
+                                >
+                                    <Stack>
+                                        <Radio value='show'>{t('表示')}</Radio>
+                                        <Radio value='hide'>{t('非表示')}</Radio>
+                                    </Stack>
+                                </RadioGroup>
+                                <FormHelperText>{t('スライダーの表示・非表示を切り替えます')}</FormHelperText>
+                            </FormControl>
                         </Box>
                     </ModalBody>
                     <ModalFooter>
