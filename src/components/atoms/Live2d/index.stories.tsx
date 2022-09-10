@@ -37,7 +37,9 @@ const Template: ComponentStory<typeof Live2d> = (args) => {
 
 export const Default = Template.bind({})
 
-Default.args = {}
+Default.args = {
+  ModelList: ['unitychan'],
+}
 
 Default.parameters = {
   design: {
