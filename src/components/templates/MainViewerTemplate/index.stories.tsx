@@ -4,6 +4,7 @@ import { MainViewerTemplate } from "./"
 import { agentDatas } from "src/factories/agentDatasFactory"
 import { linkDatas } from "src/factories/linkDatasFactory"
 import { headerInfo } from "src/factories/headerInfoFactory"
+import { sliderArgs } from "@/factories/sliderArgsFantory"
 import { Box } from "@chakra-ui/react";
 
 export default {
@@ -33,6 +34,7 @@ Default.args = {
   agentDatas: agentDatas,
   linkDatas: linkDatas,
   headerInfo: headerInfo,
+  sliderArgs: sliderArgs,
   children: <SampleBlankChildren />,
 }
 
