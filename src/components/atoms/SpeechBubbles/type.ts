@@ -1,6 +1,8 @@
-import { PriorityForce, PriorityIdle, PriorityNone } from "../../atoms/SpeechBubbles/const";
+import { PriorityForce, PriorityIdle, PriorityNone } from "./const";
 
-export interface Props { }
+export interface Props {
+    isDebug?: boolean;
+}
 
 interface Position {
     x: number;
@@ -11,7 +13,7 @@ export interface Message {
     /**
      * メッセージの内容
      */
-    message: string;
+    text: string | null;
     /**
      * 優先度の設定
      */
