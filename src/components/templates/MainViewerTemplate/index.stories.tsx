@@ -1,11 +1,10 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react"
 import { withDesign } from "storybook-addon-designs"
 import { MainViewerTemplate } from "./"
-import { agentDatas } from "src/factories/agentDatasFactory"
-import { linkDatas } from "src/factories/linkDatasFactory"
 import { headerInfo } from "src/factories/headerInfoFactory"
 import { sliderArgs } from "@/factories/sliderArgsFantory"
 import { Box } from "@chakra-ui/react";
+import { sideBarInfo } from "@/factories/sideBarInfoFactory"
 
 export default {
   title: "Design System/Templates/MainViewerTemplate",
@@ -31,11 +30,11 @@ function SampleBlankChildren() {
 export const Default = Template.bind({})
 
 Default.args = {
-  agentDatas: agentDatas,
-  linkDatas: linkDatas,
-  headerInfo: headerInfo,
-  sliderArgs: sliderArgs,
   children: <SampleBlankChildren />,
+  sideBarInfo: sideBarInfo,
+  headerInfo: headerInfo,
+  characterIsShowing: "show",
+  sliderArgs: sliderArgs,
 }
 
 Default.parameters = {
