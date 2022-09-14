@@ -1,57 +1,100 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { StyledSpeechBubbles } from '@/components/atoms/SpeechBubbles/module.style'
-import { Props } from './type'
-import { Box, Button, chakra, SlideFade, Text, useDisclosure } from "@chakra-ui/react";
+import { Props, Message } from './type'
+import { Box, SlideFade, Text } from "@chakra-ui/react";
+import { MessageUpdateCycle, BlankMessage } from "./const";
+import { nextMessage } from "./logic";
 
-const _SpeechBubbles = chakra(Box, {
-    baseStyle: {
-        position: 'relative',
-        backgroundColor: 'secondary',
-        padding: ['1.125rem', '1.5rem'],
-        fontSize: '1.25rem',
-        borderWidth: "1px",
-        borderRadius: "lg",
-        boxShadow: "md",
-        _before: {
-            content: '""',
-            position: 'absolute',
-            width: 0,
-            height: 0,
-            right: '-1rem',
-            bottom: '2.5rem',
-            rotate: '90deg',
-            border: '.75rem solid transparent',
-            borderTop: 'none',
-            borderBottomColor: 'secondary',
-            dropShadow: '(0 - 0.0625rem 0.0625rem rgba(0, 0, 0, .1))',
-        }
-    }
-})
 
 export const SpeechBubbles = React.memo((props: Props) => {
 
-    const [message, setMessage] = useState("")
-    const [isAnimation, setIsAnimation] = useState(true)
+    const [message, setMessage] = useState<Message>(BlankMessage);
+    const [queueMessages, setQueueMessages] = useState<Array<Message>>([]);
+    const [messageLogs, setMessageLogs] = useState<Array<Message>>([]);
+    const [isAnimation, setIsAnimation] = useState(true);
+
+    const messageRef = useRef(message);
+    const queueMessagesRef = React.useRef(queueMessages);
+    const messageLogsRef = React.useRef(messageLogs);
+
+    const receiveMessageHandler = useCallback((event: CustomEvent) => {
+        const receivedMessage = event.detail;
+        queueMessagesRef.current = [...queueMessagesRef.current, receivedMessage];
+        setQueueMessages([...queueMessagesRef.current]);
+    }, []);
 
     useEffect(() => {
-        window.addEventListener('speechMessage', (event: Event) => {
-            console.log(event);
-            setMessage(event.detail.message)
-            setIsAnimation(false)
-            setTimeout(() => {
-                setIsAnimation(true)
-            }, 150)
-        })
-    }, [])
+        window.addEventListener('speechMessage', (receiveMessageHandler) as EventListenerOrEventListenerObject);
+        return () => {
+            window.removeEventListener("speechMessage", (receiveMessageHandler) as EventListenerOrEventListenerObject);
+        };
+    }, [receiveMessageHandler]);
+
+    const useInterval = (callback: () => void) => {
+        const callbackRef = useRef<() => void>(callback);
+        useEffect(() => {
+            callbackRef.current = callback;
+        }, [callback]);
+
+        useEffect(() => {
+            const tick = () => { callbackRef.current() }
+            const id = setInterval(tick, MessageUpdateCycle);
+            return () => {
+                clearInterval(id);
+            };
+        }, []);
+    };
+
+    const watchQueueMessage = () => {
+        if (queueMessages.length === 0) return;
+
+        const { newMessage, copyQueueMessages } = nextMessage(queueMessagesRef.current);
+        queueMessagesRef.current = copyQueueMessages;
+        setQueueMessages([...queueMessagesRef.current]);
+
+        if (typeof newMessage === undefined) return;
+
+        messageRef.current = newMessage;
+        setMessage(messageRef.current);
+        setIsAnimation(false);
+        setTimeout(() => {
+            setIsAnimation(true);
+        }, 150);
+
+        newMessage.finished_at = new Date();
+        messageLogsRef.current = [...messageLogsRef.current, newMessage];
+        setMessageLogs([...messageLogsRef.current]);
+
+    }
+
+    useInterval(watchQueueMessage);
 
     return (
         <>
             <SlideFade in={isAnimation} offsetY='20px'>
-                <StyledSpeechBubbles>
-                    <Text>{message}</Text>
-                    {Math.random()}
-                </StyledSpeechBubbles>
+                {message.text !== null ?
+                    <StyledSpeechBubbles>
+                        <Text>{message.text}</Text>
+                    </StyledSpeechBubbles>
+                    :
+                    <></>
+                }
             </SlideFade>
+            {props.isDebug ?
+                <>
+                    {queueMessages.map((message, index) => {
+                        return (
+                            <Box key={index}>
+                                <Text>TEXT: {message.text}</Text>
+                                <Text>PRIORITY: {message.priority}</Text>
+                                <Text>CREATED_AT: {message.created_at.toLocaleString()}</Text>
+                            </Box>
+                        )
+                    })}
+                </>
+                :
+                <></>
+            }
         </>
     );
 });
