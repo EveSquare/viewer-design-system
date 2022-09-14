@@ -35,7 +35,7 @@ function ReactLive2d(props) {
     }
     // canvas样式
     let canvasStyle = {
-        position: 'fixed',
+        // position: 'fixed',
         zIndex: 2,
         ...sizing
     }
@@ -67,32 +67,16 @@ function ReactLive2d(props) {
     }, [props.release]);
 
     return (
-        <div>
-            <div
-                style={containerStyle}
-                id="live2d-container"
-            >
-                <div id="live2d-hidden"
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        position: 'absolute',
-                        top: '0',
-                        left: '0',
-                        zIndex: '2'
-                    }}
-                >
-
-                </div>
-                <canvas
-                    id="live2d"
-                    style={canvasStyle}
-                    width={width}
-                    height={height}
-                    className="live2d"
-                ></canvas>
-            </div>
-        </div>
+        <>
+            <div id="live2d-hidden"></div>
+            <canvas
+                id="live2d"
+                style={canvasStyle}
+                width={width}
+                height={height}
+                className="live2d"
+            ></canvas>
+        </>
     )
 }
 

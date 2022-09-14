@@ -54,7 +54,7 @@ function ReactLive2d(props) {
 
 
   var canvasStyle = _objectSpread({
-    position: 'fixed',
+    // position: 'fixed',
     zIndex: 2
   }, sizing);
 
@@ -82,26 +82,15 @@ function ReactLive2d(props) {
       _lappdelegate.LAppDelegate.releaseInstance();
     }
   }, [props.release]);
-  return /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("div", {
-    style: containerStyle,
-    id: "live2d-container"
-  }, /*#__PURE__*/_react["default"].createElement("div", {
-    id: "live2d-hidden",
-    style: {
-      width: '100%',
-      height: '100%',
-      position: 'absolute',
-      top: '0',
-      left: '0',
-      zIndex: '2'
-    }
+  return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, /*#__PURE__*/_react["default"].createElement("div", {
+    id: "live2d-hidden"
   }), /*#__PURE__*/_react["default"].createElement("canvas", {
     id: "live2d",
     style: canvasStyle,
     width: width,
     height: height,
     className: "live2d"
-  })));
+  }));
 }
 
 var _default = ReactLive2d;
