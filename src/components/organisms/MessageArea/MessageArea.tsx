@@ -1,35 +1,30 @@
 import { Live2d } from "@/components/atoms/Live2d";
 import { SpeechBubbles } from "@/components/atoms/SpeechBubbles";
-import { Box } from "@chakra-ui/react";
+import { Box, Grid, GridItem } from "@chakra-ui/react";
 import React from "react";
-import { Props } from './type'
+import { Props } from './type';
 
 export const MessageArea: React.FC<Props> = (props) => {
 
-    const width = 300;
-    const margin = 50;
-    const offset = "100px";
+    const width = 250;
 
     return (
         <>
             {props.isShowing == "show" ?
-                <Box zIndex={2}>
-                    <Box
-                        position="absolute"
-                        bottom="70px"
-                        maxWidth="calc(100% - 350px - 100px)"
-                        width="calc(100vw - 350px - 350px)" // live2d - sidebar
-                        right={width + margin}
-                    >
+                <Grid zIndex={2} templateColumns={`1fr ${width}px`}>
+                    <GridItem my={"auto"}>
                         <SpeechBubbles />
-                    </Box>
-                    <Live2d
-                        width={width}
-                        height={350}
-                        bottom={50}
-                        ModelList={["unitychan"]}
-                    />
-                </Box>
+                    </GridItem>
+                    <GridItem>
+                        <Box clipPath={"circle(80px at 50% 35%)"}>
+                            <Live2d
+                                width={width}
+                                height={250}
+                                ModelList={["unitychan"]}
+                            />
+                        </Box>
+                    </GridItem>
+                </Grid>
                 :
                 <></>
             }
