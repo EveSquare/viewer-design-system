@@ -28,7 +28,7 @@ export const Slider: React.FC<Props> = ({ min, max, value, onChange, isDisabled,
                 onChange={(v) => onChange(v)}
                 onMouseEnter={() => setShowTooltip(true)}
                 onMouseLeave={() => setShowTooltip(false)}
-                onChangeEnd={() => onChangeEnd()}
+                onChangeEnd={(v) => onChangeEnd(v)}
             >
                 <SliderTrack bg='primary.50'>
                     <SliderFilledTrack bg='primary' />

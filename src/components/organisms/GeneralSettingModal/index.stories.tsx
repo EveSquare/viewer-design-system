@@ -2,7 +2,7 @@ import { Button, useDisclosure } from "@chakra-ui/react"
 import { ComponentMeta, ComponentStory } from "@storybook/react"
 import React from "react"
 import { withDesign } from "storybook-addon-designs"
-import { GeneralSettingModal } from "./"
+import { GeneralSettingModal, State } from "./"
 
 export default {
   title: "Design System/Organisms/GeneralSettingModal",
@@ -18,11 +18,12 @@ export default {
 
 const Template: ComponentStory<typeof GeneralSettingModal> = (args) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [state, setState] = React.useState({
+  const [state, setState] = React.useState<State>({
     colorMode: "dark",
     headerVisibility: "show",
     sideBarVisibility: "show",
     characterVisibility: "show",
+    sliderKitVisibility: "show",
   });
   return (
     <>

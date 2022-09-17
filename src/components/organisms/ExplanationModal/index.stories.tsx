@@ -25,7 +25,6 @@ const Template: ComponentStory<typeof ExplanationModal> = (args) => {
       <ExplanationModal
         {...args}
         isOpen={isOpen}
-        onOpen={onOpen}
         onClose={onClose}
       />
     </>
