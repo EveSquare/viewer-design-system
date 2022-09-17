@@ -1,4 +1,4 @@
-import { Box, Flex, HStack } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, HStack } from "@chakra-ui/react";
 import React from "react";
 import { Props } from './type'
 import { SideBar } from "@/components/organisms/SideBar";
@@ -11,13 +11,27 @@ export const MainViewerTemplate: React.FC<Props> = ({ children, sideBarInfo, hea
         <>
             <Box overflow={"hidden"} width={"100vw"} height={"100vh"} position={"relative"}>
                 <Box position="fixed">
-                    <Flex w="100vw">
-                        <SideBar {...sideBarInfo} />
-                        <Header {...headerInfo} />
-                    </Flex>
+                    <Grid
+                        templateAreas={`"header header"
+                                        "sidebar main"`}
+                        gridTemplateRows={'65px 1fr'}
+                        gridTemplateColumns={'300px 1fr'}
+                        w={"100vw"}
+                        zIndex={2}
+                    >
+                        <GridItem area={'header'}>
+                            <Header {...headerInfo} />
+                        </GridItem>
+                        <GridItem area={'sidebar'}>
+                            <SideBar {...sideBarInfo} />
+                        </GridItem>
+                        <GridItem area={'main'}>
+                            {children}
+                        </GridItem>
+                    </Grid>
                 </Box>
                 <Box
-                    zIndex={2}
+                    zIndex={3}
                     width={"80%"}
                     position={"absolute"}
                     bottom={"-25px"}
@@ -25,13 +39,10 @@ export const MainViewerTemplate: React.FC<Props> = ({ children, sideBarInfo, hea
                 >
                     <MessageArea isShowing={characterIsShowing} />
                 </Box>
-                <Box bg="bg" zIndex={1} position="absolute" bottom={0} width="100vw">
+                <Box bg="bg" zIndex={3} position="absolute" bottom={0} width="100vw">
                     <Box px={10}>
                         <SliderKit {...sliderArgs} />
                     </Box>
-                </Box>
-                <Box zIndex={-1} w="100vw" h="100vh">
-                    {children}
                 </Box>
             </Box>
         </>
