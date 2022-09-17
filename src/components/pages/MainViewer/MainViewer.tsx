@@ -11,7 +11,7 @@ import React, { useEffect } from "react"
 import { ExplanationModal } from "@/components/organisms/ExplanationModal";
 import { Props } from './type';
 
-export const MainViewer: React.FC<Props> = ({ children }) => {
+export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, score, maxScore }) => {
 
     const [generalSettingState, setGeneralSettingState] = React.useState(generalSettingStateInitial);
     const [modalVisibilityState, setModalVisibilityState] = React.useState({
@@ -19,12 +19,6 @@ export const MainViewer: React.FC<Props> = ({ children }) => {
         ambulanceExplanationModal: false,
         fireExplanationModal: false,
         generalSettingModal: false,
-    });
-    const [sliderKitState, setSliderKitState] = React.useState({
-        isPlaying: true,
-        isDisabled: false,
-        value: 0,
-        max: 100,
     });
 
     const agentDatas: Array<AgentCardProps> = [
@@ -55,23 +49,24 @@ export const MainViewer: React.FC<Props> = ({ children }) => {
     }
 
     const headerInfo: HeaderProps = {
-        stepCount: 10,
+        stepCount: childSliderKitState.value,
         stepTooltip: 'ここには、ステップ数が表示されます',
-        score: 100,
+        score: score,
+        maxScore: maxScore,
         scoreTooltip: 'ここには、スコアが表示されます',
         isShowing: generalSettingState.headerVisibility,
         onOpenSetting: () => { setModalVisibilityState({ ...modalVisibilityState, generalSettingModal: true }) },
     }
 
     const sliderArgs: SliderArgsProps = {
-        isPlaying: sliderKitState.isPlaying,
-        isDisabled: sliderKitState.isDisabled,
+        isPlaying: childSliderKitState.isPlaying,
+        isDisabled: childSliderKitState.isDisabled,
         isShowing: generalSettingState.sliderKitVisibility,
-        value: sliderKitState.value,
-        max: sliderKitState.max,
-        onChange: (value: number) => { setSliderKitState({ ...sliderKitState, value: value }) },
-        onChangeEnd: () => { },
-        onClickPlayButton: () => { setSliderKitState({ ...sliderKitState, isPlaying: !sliderKitState.isPlaying }) },
+        value: childSliderKitState.value,
+        max: childSliderKitState.max,
+        onChange: childSliderKitState.onChange,
+        onChangeEnd: childSliderKitState.onChangeEnd,
+        onClickPlayButton: childSliderKitState.onClickPlayButton,
     }
 
     const civilianExplanationData: ExplanationModalProps = {
