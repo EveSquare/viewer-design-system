@@ -29,7 +29,7 @@ export const SliderKit: React.FC<Props> = ({ isPlaying, isDisabled, isShowing, v
                         isDisabled={isDisabled}
                         value={value}
                         onChange={(v) => onChange(v)}
-                        onChangeEnd={() => onChangeEnd()}
+                        onChangeEnd={(v) => onChangeEnd(v)}
                     ></Slider>
                     <Text>{max}</Text>
                 </HStack>
