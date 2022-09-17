@@ -11,7 +11,7 @@ export const MessageArea: React.FC<Props> = (props) => {
     return (
         <>
             {props.isShowing == "show" ?
-                <Grid zIndex={2} templateColumns={`1fr ${width}px`}>
+                <Grid templateColumns={`1fr ${width}px`}>
                     <GridItem my={"auto"}>
                         <SpeechBubbles />
                     </GridItem>
