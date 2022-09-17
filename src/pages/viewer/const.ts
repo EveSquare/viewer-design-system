@@ -9,7 +9,11 @@ export const INITIAL_VIEW_STATE = {
     zoom: 0.5
 };
 
-export const AGENT_COLOR = {
+interface AgentColor {
+    [key: string]: number[];
+}
+
+export const AGENT_COLOR: AgentColor = {
     "TacticsPolice": [0, 0, 255],
     "TacticsFire": [255, 0, 0],
     "TacticsAmbulance": [255, 255, 255],

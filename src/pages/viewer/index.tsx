@@ -3,16 +3,16 @@ import dynamic from "next/dynamic";
 import React, { useCallback, useEffect, useState } from 'react';
 import { load } from '@loaders.gl/core';
 import { JSONLoader } from '@loaders.gl/json';
-import { OrbitView, COORDINATE_SYSTEM, ViewState } from '@deck.gl/core';
-import DeckGL, { PolygonLayer, IconLayer } from 'deck.gl';
-import { Props, Animation, Entity, ToolTip } from './type';
+import { Props, Animation, ToolTip } from './type';
 import getConfig from 'next/config'
-import { INITIAL_VIEW_STATE, AGENT_COLOR, ICON_MAPPING, LOG_BASE_PATH } from "./const";
+import { AGENT_COLOR, ICON_MAPPING, LOG_BASE_PATH } from "./const";
 import { Box } from "@chakra-ui/react";
 import { ChildProps as ChildSliderArgsProps } from "@/components/organisms/SliderKit/type";
+import { OrbitView, COORDINATE_SYSTEM } from '@deck.gl/core';
+import DeckGL from '@deck.gl/react';
+import { PolygonLayer, IconLayer } from "@deck.gl/layers";
 
 const MainViewer = dynamic(() => import("src/components/pages/MainViewer").then((cmp) => cmp.MainViewer), { ssr: false });
-
 
 
 const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
@@ -29,9 +29,9 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
     const setScore = (score: number) => { _setScore(Math.round(score * 100) / 100) } // 少数第二位まで表示
     const [isFinished, setIsFinished] = useState(false);
     const [animation] = useState<Animation>({ id: 0 });
-    const [layers, setLayers] = useState<PolygonLayer | IconLayer>([]);
+    const [layers, setLayers] = useState<any>([]);
     const [rescuelog, setRescueLog] = useState(rescueLogData);
-    const [viewState, setViewState] = useState<ViewState>({
+    const [viewState, setViewState] = useState<any>({
         width: globalThis.window?.innerWidth,
         height: globalThis.window?.innerHeight,
         target: [0, 0, 0],
@@ -81,7 +81,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
         else {
             return (v - mapData.height / 2) / 1000;
         }
-    }, []);
+    }, [mapData.height, mapData.width]);
 
     const animate = useCallback(() => {
         setTime(t => (t + animationSpeed) % loopLength);
@@ -162,7 +162,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
         });
         setAgents(agents);
 
-    }, []);
+    }, [getNormalizedPos, mapData.entities, rescuelog.world.agents]);
 
     useEffect(() => {
         setLayers([
@@ -175,8 +175,8 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
                 filled: true,
                 wireframe: true,
                 lineWidthMinPixels: 1,
-                getPolygon: d => d.contour,
-                getElevation: d => d.elevation,
+                getPolygon: (d: any) => d.contour,
+                getElevation: (d: any) => d.elevation,
                 getFillColor: [200, 200, 200],
                 getLineColor: [80, 80, 80],
                 getLineWidth: 1,
@@ -192,7 +192,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
                 filled: true,
                 wireframe: true,
                 lineWidthMinPixels: 1,
-                getPolygon: d => d.contour,
+                getPolygon: (d: any) => d.contour,
                 getElevation: 0,
                 getFillColor: [230, 230, 230],
                 getLineColor: [80, 80, 80],
@@ -206,11 +206,11 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
                 pickable: true,
                 iconAtlas: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png',
                 iconMapping: ICON_MAPPING,
-                getIcon: d => 'marker',
+                getIcon: (d: any) => 'marker',
                 sizeScale: 15,
-                getPosition: d => d.coordinates,
-                getSize: d => 1,
-                getColor: d => d.color,
+                getPosition: (d: any) => d.coordinates,
+                getSize: (d: any) => 1,
+                getColor: (d: any) => d.color,
                 transitions: {
                     getPosition: 300,
                 },
@@ -258,7 +258,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
                             onViewStateChange={({ viewState }: any) => {
                                 setViewState(viewState);
                             }}
-                            onError={e => console.error(e)}
+                            onError={(e: Error) => console.error(e)}
                         ></DeckGL>
                     </Box>
                 </Box>
