@@ -1,4 +1,4 @@
-export interface Props {
+export interface ChildProps {
     /**
      * ステータスアイコンの切り替え
      */
@@ -7,10 +7,6 @@ export interface Props {
      * 非活性状態
     */
     isDisabled: boolean;
-    /**
-     * 表示切り替え
-     */
-    isShowing: string;
     /**
      * スライダーの値
      */
@@ -26,10 +22,17 @@ export interface Props {
     /**
      * スライダー終了イベント
      */
-    onChangeEnd: () => void;
+    onChangeEnd: (v: number) => void;
     /** 
      * 再生・停止クリックイベント
      */
     onClickPlayButton: () => void;
+}
+
+export interface Props extends ChildProps {
+    /**
+     * 表示切り替え
+     */
+    isShowing: string;
 }
 
