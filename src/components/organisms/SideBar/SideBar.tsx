@@ -13,9 +13,6 @@ export const SideBar: React.FC<Props> = ({ agentDatas, linkDatas, isShowing }) =
             {isShowing == "show" ?
                 <Container w="300px" h="100vh" bg="bg">
                     <VStack>
-                        <Box m={2}>
-                            <Logo />
-                        </Box>
                         <SectionBar />
                         <>
                             {
