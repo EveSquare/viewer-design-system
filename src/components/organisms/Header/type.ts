@@ -12,6 +12,10 @@ export interface Props {
      */
     score: number;
     /**
+     * 最大SCORE
+     */
+    maxScore: number;
+    /**
      * ヘッダ右側のテキスト ツールチップ
      */
     scoreTooltip?: string;
