@@ -2,8 +2,9 @@ import { SettingsIcon } from "@chakra-ui/icons";
 import { Box, Flex, Tooltip, Text, HStack, Spacer } from "@chakra-ui/react";
 import React from "react";
 import { Props } from './type'
+import { Logo } from "@/components/organisms/Logo";
 
-export const Header: React.FC<Props> = ({ stepCount, stepTooltip, score, scoreTooltip, onOpenSetting, isShowing }) => {
+export const Header: React.FC<Props> = ({ stepCount, stepTooltip, score, maxScore, scoreTooltip, onOpenSetting, isShowing }) => {
     return (
         <>
             {isShowing == "show" ?
@@ -13,10 +14,13 @@ export const Header: React.FC<Props> = ({ stepCount, stepTooltip, score, scoreTo
                     wrap="nowrap"
                     w="100%"
                     h="65px"
-                    p={['0', '1rem']}
+                    pr={'1rem'}
                     bg="bg"
                     userSelect="none"
                 >
+                    <Box m={2}>
+                        <Logo />
+                    </Box>
                     <Box>
                         <Tooltip
                             label={stepTooltip}
@@ -33,7 +37,9 @@ export const Header: React.FC<Props> = ({ stepCount, stepTooltip, score, scoreTo
                             aria-label={scoreTooltip}
                             closeDelay={500}
                         >
-                            <Text fontSize="2xl" as="b">SCORE: {score}/</Text>
+                            <Text fontSize="2xl" as="b">
+                                SCORE: {score}/<Text fontSize='xl' as="span">{maxScore}</Text>
+                            </Text>
                         </Tooltip>
                         <SettingsIcon
                             w="24px"
