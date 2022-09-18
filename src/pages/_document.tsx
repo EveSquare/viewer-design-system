@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-sync-scripts */
 import Document, { DocumentContext, Head, Html, Main, NextScript } from "next/document";
 import { ServerStyleSheet } from "styled-components";
+import Script from 'next/script'
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -33,7 +34,9 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <script src="http://publicjs.supmiao.com/live2dcubismcore.min.js"></script>
+          <script
+            src="/supmiao/live2dcubismcore.min.js"
+          ></script>
         </Head>
         <Main />
         <NextScript />
