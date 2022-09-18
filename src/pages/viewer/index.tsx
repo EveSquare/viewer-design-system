@@ -3,9 +3,9 @@ import dynamic from "next/dynamic";
 import React, { useCallback, useEffect, useState } from 'react';
 import { load } from '@loaders.gl/core';
 import { JSONLoader } from '@loaders.gl/json';
-import { Props, Animation, ToolTip } from './type';
+import { Props, Animation, ToolTip } from '../../common/viewer/type';
 import getConfig from 'next/config'
-import { AGENT_COLOR, ICON_MAPPING, LOG_BASE_PATH } from "./const";
+import { AGENT_COLOR, ICON_MAPPING, LOG_BASE_PATH } from "../../common/viewer/const";
 import { Box } from "@chakra-ui/react";
 import { ChildProps as ChildSliderArgsProps } from "@/components/organisms/SliderKit/type";
 import { OrbitView, COORDINATE_SYSTEM } from '@deck.gl/core';
