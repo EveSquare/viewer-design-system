@@ -81,7 +81,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
         else {
             return (v - mapData.height / 2) / 1000;
         }
-    }, [mapData.height, mapData.width]);
+    }, []);
 
     const animate = useCallback(() => {
         setTime(t => (t + animationSpeed) % loopLength);
@@ -91,7 +91,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
     useEffect(() => {
         animation.id = window.requestAnimationFrame(animate);
         return () => window.cancelAnimationFrame(animation.id);
-    }, [animate, animation]);
+    }, [animation]);
 
     useEffect(() => {
         const s = Math.floor(time / stepDuration);
@@ -100,7 +100,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
             setSliderKitState({ ...sliderKitState, value: s });
             setScore(metaData.scores[s]);
         }
-    }, [metaData.scores, sliderKitState, step, time]);
+    }, [time]);
 
     useEffect(() => {
         async function fetchData() {
@@ -162,7 +162,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
         });
         setAgents(agents);
 
-    }, [getNormalizedPos, mapData.entities, rescuelog.world.agents]);
+    }, []);
 
     useEffect(() => {
         setLayers([
@@ -230,7 +230,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
             }
         });
         setAgents(a);
-    }, [getNormalizedPos, rescuelog]);
+    }, [rescuelog]);
 
     return (
         <>
