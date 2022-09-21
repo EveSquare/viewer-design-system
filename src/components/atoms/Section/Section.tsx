@@ -20,7 +20,6 @@ export const Section: React.FC<Props> = ({ text, href, isSelected }) => {
                         listStyleType={"none"}
                     >
                         <Box
-                            as="li"
                             title={text}
                             userSelect={"none"}
                             fontWeight={"medium"}
