@@ -12,12 +12,12 @@ export const IconText: React.FC<Props> = ({ icon, text, iconSize, fontSize, text
                 >
                     <Icon
                         as={icon}
-                        w={iconSize}
-                        h={iconSize}
+                        w={iconSize || "22px"}
+                        h={iconSize || "22px"}
                     ></Icon>
                     <Text
-                        ml={textMarginLeft}
-                        fontSize={fontSize}
+                        ml={textMarginLeft || "6px"}
+                        fontSize={fontSize || "md"}
                         as='b'
                         userSelect="none"
                     >{text}</Text>
@@ -30,12 +30,12 @@ export const IconText: React.FC<Props> = ({ icon, text, iconSize, fontSize, text
                         >
                             <Icon
                                 as={icon}
-                                w={iconSize}
-                                h={iconSize}
+                                w={iconSize || "22px"}
+                                h={iconSize || "22px"}
                             ></Icon>
                             <Text
-                                ml={textMarginLeft}
-                                fontSize={fontSize}
+                                ml={textMarginLeft || "6px"}
+                                fontSize={fontSize || "md"}
                                 as='b'
                                 userSelect="none"
                             >{text}</Text>
