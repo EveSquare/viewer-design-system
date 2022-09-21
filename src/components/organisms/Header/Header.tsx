@@ -3,21 +3,13 @@ import { Box, Flex, Tooltip, Text, HStack, Spacer } from "@chakra-ui/react";
 import React from "react";
 import { Props } from './type'
 import { Logo } from "@/components/organisms/Logo";
+import { HeaderBase } from "@/components/atoms/HeaderBase";
 
 export const Header: React.FC<Props> = ({ stepCount, stepTooltip, score, maxScore, scoreTooltip, onOpenSetting, isShowing }) => {
     return (
         <>
             {isShowing == "show" ?
-                <Flex
-                    justify="space-between"
-                    alignItems="center"
-                    wrap="nowrap"
-                    w="100%"
-                    h="65px"
-                    pr={'1rem'}
-                    bg="bg"
-                    userSelect="none"
-                >
+                <HeaderBase>
                     <Box m={2}>
                         <Logo />
                     </Box>
@@ -48,15 +40,9 @@ export const Header: React.FC<Props> = ({ stepCount, stepTooltip, score, maxScor
                             onClick={onOpenSetting}
                         />
                     </HStack>
-                </Flex>
+                </HeaderBase>
                 :
-                <Flex
-                    alignItems="end"
-                    justify="center"
-                    w="100%"
-                    h="65px"
-                    p={['0', '1rem']}
-                >
+                <HeaderBase>
                     <Spacer />
                     <SettingsIcon
                         w="24px"
@@ -64,7 +50,7 @@ export const Header: React.FC<Props> = ({ stepCount, stepTooltip, score, maxScor
                         _hover={{ color: 'primary' }}
                         onClick={onOpenSetting}
                     />
-                </Flex>
+                </HeaderBase>
             }
         </>
     );
