@@ -1,11 +1,13 @@
 import { IconType } from "react-icons";
+import { IconProps } from "@chakra-ui/icons";
+import { ComponentWithAs } from "@chakra-ui/react";
 
 
 export interface Props {
     /**
      * アイコンの種類
      */
-    icon: IconType;
+    icon: IconType | ComponentWithAs<'svg', IconProps>;
     /**
      * 表示するテキスト
      */
