@@ -1,30 +1,7 @@
 import type { NextPage } from "next";
 import { ExplanationPage } from "@/components/pages/ExplanationPage";
 import { Box, Flex, Heading, List, ListIcon, ListItem, Icon, Text, VStack, Grid, GridItem } from "@chakra-ui/react";
-import Image from 'next/image'
-
-type AgentIntroductionProps = {
-    src: string, title: string, description: string
-}
-
-function AgentIntroduction(props: AgentIntroductionProps) {
-    return (
-        <Grid w={"100%"} templateAreas={`"img explanation"`} templateColumns={"140px 1fr"}>
-            <GridItem area="img">
-                <Image
-                    src={props.src}
-                    width="100px"
-                    height="100px"
-                    alt={props.title}
-                />
-            </GridItem>
-            <GridItem>
-                <Text fontSize={"xl"} as="b">{props.title}</Text>
-                <Text>{props.description}</Text>
-            </GridItem>
-        </Grid>
-    )
-}
+import { ImageCard } from "@/components/molecules/ImageCard";
 
 const WhatIsTheAgent: NextPage = () => {
 
@@ -39,17 +16,17 @@ const WhatIsTheAgent: NextPage = () => {
                     spacing={4}
                     align='stretch'
                 >
-                    <AgentIntroduction
+                    <ImageCard
                         src="https://raw.githubusercontent.com/EveSquare/viewer-design-system/master/public/Resources/img/ambulance.svg"
                         title="救急隊"
                         description="自力で動けない市民を避難所まで搬送"
                     />
-                    <AgentIntroduction
+                    <ImageCard
                         src="https://raw.githubusercontent.com/EveSquare/viewer-design-system/master/public/Resources/img/fire.svg"
                         title="消防隊"
                         description="建物に埋まってしまって動けない市民と人工知能ロボットを救出"
                     />
-                    <AgentIntroduction
+                    <ImageCard
                         src="https://raw.githubusercontent.com/EveSquare/viewer-design-system/master/public/Resources/img/police.svg"
                         title="土木隊"
                         description="道路を塞いでいるがれきを撤去"
@@ -60,7 +37,7 @@ const WhatIsTheAgent: NextPage = () => {
                 <Text mb={4}>
                     市民は避難所に着くことを目指します。緑色で表示されます。
                 </Text>
-                <AgentIntroduction
+                <ImageCard
                     src="https://raw.githubusercontent.com/EveSquare/viewer-design-system/master/public/Resources/img/civilian.svg"
                     title="市民"
                     description="自力で避難所まで向かう"

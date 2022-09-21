@@ -27,6 +27,11 @@ export const ExplanationPage: React.FC<Props> = ({ children, pageKey }) => {
                     text: "はじめに２：エージェントとは",
                     href: "/explanation/chapter1/whatistheagent",
                 },
+                {
+                    key: 'buildings',
+                    text: "はじめに３：建物等について",
+                    href: "/explanation/chapter1/buildings",
+                }
             ]
         },
         {
