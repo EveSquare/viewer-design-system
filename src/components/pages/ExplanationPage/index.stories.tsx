@@ -39,13 +39,13 @@ const sideBarInfo = [
       {
         key: 'whatistherrs',
         text: "はじめに１：RRSとは",
-        href: "explanation/chaper1/whatistherrs",
+        href: "/explanation/chaper1/whatistherrs",
         isSelected: true,
       },
       {
         key: 'whatistheagent',
         text: "はじめに２：エージェントとは",
-        href: "explanation/chaper1/whatistheagent",
+        href: "/explanation/chaper1/whatistheagent",
         isSelected: false,
       },
     ]
@@ -58,13 +58,13 @@ const sideBarInfo = [
       {
         key: 'flowofthegame',
         text: "競技の流れ１：競技の流れ",
-        href: "explanation/chaper2/flowofthegame",
+        href: "/explanation/chaper2/flowofthegame",
         isSelected: false,
       },
       {
         key: 'flowofthegame',
         text: "競技の流れ２：競技の流れ",
-        href: "explanation/chaper2/flowofthegame",
+        href: "/explanation/chaper2/flowofthegame",
         isSelected: false,
       },
     ],
@@ -72,7 +72,7 @@ const sideBarInfo = [
 ]
 
 Default.args = {
-  sideBarInfo: sideBarInfo,
+  // sideBarInfo: sideBarInfo,
   children: <SampleChildComponent />,
 }
 

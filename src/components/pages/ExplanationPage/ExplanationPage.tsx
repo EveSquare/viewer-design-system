@@ -9,9 +9,7 @@ import { QuestionOutlineIcon } from '@chakra-ui/icons';
 import { Props } from './type';
 
 
-export const ExplanationPage: React.FC<Props> = ({ children }) => {
-
-    const pageKey = "whatistherrs";
+export const ExplanationPage: React.FC<Props> = ({ children, pageKey }) => {
 
     const sideBarInfo = [
         {
@@ -22,12 +20,12 @@ export const ExplanationPage: React.FC<Props> = ({ children }) => {
                 {
                     key: 'whatistherrs',
                     text: "はじめに１：RRSとは",
-                    href: "explanation/chaper1/whatistherrs",
+                    href: "/explanation/chapter1/whatisrrs",
                 },
                 {
                     key: 'whatistheagent',
                     text: "はじめに２：エージェントとは",
-                    href: "explanation/chaper1/whatistheagent",
+                    href: "/explanation/chapter1/whatistheagent",
                 },
             ]
         },
@@ -39,16 +37,18 @@ export const ExplanationPage: React.FC<Props> = ({ children }) => {
                 {
                     key: 'flowofthegame',
                     text: "競技の流れ１：競技の流れ",
-                    href: "explanation/chaper2/flowofthegame",
+                    href: "/explanation/chapter2/flowofthegame",
                 },
                 {
-                    key: 'flowofthegame',
+                    key: 'flowofthegame2',
                     text: "競技の流れ２：競技の流れ",
-                    href: "explanation/chaper2/flowofthegame",
+                    href: "/explanation/chapter2/flowofthegame",
                 },
             ],
         },
     ]
+
+    const headerHeight = "65px";
 
     return (
         <>
@@ -66,7 +66,7 @@ export const ExplanationPage: React.FC<Props> = ({ children }) => {
                             </Box>
                         </HeaderBase>
                     </GridItem>
-                    <GridItem area="sidebar" bg={"bg"} h={"100vh"}>
+                    <GridItem area="sidebar" bg={"bg"} h={`calc(100vh - ${headerHeight})`}>
                         <Flex justify="center" flexDirection={"column"} alignItems={"center"}>
                             <Box w={"300px"} pt={"7rem"}>
                                 {sideBarInfo.map((item) => (
@@ -88,7 +88,7 @@ export const ExplanationPage: React.FC<Props> = ({ children }) => {
                             </Box>
                         </Flex>
                     </GridItem>
-                    <GridItem area="main" bg={"bg"} h={"100vh"} w={"100%"}>
+                    <GridItem area="main" bg={"bg"} h={`calc(100vh - ${headerHeight})`} w={"100%"} overflowY={"scroll"}>
                         <Box mx={"4rem"} p={"6rem"}>
                             {children}
                         </Box>
