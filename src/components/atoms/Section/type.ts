@@ -7,5 +7,9 @@ export interface Props {
      * リンク
      */
     href: string;
+    /**
+     * リンク選択状態
+     */
+    isSelected: boolean;
 }
 

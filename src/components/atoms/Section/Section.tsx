@@ -3,9 +3,10 @@ import React from "react";
 import { Props } from './type';
 import NextLink from "next/link";
 
-export const Section: React.FC<Props> = ({ text, href }) => {
+export const Section: React.FC<Props> = ({ text, href, isSelected }) => {
 
     const themeColor = useColorModeValue("black", "white");
+
 
     return (
         <>
@@ -23,19 +24,23 @@ export const Section: React.FC<Props> = ({ text, href }) => {
                             title={text}
                             userSelect={"none"}
                             fontWeight={"medium"}
-                            _before={{
-                                content: "'−'",
-                                color: themeColor,
-                                position: "absolute",
-                                left: "3rem",
-                                top: "4.75rem",
-                            }}
+                            bg={isSelected ? "secondaryHover" : "none"}
+                            borderRadius={"md"}
                             _hover={{
                                 bg: "secondaryHover",
-                                borderRadius: "md",
                             }}
                         >
-                            <Text p={"5px"}>{text}</Text>
+                            <Text
+                                p={"5px"}
+                                _before={{
+                                    content: "'−'",
+                                    color: themeColor,
+                                    position: "relative",
+                                    right: "22px",
+                                    textDecoration: "none",
+                                    display: "inline-block",
+                                }}
+                            >{text}</Text>
                         </Box>
                     </Box>
                 </Link>
