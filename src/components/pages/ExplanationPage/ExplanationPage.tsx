@@ -34,23 +34,23 @@ export const ExplanationPage: React.FC<Props> = ({ children, pageKey }) => {
                 }
             ]
         },
-        {
-            key: "chapter2",
-            text: "競技の流れ",
-            icon: QuestionOutlineIcon,
-            sections: [
-                {
-                    key: 'flowofthegame',
-                    text: "競技の流れ１：競技の流れ",
-                    href: "/explanation/chapter2/flowofthegame",
-                },
-                {
-                    key: 'flowofthegame2',
-                    text: "競技の流れ２：競技の流れ",
-                    href: "/explanation/chapter2/flowofthegame",
-                },
-            ],
-        },
+        // {
+        //     key: "chapter2",
+        //     text: "競技の流れ",
+        //     icon: QuestionOutlineIcon,
+        //     sections: [
+        //         {
+        //             key: 'flowofthegame',
+        //             text: "競技の流れ１：競技の流れ",
+        //             href: "/explanation/chapter2/flowofthegame",
+        //         },
+        //         {
+        //             key: 'flowofthegame2',
+        //             text: "競技の流れ２：競技の流れ",
+        //             href: "/explanation/chapter2/flowofthegame",
+        //         },
+        //     ],
+        // },
     ]
 
     const headerHeight = "65px";
