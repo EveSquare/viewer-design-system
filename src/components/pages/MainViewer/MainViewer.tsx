@@ -30,25 +30,25 @@ export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, sco
         {
             agentType: 'civilian',
             title: '市民',
-            description: '市民の説明',
+            description: '市民の説明を開く',
             onClick: () => { setModalVisibilityState({ ...modalVisibilityState, civilianExplanationModal: true }) },
         },
         {
             agentType: 'ambulance',
             title: '救急隊',
-            description: '救急隊の説明',
+            description: '救急隊の説明を開く',
             onClick: () => { setModalVisibilityState({ ...modalVisibilityState, ambulanceExplanationModal: true }) },
         },
         {
             agentType: 'fire',
             title: '消防隊',
-            description: '消防隊の説明',
+            description: '消防隊の説明を開く',
             onClick: () => { setModalVisibilityState({ ...modalVisibilityState, fireExplanationModal: true }) },
         },
         {
             agentType: 'police',
             title: '土木隊',
-            description: '土木隊の説明',
+            description: '土木隊の説明を開く',
             onClick: () => { setModalVisibilityState({ ...modalVisibilityState, policeExplanationModal: true }) },
         },
     ]
@@ -61,10 +61,10 @@ export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, sco
 
     const headerInfo: HeaderProps = {
         stepCount: childSliderKitState.value,
-        stepTooltip: 'ここには、ステップ数が表示されます',
+        stepTooltip: '救助活動の進行度を表します',
         score: score,
         maxScore: maxScore,
-        scoreTooltip: 'ここには、スコアが表示されます',
+        scoreTooltip: '救助活動によってスコアが減算されます',
         isShowing: generalSettingState.headerVisibility,
         onOpenSetting: () => { setModalVisibilityState({ ...modalVisibilityState, generalSettingModal: true }) },
     }
