@@ -10,6 +10,10 @@ import { generalSettingState as generalSettingStateInitial } from "@/factories/g
 import React, { useEffect } from "react"
 import { ExplanationModal } from "@/components/organisms/ExplanationModal";
 import { Props } from './type';
+import { CivilianExplanationComponent } from "@/factories/civilianExplanationComponent";
+import { AmbulanceExplanationComponent } from "@/factories/ambulanceExplanationComponent";
+import { FireExplanationComponent } from "@/factories/fireExplanationComponent";
+import { PoliceExplanationComponent } from "@/factories/policeExplanationComponent";
 
 export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, score, maxScore }) => {
 
@@ -18,6 +22,7 @@ export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, sco
         civilianExplanationModal: false,
         ambulanceExplanationModal: false,
         fireExplanationModal: false,
+        policeExplanationModal: false,
         generalSettingModal: false,
     });
 
@@ -39,6 +44,12 @@ export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, sco
             title: '消防隊',
             description: '消防隊の説明',
             onClick: () => { setModalVisibilityState({ ...modalVisibilityState, fireExplanationModal: true }) },
+        },
+        {
+            agentType: 'police',
+            title: '土木隊',
+            description: '土木隊の説明',
+            onClick: () => { setModalVisibilityState({ ...modalVisibilityState, policeExplanationModal: true }) },
         },
     ]
 
@@ -71,7 +82,7 @@ export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, sco
 
     const civilianExplanationData: ExplanationModalProps = {
         title: '市民の説明',
-        children: <></>,
+        children: <CivilianExplanationComponent />,
         isOpen: modalVisibilityState.civilianExplanationModal,
         onClose: () => { setModalVisibilityState({ ...modalVisibilityState, civilianExplanationModal: false }) },
         agentType: 'civilian',
@@ -79,7 +90,7 @@ export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, sco
 
     const ambulanceExplanationData: ExplanationModalProps = {
         title: '救急隊の説明',
-        children: <></>,
+        children: <AmbulanceExplanationComponent />,
         isOpen: modalVisibilityState.ambulanceExplanationModal,
         onClose: () => { setModalVisibilityState({ ...modalVisibilityState, ambulanceExplanationModal: false }) },
         agentType: 'ambulance',
@@ -87,10 +98,18 @@ export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, sco
 
     const fireExplanationData: ExplanationModalProps = {
         title: '消防隊の説明',
-        children: <></>,
+        children: <FireExplanationComponent />,
         isOpen: modalVisibilityState.fireExplanationModal,
         onClose: () => { setModalVisibilityState({ ...modalVisibilityState, fireExplanationModal: false }) },
         agentType: 'fire',
+    }
+
+    const policeExplanationData: ExplanationModalProps = {
+        title: '土木隊の説明',
+        children: <PoliceExplanationComponent />,
+        isOpen: modalVisibilityState.policeExplanationModal,
+        onClose: () => { setModalVisibilityState({ ...modalVisibilityState, policeExplanationModal: false }) },
+        agentType: 'police',
     }
 
     const { toggleColorMode } = useColorMode()
@@ -121,6 +140,7 @@ export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, sco
             <ExplanationModal {...civilianExplanationData} />
             <ExplanationModal {...ambulanceExplanationData} />
             <ExplanationModal {...fireExplanationData} />
+            <ExplanationModal {...policeExplanationData} />
         </>
     )
 }
