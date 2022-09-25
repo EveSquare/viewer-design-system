@@ -7,23 +7,28 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react"
 import { StoryContext } from "@storybook/react"
-import * as React from "react"
+import React, { Suspense, useEffect } from "react";
 import { FaMoon, FaSun } from "react-icons/fa"
 import { withPerformance } from "storybook-addon-performance"
 import chkraTheme from '../chkraTheme'
-import "../i18n.js";
+import i18n from '../src/i18n';
+import { I18nextProvider } from "react-i18next";
 
 /**
  * Add global context for RTL-LTR switching
  */
 export const globalTypes = {
   direction: {
-    name: "Direction",
-    description: "Direction for layout",
+    name: "言語",
+    description: "レイアウトの方向",
     defaultValue: "LTR",
     toolbar: {
-      icon: "globe",
-      items: ["LTR", "RTL"],
+      icon: 'globe',
+      items: [
+        { value: 'ja', title: 'Japanese' },
+        { value: 'en', title: 'English' },
+      ],
+      showName: true,
     },
   },
 }
@@ -63,7 +68,28 @@ const withChakra = (StoryFn: Function, context: StoryContext) => {
   )
 }
 
-export const decorators = [withChakra, withPerformance]
+const withI18next = (Story, context) => {
+  const { locale } = context.globals;
+
+  useEffect(() => {
+    i18n.changeLanguage(locale);
+  }, [locale]);
+
+  return (
+    <Suspense fallback={<div>loading translations...</div>}>
+      <I18nextProvider i18n={i18n}>
+        <Story />
+      </I18nextProvider>
+    </Suspense>
+  );
+};
+
+i18n.on('languageChanged', (locale) => {
+  const direction = i18n.dir(locale);
+  document.dir = direction;
+});
+
+export const decorators = [withChakra, withPerformance, withI18next]
 export const parameters = {
   a11y: {
     config: {
