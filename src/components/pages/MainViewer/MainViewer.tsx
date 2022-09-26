@@ -64,7 +64,7 @@ export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, sco
         stepTooltip: '救助活動の進行度を表します',
         score: score,
         maxScore: maxScore,
-        scoreTooltip: '救助活動によってスコアが減算されます',
+        scoreTooltip: '市民の負傷度合いによってスコアが減算されます',
         isShowing: generalSettingState.headerVisibility,
         onOpenSetting: () => { setModalVisibilityState({ ...modalVisibilityState, generalSettingModal: true }) },
     }
