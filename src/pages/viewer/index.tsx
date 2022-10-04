@@ -63,9 +63,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
             setStep(value);
             setTime(value * stepDuration);
         },
-        onChangeEnd: () => {
-            setSliderKitState({ ...sliderKitState, isPlaying: true })
-        },
+        onChangeEnd: () => { },
         onClickPlayButton: () => {
             setSliderKitState({ ...sliderKitState, isPlaying: !sliderKitState.isPlaying })
             if (sliderKitState.isPlaying === false) {
@@ -204,7 +202,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
                 id: 'agents',
                 data: agents,
                 pickable: true,
-                iconAtlas: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png',
+                iconAtlas: '/Resources/img/icon-atlas.png',
                 iconMapping: ICON_MAPPING,
                 getIcon: (d: any) => 'marker',
                 sizeScale: 15,
