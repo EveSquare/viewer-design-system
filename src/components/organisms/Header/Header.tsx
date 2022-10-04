@@ -4,6 +4,8 @@ import React from "react";
 import { Props } from './type'
 import { Logo } from "@/components/organisms/Logo";
 import { HeaderBase } from "@/components/atoms/HeaderBase";
+import { Icon } from '@chakra-ui/react';
+import { MdOutlineInfo } from 'react-icons/md';
 
 export const Header: React.FC<Props> = ({ stepCount, stepTooltip, score, maxScore, scoreTooltip, onOpenSetting, isShowing }) => {
     return (
@@ -19,7 +21,7 @@ export const Header: React.FC<Props> = ({ stepCount, stepTooltip, score, maxScor
                             aria-label={stepTooltip}
                             closeDelay={500}
                         >
-                            <Text fontSize="2xl" as="b">STEP: {stepCount}</Text>
+                            <Text fontSize="2xl" as="b">STEP<Icon as={MdOutlineInfo} w={"16px"} mr={1}></Icon>: {stepCount}</Text>
                         </Tooltip>
                     </Box>
                     <Spacer />
@@ -30,7 +32,7 @@ export const Header: React.FC<Props> = ({ stepCount, stepTooltip, score, maxScor
                             closeDelay={500}
                         >
                             <Text fontSize="2xl" as="b">
-                                SCORE: {score}/<Text fontSize='xl' as="span">{maxScore}</Text>
+                                SCORE<Icon as={MdOutlineInfo} w={"16px"} mr={1}></Icon>: {score}/<Text fontSize='xl' as="span">{maxScore}</Text>
                             </Text>
                         </Tooltip>
                         <SettingsIcon
