@@ -8,7 +8,7 @@ export const PoliceExplanationComponent = () => {
                 道路を塞いでいるがれきを撤去します。青色で表示されます。
             </Text>
             <ImageCard
-                src="https://raw.githubusercontent.com/EveSquare/viewer-design-system/master/public/Resources/img/police.svg"
+                src="/Resources/img/police.svg"
                 title="土木隊"
                 description="道路を塞いでいるがれきを撤去"
             />
