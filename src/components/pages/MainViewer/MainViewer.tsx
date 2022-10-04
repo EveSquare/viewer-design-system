@@ -61,7 +61,7 @@ export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, sco
 
     const headerInfo: HeaderProps = {
         stepCount: childSliderKitState.value,
-        stepTooltip: '救助活動の進行度を表します',
+        stepTooltip: '救助活動の経過時間を表します',
         score: score,
         maxScore: maxScore,
         scoreTooltip: '市民の負傷度合いによってスコアが減算されます',
