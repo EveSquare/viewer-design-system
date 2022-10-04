@@ -10,13 +10,13 @@ export const Logo: React.FC = () => {
     <>
       <Link href="/" _hover={{ textDecoration: 'none' }} title={t("ホームへ戻る")}>
         <Center>
+          <LogoImage width={100} height={45} />
           <Text
             as="b"
-            mr={2}
+            mx={2}
             fontSize="2rem"
             userSelect="none"
           >RRSViewer</Text>
-          <LogoImage width={110} height={55} />
         </Center>
       </Link>
     </>
