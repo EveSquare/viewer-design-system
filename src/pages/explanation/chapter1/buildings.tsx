@@ -14,22 +14,22 @@ const Buildings: NextPage = () => {
                     align='stretch'
                 >
                     <ImageCard
-                        src="https://raw.githubusercontent.com/EveSquare/viewer-design-system/master/public/Resources/img/building.svg"
+                        src="/Resources/img/building.svg"
                         title="建物"
                         description="多くの市民が取り残されている"
                     />
                     <ImageCard
-                        src="https://raw.githubusercontent.com/EveSquare/viewer-design-system/master/public/Resources/img/shelter.svg"
+                        src="/Resources/img/shelter.svg"
                         title="避難所"
                         description="全ての市民の避難場所"
                     />
                     <ImageCard
-                        src="https://raw.githubusercontent.com/EveSquare/viewer-design-system/master/public/Resources/img/road.svg"
+                        src="/Resources/img/road.svg"
                         title="道路"
                         description="市民やロボットが使用する通路"
                     />
                     {/* <ImageCard
-                        src="https://raw.githubusercontent.com/EveSquare/viewer-design-system/master/public/Resources/img/road.svg"
+                        src="/Resources/img/road.svg"
                         title="瓦礫"
                         description="通路を塞ぎ、市民やロボットの通行の妨げとなる"
                     /> */}

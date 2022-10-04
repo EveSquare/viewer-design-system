@@ -17,17 +17,17 @@ const WhatIsTheAgent: NextPage = () => {
                     align='stretch'
                 >
                     <ImageCard
-                        src="https://raw.githubusercontent.com/EveSquare/viewer-design-system/master/public/Resources/img/ambulance.svg"
+                        src="/Resources/img/ambulance.svg"
                         title="救急隊"
                         description="自力で動けない市民を避難所まで搬送"
                     />
                     <ImageCard
-                        src="https://raw.githubusercontent.com/EveSquare/viewer-design-system/master/public/Resources/img/fire.svg"
+                        src="/Resources/img/fire.svg"
                         title="消防隊"
                         description="建物に埋まってしまって動けない市民と人工知能ロボットを救出"
                     />
                     <ImageCard
-                        src="https://raw.githubusercontent.com/EveSquare/viewer-design-system/master/public/Resources/img/police.svg"
+                        src="/Resources/img/police.svg"
                         title="土木隊"
                         description="道路を塞いでいるがれきを撤去"
                     />
@@ -38,7 +38,7 @@ const WhatIsTheAgent: NextPage = () => {
                     市民は避難所に着くことを目指します。緑色で表示されます。
                 </Text>
                 <ImageCard
-                    src="https://raw.githubusercontent.com/EveSquare/viewer-design-system/master/public/Resources/img/civilian.svg"
+                    src="/Resources/img/civilian.svg"
                     title="市民"
                     description="自力で避難所まで向かう"
                 />
