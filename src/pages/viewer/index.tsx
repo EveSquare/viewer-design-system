@@ -231,7 +231,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
     }, [rescuelog]);
 
     return (
-        <>
+        <div onContextMenu={(e) => { e.preventDefault(); }}>
             <MainViewer
                 childSliderKitState={sliderArgs}
                 score={score}
@@ -261,7 +261,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
                     </Box>
                 </Box>
             </MainViewer>
-        </>
+        </div>
     )
 }
 
