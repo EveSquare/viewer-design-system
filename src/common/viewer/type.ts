@@ -195,3 +195,16 @@ export interface Animation {
 export interface ToolTip {
     entity: Entity
 }
+
+
+/** 
+ * 定数の型
+*/
+
+export interface AgentColor {
+    [key: string]: number[];
+}
+
+export interface IconMapping {
+    marker: { x: number; y: number; width: number; height: number; mask: boolean; };
+}
