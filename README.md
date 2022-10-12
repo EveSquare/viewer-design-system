@@ -34,6 +34,6 @@ yarn hygen
 - node v16.14.2
 - yarn v1.22.19
 
-## サンプル
+## StoryBookサンプル
 
 `https://631806e6d5cba4af51ae5b2b-psnzkainpv.chromatic.com`
