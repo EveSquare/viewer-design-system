@@ -1,38 +1,35 @@
-import { OrthographicView, OrbitView, COORDINATE_SYSTEM } from "@deck.gl/core";
-import DeckGL, {
-  GeoJsonLayer,
-  ArcLayer,
-  PolygonLayer,
-  IconLayer,
-} from "deck.gl";
+import { MapInfo, Record } from "@/common/viewer/type";
+import { FillColor } from "@/common/viewer/type";
+import { FILL_COLOR } from "@/common/viewer/const";
+import { COORDINATE_SYSTEM } from "@deck.gl/core";
+import { PolygonLayer } from "@deck.gl/layers";
 
 import normalizePosition from "../../lib/normalizePosition";
 
 class BuildingsLayer {
-  constructor(mapdata) {
+  mapdata: MapInfo;
+  FILL_COLOR: FillColor;
+
+  constructor(mapdata: MapInfo) {
     this.mapdata = mapdata;
-    this.FILL_COLOR = {
-      Building: [200, 200, 200, 200],
-      Refuge: [0, 200, 0, 200],
-      GasStation: [200, 200, 200, 200],
-    };
+    this.FILL_COLOR = FILL_COLOR;
   }
 
-  get(rescuelog) {
+  get(_: Record) {
     const np = new normalizePosition(this.mapdata.width, this.mapdata.height);
     const buildings = this.mapdata.entities
       .filter(
-        (v) =>
+        (v: any) =>
           v.type === "Building" ||
           v.type === "Refuge" ||
           v.type === "GasStation"
       )
-      .map((v) => {
+      .map((v: any) => {
         if (v.type === "Refuge") {
           console.log(v.type, v.x, v.y);
         }
 
-        let d = v.edges.map((vv) => [
+        let d = v.edges.map((vv: any) => [
           np.getX(vv.start.x),
           np.getY(vv.start.y),
           0,
@@ -58,9 +55,9 @@ class BuildingsLayer {
       filled: true,
       wireframe: true,
       lineWidthMinPixels: 1,
-      getPolygon: (d) => d.contour,
-      getElevation: (d) => d.elevation,
-      getFillColor: (d) => d.color,
+      getPolygon: (d: any) => d.contour,
+      getElevation: (d: any) => d.elevation,
+      getFillColor: (d: any) => d.color,
       getLineColor: [80, 80, 80],
       getLineWidth: 1,
       coordinateSystem: COORDINATE_SYSTEM.CARTESIAN,
