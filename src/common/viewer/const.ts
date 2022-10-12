@@ -1,4 +1,6 @@
-export const LOG_BASE_PATH = "/EveSquare/data/main/Resources/logs/sample-logs/6";
+import { AgentColor, FillColor, IconMapping } from "./type";
+
+export const LOG_BASE_PATH = "/Resources/logs/sample-logs/6";
 
 export const INITIAL_VIEW_STATE = {
     target: [0, 0, 0],
@@ -9,10 +11,6 @@ export const INITIAL_VIEW_STATE = {
     zoom: 0.5
 };
 
-interface AgentColor {
-    [key: string]: number[];
-}
-
 export const AGENT_COLOR: AgentColor = {
     "TacticsPolice": [0, 0, 255],
     "TacticsFire": [255, 0, 0],
@@ -20,6 +18,12 @@ export const AGENT_COLOR: AgentColor = {
     "Civilian": [0, 255, 0],
 }
 
-export const ICON_MAPPING = {
+export const ICON_MAPPING: IconMapping = {
     marker: { x: 0, y: 0, width: 128, height: 128, mask: true }
+};
+
+export const FILL_COLOR: FillColor = {
+    Building: [200, 200, 200, 200],
+    Refuge: [0, 200, 0, 200],
+    GasStation: [200, 200, 200, 200],
 };
