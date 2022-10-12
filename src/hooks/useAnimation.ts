@@ -1,21 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Animation } from '@/common/viewer/type';
 
-function useAnimation() {
+function useAnimation(maxsteps: number) {
   const [animation] = useState<Animation>({ id: 0 });
   const [time, setTime] = useState(0);
   const [step, setStep] = useState(0);
   const [isPause, setIsPause] = useState(false);
 
-  const animationSpeed = 10;
+  const animationSpeed = 1;
   const stepDuration = 60;
-  const maxsteps = 300;
   const loopLength = stepDuration * maxsteps;
 
-  const animate = () => {
+  const animate = useCallback(() => {
     setTime((t) => (t + animationSpeed) % loopLength);
     animation.id = window.requestAnimationFrame(animate);
-  };
+  }, [animation]);
 
   useEffect(() => {
     animation.id = window.requestAnimationFrame(animate);
@@ -23,11 +22,12 @@ function useAnimation() {
   }, [animation]);
 
   useEffect(() => {
-    if (!isPause && Math.floor(time % stepDuration) === 0) {
+    const s = Math.floor(time / stepDuration);
+    if (!isPause && step < s) {
       setStep(step + 1);
     }
   }, [time]);
 
-  return { time: time, step: step, isPause: isPause, setStep: setStep, setIsPause: setIsPause };
+  return { time: time, step: step, isPause: isPause, setStep: setStep, setTime: setTime, setIsPause: setIsPause };
 }
 export default useAnimation;
