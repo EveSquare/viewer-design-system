@@ -26,7 +26,7 @@ class BuildingsLayer {
       )
       .map((v: any) => {
         if (v.type === "Refuge") {
-          console.log(v.type, v.x, v.y);
+          // console.log(v.type, v.x, v.y);
         }
 
         let d = v.edges.map((vv: any) => [
