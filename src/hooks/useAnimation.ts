@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-
-import data from "../data/sample-logs/6/full/1.json";
+import { Animation } from '@/common/viewer/type';
 
 function useAnimation() {
-  const [animation] = useState({});
+  const [animation] = useState<Animation>({ id: 0 });
   const [time, setTime] = useState(0);
   const [step, setStep] = useState(0);
   const [isPause, setIsPause] = useState(false);
