@@ -1,4 +1,4 @@
-import { AgentColor, IconMapping } from "./type";
+import { AgentColor, FillColor, IconMapping } from "./type";
 
 // export const LOG_BASE_PATH = "/EveSquare/data/main/Resources/logs/sample-logs/6";
 export const LOG_BASE_PATH = "/Resources/logs/sample-logs/6";
@@ -21,4 +21,10 @@ export const AGENT_COLOR: AgentColor = {
 
 export const ICON_MAPPING: IconMapping = {
     marker: { x: 0, y: 0, width: 128, height: 128, mask: true }
+};
+
+export const FILL_COLOR: FillColor = {
+    Building: [200, 200, 200, 200],
+    Refuge: [0, 200, 0, 200],
+    GasStation: [200, 200, 200, 200],
 };

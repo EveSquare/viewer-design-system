@@ -208,3 +208,7 @@ export interface AgentColor {
 export interface IconMapping {
     marker: { x: number; y: number; width: number; height: number; mask: boolean; };
 }
+
+export interface FillColor {
+    Building: number[]; Refuge: number[]; GasStation: number[];
+}
