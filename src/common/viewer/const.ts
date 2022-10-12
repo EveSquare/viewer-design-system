@@ -1,6 +1,5 @@
 import { AgentColor, FillColor, IconMapping } from "./type";
 
-// export const LOG_BASE_PATH = "/EveSquare/data/main/Resources/logs/sample-logs/6";
 export const LOG_BASE_PATH = "/Resources/logs/sample-logs/6";
 
 export const INITIAL_VIEW_STATE = {
