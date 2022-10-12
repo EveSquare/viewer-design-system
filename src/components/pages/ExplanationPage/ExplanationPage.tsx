@@ -14,6 +14,7 @@ export const ExplanationPage: React.FC<Props> = ({ children, pageKey }) => {
     const sideBarInfo = [
         {
             key: "chapter1",
+            href: "/explanation/chapter1",
             text: "競技の説明",
             icon: RiPoliceCarLine,
             sections: [
@@ -76,7 +77,7 @@ export const ExplanationPage: React.FC<Props> = ({ children, pageKey }) => {
                             <Box w={"300px"} pt={"7rem"}>
                                 {sideBarInfo.map((item) => (
                                     <Box key={item.key}>
-                                        <IconText icon={item.icon} text={item.text}></IconText>
+                                        <IconText icon={item.icon} text={item.text} href={item.href}></IconText>
                                         <Box my={"1rem"}>
                                             {item.sections.map((section) => (
                                                 <Box key={section.key} pl={"0.7rem"}>
