@@ -121,12 +121,15 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
             >
                 <DeckGLWrapper>
                     <DeckGL
-                        controller={true}
+                        controller={{inertia: false, minRotationX: 0, dragMode: "pan"}}
                         layers={layers}
                         getTooltip={({ entity }: ToolTip) => entity && `${entity.type} (${entity.id})\n Position: ${entity.x}, ${entity.y}`}
                         views={new OrbitView()}
                         viewState={viewState}
                         onViewStateChange={({ viewState }: any) => {
+                            // Z軸方向の操作は無効にする
+                            viewState.target = [viewState.target[0], viewState.target[1], 0];
+
                             setViewState(viewState);
                         }}
                         onError={(e: Error) => console.error(e)}
