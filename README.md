@@ -3,7 +3,18 @@
 
 ## セットアップ
 
+環境変数ファイルの作成
+```shell
+cp .env.example .env
 ```
+
+```txt
+# .envファイルをこのように書き換えます
+NEXT_PUBLIC_LOG_HOST=http://localhost:3000/
+```
+
+必要なパッケージをインストールします
+```shell
 yarn
 ```
 
