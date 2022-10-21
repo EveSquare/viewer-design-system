@@ -80,7 +80,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
 
     const onStepUpdate = () => {
         async function fetchData() {
-            const host = getConfig().publicRuntimeConfig.LOG_HOST;
+            const host = process.env.NEXT_PUBLIC_LOG_HOST;
             const featch_url = new URL(LOG_BASE_PATH + `/full/${step + 1}.json`, host).href;
             const log = await load(featch_url, JSONLoader);
             setRescueLog(log);
@@ -121,7 +121,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
             >
                 <DeckGLWrapper>
                     <DeckGL
-                        controller={{inertia: false, minRotationX: 0, dragMode: "pan"}}
+                        controller={{ inertia: false, minRotationX: 0, dragMode: "pan" }}
                         layers={layers}
                         getTooltip={({ entity }: ToolTip) => entity && `${entity.type} (${entity.id})\n Position: ${entity.x}, ${entity.y}`}
                         views={new OrbitView()}
@@ -141,7 +141,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
 }
 
 export async function getStaticProps() {
-    const host = getConfig().publicRuntimeConfig.LOG_HOST;
+    const host = process.env.NEXT_PUBLIC_LOG_HOST;
 
     const mapUrl = new URL(LOG_BASE_PATH + "/map.json", host).href;
     const mapData = await load(mapUrl, JSONLoader);

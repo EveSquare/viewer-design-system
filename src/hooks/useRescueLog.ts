@@ -6,7 +6,7 @@ import { JSONLoader } from '@loaders.gl/json';
 
 async function useRescueLog() {
 
-    const host = getConfig().publicRuntimeConfig.LOG_HOST;
+    const host = process.env.NEXT_PUBLIC_LOG_HOST;
     const rescueLogDataUrl = new URL(LOG_BASE_PATH + "/full/1.json", host).href;
     const rescueLogData = await load(rescueLogDataUrl, JSONLoader);
 
