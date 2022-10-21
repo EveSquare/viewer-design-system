@@ -12,8 +12,8 @@ export const HeaderBase: React.FC<Props> = (props) => {
                 w="100%"
                 h="65px"
                 pr={'1rem'}
-                bg="bg"
                 userSelect="none"
+                {...props}
             >
                 {props.children}
             </Flex>
