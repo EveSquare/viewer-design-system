@@ -192,8 +192,8 @@ export interface Animation {
     id: number
 }
 
-export interface ToolTip {
-    entity: Entity
+export interface ToolTipObject {
+    object: Entity
 }
 
 
