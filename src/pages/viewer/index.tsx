@@ -3,10 +3,9 @@ import dynamic from "next/dynamic";
 import React, { useEffect, useState } from 'react';
 import { load } from '@loaders.gl/core';
 import { JSONLoader } from '@loaders.gl/json';
-import { Props, ToolTip } from '../../common/viewer/type';
+import { Props, ToolTipObject } from '../../common/viewer/type';
 import { LOG_BASE_PATH } from "../../common/viewer/const";
 import { DeckGLWrapper } from "@/components/atoms/DeckGLWrapper";
-import getConfig from 'next/config'
 import { ChildProps as ChildSliderArgsProps } from "@/components/organisms/SliderKit/type";
 import { OrbitView } from '@deck.gl/core';
 import DeckGL from '@deck.gl/react';
@@ -123,7 +122,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
                     <DeckGL
                         controller={{ inertia: false, minRotationX: 0, dragMode: "pan" }}
                         layers={layers}
-                        getTooltip={({ entity }: ToolTip) => entity && `${entity.type} (${entity.id})\n Position: ${entity.x}, ${entity.y}`}
+                        getTooltip={({ object }: ToolTipObject) => object && `${object.type} (${object.id})\n Position: ${object.x}, ${object.y}`}
                         views={new OrbitView()}
                         viewState={viewState}
                         onViewStateChange={({ viewState }: any) => {
