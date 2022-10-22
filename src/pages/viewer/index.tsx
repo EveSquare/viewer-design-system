@@ -1,9 +1,9 @@
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
-import React, { useEffect, useState } from 'react';
-import { load } from '@loaders.gl/core';
-import { JSONLoader } from '@loaders.gl/json';
-import { Props, ToolTipObject } from '../../common/viewer/type';
+import React, { useEffect, useState } from "react";
+import { load } from "@loaders.gl/core";
+import { JSONLoader } from "@loaders.gl/json";
+import { Props, ToolTipObject } from "../../common/viewer/type";
 import { LOG_BASE_PATH } from "../../common/viewer/const";
 import { DeckGLWrapper } from "@/components/atoms/DeckGLWrapper";
 import { ChildProps as ChildSliderArgsProps } from "@/components/organisms/SliderKit/type";
@@ -11,6 +11,7 @@ import { OrbitView } from "@deck.gl/core";
 import DeckGL from "@deck.gl/react";
 
 import useAnimation from "@/hooks/useAnimation";
+import useRescueLog from "@/hooks/useRescueLog";
 import useScore from "@/hooks/useScore";
 
 import DefaultAgentsLayer from "@/RRSLayers/Agents/DefaultAgentsLayer";
@@ -42,9 +43,9 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
 
   const { time, step, isPause, setStep, setTime, setIsPause } =
     useAnimation(maxsteps);
+  const {rescuelog, setRescuelog} = useRescueLog(rescueLogData);
   const { score, setScore } = useScore(maxScore);
   const [isFinished, setIsFinished] = useState(false);
-  const [rescuelog, setRescueLog] = useState(rescueLogData);
 
   const buildingsLayer = new DefaultBuildingsLayer(mapData, rescuelog);
   const roadsLayer = new DefaultRoadsLayer(mapData, rescuelog);
@@ -82,26 +83,27 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
     },
   };
 
-    const onStepUpdate = () => {
-        async function fetchData() {
-            const host = process.env.NEXT_PUBLIC_LOG_HOST;
-            const featch_url = new URL(LOG_BASE_PATH + `/full/${step + 1}.json`, host).href;
-            const log = await load(featch_url, JSONLoader);
-            setRescueLog(log);
-        }
-        if (step === maxsteps - 1) {
-            setIsFinished(true);
-            console.log("finished");
-        } else {
-            fetchData();
-        };
-    };
+  const onStepUpdate = () => {
+    async function fetchData() {
+      const host = process.env.NEXT_PUBLIC_LOG_HOST;
+      const featch_url = new URL(LOG_BASE_PATH + `/full/${step + 1}.json`, host)
+        .href;
+      const log = await load(featch_url, JSONLoader);
+      setRescuelog(log);
+    }
+    if (step === maxsteps - 1) {
+      setIsFinished(true);
+      console.log("finished");
+    } else {
+      fetchData();
+    }
+  };
 
   const onRescueLogUpdate = () => {
-    agentsLayer.setRescueLog(rescuelog);
-    buildingsLayer.setRescueLog(rescuelog);
-    roadsLayer.setRescueLog(rescuelog);
-    blockadesLayer.setRescueLog(rescuelog);
+    // agentsLayer.setRescueLog(rescuelog);
+    // buildingsLayer.setRescueLog(rescuelog);
+    // roadsLayer.setRescueLog(rescuelog);
+    // blockadesLayer.setRescueLog(rescuelog);
   };
 
   useEffect(() => {
@@ -111,12 +113,13 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
   }, [step]);
 
   useEffect(() => {
-    if (time % 6 === 0) { // stepduration / 10
+    if (time % 6 === 0) {
+      // stepduration / 10
       setLayers([
-        buildingsLayer.getLayer(),
-        roadsLayer.getLayer(),
-        blockadesLayer.getLayer(),
-        agentsLayer.getLayer(time),
+        // buildingsLayer.getLayer(),
+        // roadsLayer.getLayer(),
+        // blockadesLayer.getLayer(),
+        // agentsLayer.getLayer(time),
       ]);
     }
   }, [time]);
@@ -125,23 +128,30 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
     onRescueLogUpdate();
   }, [rescuelog]);
 
-    return (
-        <div onContextMenu={(e) => { e.preventDefault(); }}>
-            <MainViewer
-                childSliderKitState={sliderArgs}
-                score={score}
-                maxScore={maxScore}
-            >
-                <DeckGLWrapper>
-                    <DeckGL
-                        controller={{ inertia: false, minRotationX: 0, dragMode: "pan" }}
-                        layers={layers}
-                        getTooltip={({ object }: ToolTipObject) => object && `${object.type} (${object.id})\n Position: ${object.x}, ${object.y}`}
-                        views={new OrbitView()}
-                        viewState={viewState}
-                        onViewStateChange={({ viewState }: any) => {
-                            // Z軸方向の操作は無効にする
-                            viewState.target = [viewState.target[0], viewState.target[1], 0];
+  return (
+    <div
+      onContextMenu={(e) => {
+        e.preventDefault();
+      }}
+    >
+      <MainViewer
+        childSliderKitState={sliderArgs}
+        score={score}
+        maxScore={maxScore}
+      >
+        <DeckGLWrapper>
+          <DeckGL
+            controller={{ inertia: false, minRotationX: 0, dragMode: "pan" }}
+            layers={layers}
+            getTooltip={({ object }: ToolTipObject) =>
+              object &&
+              `${object.type} (${object.id})\n Position: ${object.x}, ${object.y}`
+            }
+            views={new OrbitView()}
+            viewState={viewState}
+            onViewStateChange={({ viewState }: any) => {
+              // Z軸方向の操作は無効にする
+              viewState.target = [viewState.target[0], viewState.target[1], 0];
 
               setViewState(viewState);
             }}
@@ -154,7 +164,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
 };
 
 export async function getStaticProps() {
-    const host = process.env.NEXT_PUBLIC_LOG_HOST;
+  const host = process.env.NEXT_PUBLIC_LOG_HOST;
 
   const mapUrl = new URL(LOG_BASE_PATH + "/map.json", host).href;
   const mapData = await load(mapUrl, JSONLoader);
