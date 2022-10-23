@@ -1,10 +1,10 @@
 export class Simulation {
-  worldmodels = {};
+  worldmodels: WorldModel[] = [];
   constructor() {}
   getTotalTimeSteps() {
-    return Object.keys(simulation.worldmodels).length - 1;
+    return Object.keys(this.worldmodels).length - 1;
   }
-  getWorld(time) {
+  getWorld(time: number) {
     if (!this.worldmodels[time]) {
       if (time == 0) this.worldmodels[time] = new WorldModel(0);
       else if (this.worldmodels[time - 1])
@@ -22,6 +22,7 @@ export class Simulation {
     let time = command.getTime();
     this.getWorld(time).addCommands(command.getCommandsList());
   }
+
   processConfig(configlog) {
     this.config = configlog.getConfig().getDataMap().map_;
     //let keys = Object.keys(config);
@@ -49,19 +50,20 @@ export class Simulation {
 }
 
 export class WorldModel {
+  time = 0;
   commands = [];
   changeset = null;
   perceptions = {};
-  entities = {};
+  entities: Entity[] = [];
   entitiesByUrn = {};
 
-  constructor(time) {
+  constructor(time: number) {
     this.time = time;
   }
   cloneForNextCycle() {
     let newWorld = new WorldModel(this.time + 1);
     Object.keys(this.entities).forEach((eid) => {
-      newWorld.entities[eid] = this.entities[eid].clone();
+      newWorld.entities[Number(eid)] = this.entities[Number(eid)].clone();
     });
     newWorld.refresh();
     return newWorld;
