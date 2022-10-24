@@ -1,4 +1,4 @@
-import { MapInfo, Record } from "@/common/viewer/type";
+import { AreaInfo, MapInfo, Record } from "@/common/viewer/type";
 import { FillColor } from "@/common/viewer/type";
 import { FILL_COLOR } from "@/common/viewer/const";
 import { COORDINATE_SYSTEM } from "@deck.gl/core";
@@ -37,7 +37,7 @@ class BuildingsLayer {
             v.type === "Refuge" ||
             v.type === "GasStation"
         )
-        .map((v: any) => {
+        .map((v: AreaInfo) => {
           let d = v.edges.map((vv: any) => [
             np.getX(vv.start.x),
             np.getY(vv.start.y),
