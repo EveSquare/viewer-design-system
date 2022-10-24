@@ -1,7 +1,7 @@
 import { Center, Link, Text } from "@chakra-ui/react";
 import React from "react";
 import { LogoImage } from "@/components/atoms/LogoImage";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 
 export const Logo: React.FC = () => {
   const { t, i18n } = useTranslation();
