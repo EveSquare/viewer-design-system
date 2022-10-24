@@ -85,7 +85,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
     const onStepUpdate = () => {
         async function fetchData() {
             const host = process.env.NEXT_PUBLIC_LOG_HOST;
-            const featch_url = new URL(process.env.NEXT_PUBLIC_LOG_BASE_PATH + `/full/${step + 1}.json`, host).href;
+            const featch_url = new URL(process.env.NEXT_PUBLIC_DEFAULT_LOG_BASE_PATH + `/full/${step + 1}.json`, host).href;
             const log = await load(featch_url, JSONLoader);
             setRescueLog(log);
         }
@@ -156,13 +156,13 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
 export async function getStaticProps({ locale }: any) {
     const host = process.env.NEXT_PUBLIC_LOG_HOST;
 
-    const mapUrl = new URL(process.env.NEXT_PUBLIC_LOG_BASE_PATH + "/map.json", host).href;
+    const mapUrl = new URL(process.env.NEXT_PUBLIC_DEFAULT_LOG_BASE_PATH + "/map.json", host).href;
     const mapData = await load(mapUrl, JSONLoader);
 
-    const rescueLogDataUrl = new URL(process.env.NEXT_PUBLIC_LOG_BASE_PATH + "/full/1.json", host).href;
+    const rescueLogDataUrl = new URL(process.env.NEXT_PUBLIC_DEFAULT_LOG_BASE_PATH + "/full/1.json", host).href;
     const rescueLogData = await load(rescueLogDataUrl, JSONLoader);
 
-    const metaUrl = new URL(process.env.NEXT_PUBLIC_LOG_BASE_PATH + "/meta.json", host).href;
+    const metaUrl = new URL(process.env.NEXT_PUBLIC_DEFAULT_LOG_BASE_PATH + "/meta.json", host).href;
     const metaData = await load(metaUrl, JSONLoader);
     return {
         props: {
