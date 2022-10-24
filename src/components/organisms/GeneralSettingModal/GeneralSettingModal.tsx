@@ -1,7 +1,7 @@
 import { Box, Button, FormControl, FormHelperText, FormLabel, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Radio, RadioGroup, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 import { Props } from './type'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 import { SectionBar } from "@/components/atoms/SectionBar";
 
 export const GeneralSettingModal: React.FC<Props> = ({ onClose, isOpen, size, state, setState }) => {

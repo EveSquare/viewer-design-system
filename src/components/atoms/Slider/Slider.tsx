@@ -1,7 +1,7 @@
 import React from "react";
 import { Props } from './type'
 import { RiPoliceCarLine } from 'react-icons/ri';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 import {
     Slider as CSlider,
     SliderTrack,
