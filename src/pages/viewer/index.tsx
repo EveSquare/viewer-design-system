@@ -3,8 +3,7 @@ import dynamic from "next/dynamic";
 import React, { useEffect, useState } from 'react';
 import { load } from '@loaders.gl/core';
 import { JSONLoader } from '@loaders.gl/json';
-import { Props, ToolTipObject } from '../../common/viewer/type';
-import { LOG_BASE_PATH } from "../../common/viewer/const";
+import { Props, ToolTipObject } from '@/common/viewer/type';
 import { DeckGLWrapper } from "@/components/atoms/DeckGLWrapper";
 import { ChildProps as ChildSliderArgsProps } from "@/components/organisms/SliderKit/type";
 import { OrbitView } from "@deck.gl/core";
@@ -86,7 +85,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
     const onStepUpdate = () => {
         async function fetchData() {
             const host = process.env.NEXT_PUBLIC_LOG_HOST;
-            const featch_url = new URL(LOG_BASE_PATH + `/full/${step + 1}.json`, host).href;
+            const featch_url = new URL(process.env.NEXT_PUBLIC_LOG_BASE_PATH + `/full/${step + 1}.json`, host).href;
             const log = await load(featch_url, JSONLoader);
             setRescueLog(log);
         }
@@ -157,13 +156,13 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
 export async function getStaticProps({ locale }: any) {
     const host = process.env.NEXT_PUBLIC_LOG_HOST;
 
-    const mapUrl = new URL(LOG_BASE_PATH + "/map.json", host).href;
+    const mapUrl = new URL(process.env.NEXT_PUBLIC_LOG_BASE_PATH + "/map.json", host).href;
     const mapData = await load(mapUrl, JSONLoader);
 
-    const rescueLogDataUrl = new URL(LOG_BASE_PATH + "/full/1.json", host).href;
+    const rescueLogDataUrl = new URL(process.env.NEXT_PUBLIC_LOG_BASE_PATH + "/full/1.json", host).href;
     const rescueLogData = await load(rescueLogDataUrl, JSONLoader);
 
-    const metaUrl = new URL(LOG_BASE_PATH + "/meta.json", host).href;
+    const metaUrl = new URL(process.env.NEXT_PUBLIC_LOG_BASE_PATH + "/meta.json", host).href;
     const metaData = await load(metaUrl, JSONLoader);
     return {
         props: {
