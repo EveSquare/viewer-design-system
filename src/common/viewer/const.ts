@@ -25,5 +25,6 @@ export const ICON_MAPPING: IconMapping = {
 export const FILL_COLOR: FillColor = {
     Building: [200, 200, 200, 200],
     Refuge: [0, 200, 0, 200],
+    Road: [100, 100, 100, 200],
     GasStation: [200, 200, 200, 200],
 };
