@@ -11,7 +11,7 @@ export const Header: React.FC<Props> = ({ stepCount, stepTooltip, score, maxScor
     return (
         <>
             {isShowing == "show" ?
-                <HeaderBase>
+                <HeaderBase bg="bg">
                     <Box m={2}>
                         <Logo />
                     </Box>

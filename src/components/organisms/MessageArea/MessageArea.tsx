@@ -10,7 +10,7 @@ export const MessageArea: React.FC<Props> = (props) => {
 
     return (
         <>
-            <Box visibility={props.isShowing == "show" ? "visible" : "hidden"}>
+            <Box hidden={props.isShowing == "show" ? false : true}>
                 <Grid templateColumns={`1fr ${width}px`}>
                     <GridItem my={"auto"}>
                         <SpeechBubbles />

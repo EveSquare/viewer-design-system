@@ -18,7 +18,7 @@ export const SliderKit: React.FC<Props> = ({ isPlaying, isDisabled, isShowing, v
                         colorScheme={isPlaying ? undefined : "primary"}
                         aria-label={t("再生/停止")}
                         isDisabled={isDisabled}
-                        icon={isPlaying ? <Icon as={BsPlayFill} /> : <Icon as={BsPauseFill} />}
+                        icon={isPlaying ? <Icon as={BsPauseFill} /> : <Icon as={BsPlayFill} />}
                         onClick={() => onClickPlayButton()}
                     >
                     </IconButton>

@@ -7,6 +7,9 @@ import { MessageArea } from "@/components/organisms/MessageArea";
 import { SliderKit } from "@/components/organisms/SliderKit";
 
 export const MainViewerTemplate: React.FC<Props> = ({ children, sideBarInfo, headerInfo, characterIsShowing, sliderArgs }) => {
+
+    const sidebar_width = sideBarInfo.isShowing === "show" ? "300px" : "0px";
+
     return (
         <>
             <Box overflow={"hidden"} width={"100vw"} height={"100vh"} position={"relative"}>
@@ -15,7 +18,7 @@ export const MainViewerTemplate: React.FC<Props> = ({ children, sideBarInfo, hea
                         templateAreas={`"header header"
                                         "sidebar main"`}
                         gridTemplateRows={'65px 1fr'}
-                        gridTemplateColumns={'300px 1fr'}
+                        gridTemplateColumns={`${sidebar_width} 1fr`}
                         w={"100vw"}
                         zIndex={2}
                     >
