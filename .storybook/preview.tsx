@@ -11,7 +11,6 @@ import * as React from "react"
 import { FaMoon, FaSun } from "react-icons/fa"
 import { withPerformance } from "storybook-addon-performance"
 import chkraTheme from '../chkraTheme'
-import "../i18n.js";
 
 /**
  * Add global context for RTL-LTR switching
