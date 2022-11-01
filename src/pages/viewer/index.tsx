@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { load } from '@loaders.gl/core';
 import { JSONLoader } from '@loaders.gl/json';
 import { Props, ToolTipObject } from '@/common/viewer/type';
+import { STEP_DULATION } from '@/common/viewer/const';
 import { DeckGLWrapper } from "@/components/atoms/DeckGLWrapper";
 import { ChildProps as ChildSliderArgsProps } from "@/components/organisms/SliderKit/type";
 import { OrbitView } from "@deck.gl/core";
@@ -24,7 +25,6 @@ const MainViewer = dynamic(
 );
 
 const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
-    const stepDuration = 60;
     const maxsteps = metaData.maxTimeStep;
     const maxScore = Math.round(metaData.scores[0] * 100) / 100;
 
@@ -67,7 +67,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
             setSliderKitState({ ...sliderKitState, value: value, isPlaying: false });
             setIsPause(!false);
             setStep(value);
-            setTime(value * stepDuration);
+            setTime(value * STEP_DULATION);
         },
         onChangeEnd: () => { },
         onClickPlayButton: () => {
@@ -76,9 +76,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
                 isPlaying: !sliderKitState.isPlaying,
             });
             setIsPause(sliderKitState.isPlaying);
-            if (isPause === false) {
-                setTime(step * stepDuration);
-            }
+            setTime(step * STEP_DULATION);
         },
     };
 
