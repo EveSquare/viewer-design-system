@@ -1,16 +1,18 @@
 import { Text } from "@chakra-ui/react";
 import { ImageCard } from "@/components/molecules/ImageCard";
+import { useTranslation } from "next-i18next";
 
 export const CivilianExplanationComponent = () => {
+    const { t, i18n } = useTranslation();
     return (
         <>
             <Text mb={4}>
-                市民は避難所に着くことを目指します。緑色で表示されます。
+                {t("市民は避難所に着くことを目指します。緑色で表示されます。")}
             </Text>
             <ImageCard
                 src="/Resources/img/civilian.svg"
-                title="市民"
-                description="自力で避難所まで向かう"
+                title={t("市民")}
+                description={t("自力で避難所まで向かう")}
             />
         </>
     )

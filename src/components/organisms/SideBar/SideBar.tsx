@@ -1,13 +1,14 @@
 import React from "react";
 import { QuestionOutlineIcon } from '@chakra-ui/icons'
-import { Box, Container, Heading, Link, VStack } from "@chakra-ui/react";
-import { Logo } from "@/components/organisms/Logo";
+import { Container, Heading, VStack } from "@chakra-ui/react";
 import { SectionBar } from "@/components/atoms/SectionBar";
 import { AgentCard } from "@/components/molecules/AgentCard";
 import { LinkCard } from "@/components/molecules/LinkCard";
 import { Props } from "./type";
+import { useTranslation } from "next-i18next";
 
 export const SideBar: React.FC<Props> = ({ agentDatas, linkDatas, isShowing }) => {
+    const { t, i18n } = useTranslation();
     return (
         <>
             <Container
@@ -42,7 +43,7 @@ export const SideBar: React.FC<Props> = ({ agentDatas, linkDatas, isShowing }) =
                     </>
                     <SectionBar />
                     <>
-                        <Heading fontSize="xl">外部リンク</Heading>
+                        <Heading fontSize="xl">{t("外部リンク")}</Heading>
                         {
                             linkDatas ?
                                 (linkDatas

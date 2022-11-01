@@ -28,8 +28,8 @@ export const GeneralSettingModal: React.FC<Props> = ({ onClose, isOpen, size, st
                                     value={state.colorMode}
                                 >
                                     <Stack>
-                                        <Radio value='light'>{t('ライト')}</Radio>
-                                        <Radio value='dark'>{t('ダーク')}</Radio>
+                                        <Radio value='light'>{t('ライトモード')}</Radio>
+                                        <Radio value='dark'>{t('ダークモード')}</Radio>
                                     </Stack>
                                 </RadioGroup>
                                 <FormHelperText>{t('画面の色を変更できます')}</FormHelperText>
