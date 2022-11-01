@@ -3,6 +3,7 @@ import { LogList } from "@/components/templates/LogList";
 import { Props as LogCardProps } from "@/components/molecules/LogCard/type";
 import { LogSection as LogSectionProps } from "@/components/templates/LogList/type";
 import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const Home: NextPage = () => {
 
@@ -57,5 +58,13 @@ const Home: NextPage = () => {
     </>
   );
 };
+
+export async function getStaticProps({ locale }: any) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common']))
+    },
+  };
+}
 
 export default Home;
