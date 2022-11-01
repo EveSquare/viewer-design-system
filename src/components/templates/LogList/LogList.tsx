@@ -4,9 +4,10 @@ import { Box, Center, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import { HeaderBase } from "@/components/atoms/HeaderBase";
 import { Logo } from "@/components/organisms/Logo";
 import { LogCard } from "@/components/molecules/LogCard";
+import { useTranslation } from 'next-i18next';
 
 export const LogList: React.FC<Props> = ({ logSections }) => {
-
+    const { t, i18n } = useTranslation();
     return (
         <>
             <Box>
@@ -25,12 +26,12 @@ export const LogList: React.FC<Props> = ({ logSections }) => {
                     </GridItem>
                     <GridItem area={'main'}>
                         <Center w={"100vw"} p={2}>
-                            <Text fontSize='3xl'>ログ一覧</Text>
+                            <Text fontSize='3xl'>{t("ログ一覧")}</Text>
                         </Center>
                         {logSections.map((logSection: LogSection, i: number) => (
                             <Box key={logSection.sectionName} mt={"4rem"}>
                                 <Box px={4}>
-                                    <Text fontSize='3xl' as="b">人気</Text>
+                                    <Text fontSize='3xl' as="b">{t("人気")}</Text>
                                 </Box>
                                 <Flex
                                     w={"100vw"}

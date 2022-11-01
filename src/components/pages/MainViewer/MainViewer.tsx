@@ -1,5 +1,4 @@
 import { MainViewerTemplate } from "@/components/templates/MainViewerTemplate"
-import { linkDatas } from "src/factories/linkDatasFactory"
 import { Props as HeaderProps } from "@/components/organisms/Header/type";
 import { Props as AgentCardProps } from "@/components/molecules/AgentCard/type";
 import { Props as ExplanationModalProps } from "@/components/organisms/ExplanationModal/type";
@@ -14,8 +13,11 @@ import { CivilianExplanationComponent } from "@/factories/civilianExplanationCom
 import { AmbulanceExplanationComponent } from "@/factories/ambulanceExplanationComponent";
 import { FireExplanationComponent } from "@/factories/fireExplanationComponent";
 import { PoliceExplanationComponent } from "@/factories/policeExplanationComponent";
+import { useTranslation } from "next-i18next";
+import { QuestionOutlineIcon } from "@chakra-ui/icons";
 
 export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, score, maxScore }) => {
+    const { t, i18n } = useTranslation();
 
     const [generalSettingState, setGeneralSettingState] = React.useState(generalSettingStateInitial);
     const [modalVisibilityState, setModalVisibilityState] = React.useState({
@@ -29,28 +31,41 @@ export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, sco
     const agentDatas: Array<AgentCardProps> = [
         {
             agentType: 'civilian',
-            title: '市民',
-            description: '市民の説明を開く',
+            title: t('市民'),
+            description: t('市民の説明を開く'),
             onClick: () => { setModalVisibilityState({ ...modalVisibilityState, civilianExplanationModal: true }) },
         },
         {
             agentType: 'ambulance',
-            title: '救急隊',
-            description: '救急隊の説明を開く',
+            title: t('救急隊'),
+            description: t('救急隊の説明を開く'),
             onClick: () => { setModalVisibilityState({ ...modalVisibilityState, ambulanceExplanationModal: true }) },
         },
         {
             agentType: 'fire',
-            title: '消防隊',
-            description: '消防隊の説明を開く',
+            title: t('消防隊'),
+            description: t('消防隊の説明を開く'),
             onClick: () => { setModalVisibilityState({ ...modalVisibilityState, fireExplanationModal: true }) },
         },
         {
             agentType: 'police',
-            title: '土木隊',
-            description: '土木隊の説明を開く',
+            title: t('土木隊'),
+            description: t('土木隊の説明を開く'),
             onClick: () => { setModalVisibilityState({ ...modalVisibilityState, policeExplanationModal: true }) },
         },
+    ]
+
+    const linkDatas = [
+        {
+            prependIcon: <QuestionOutlineIcon w={5} h={5} />,
+            title: t('RRSとは'),
+            href: '/explanation/chapter1/whatisrrs'
+        },
+        {
+            prependIcon: <QuestionOutlineIcon w={5} h={5} />,
+            title: t('エージェントとは'),
+            href: '/explanation/chapter1/whatistheagent'
+        }
     ]
 
     const sideBarInfo = {
@@ -61,10 +76,10 @@ export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, sco
 
     const headerInfo: HeaderProps = {
         stepCount: childSliderKitState.value,
-        stepTooltip: '救助活動の経過時間を表します',
+        stepTooltip: t('救助活動の経過時間を表します'),
         score: score,
         maxScore: maxScore,
-        scoreTooltip: '市民の負傷度合いによってスコアが減算されます',
+        scoreTooltip: t('市民の負傷度合いによってスコアが減算されます'),
         isShowing: generalSettingState.headerVisibility,
         onOpenSetting: () => { setModalVisibilityState({ ...modalVisibilityState, generalSettingModal: true }) },
     }
@@ -81,7 +96,7 @@ export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, sco
     }
 
     const civilianExplanationData: ExplanationModalProps = {
-        title: '市民の説明',
+        title: t('市民の説明'),
         children: <CivilianExplanationComponent />,
         isOpen: modalVisibilityState.civilianExplanationModal,
         onClose: () => { setModalVisibilityState({ ...modalVisibilityState, civilianExplanationModal: false }) },
@@ -89,7 +104,7 @@ export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, sco
     }
 
     const ambulanceExplanationData: ExplanationModalProps = {
-        title: '救急隊の説明',
+        title: t('救急隊の説明'),
         children: <AmbulanceExplanationComponent />,
         isOpen: modalVisibilityState.ambulanceExplanationModal,
         onClose: () => { setModalVisibilityState({ ...modalVisibilityState, ambulanceExplanationModal: false }) },
@@ -97,7 +112,7 @@ export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, sco
     }
 
     const fireExplanationData: ExplanationModalProps = {
-        title: '消防隊の説明',
+        title: t('消防隊の説明'),
         children: <FireExplanationComponent />,
         isOpen: modalVisibilityState.fireExplanationModal,
         onClose: () => { setModalVisibilityState({ ...modalVisibilityState, fireExplanationModal: false }) },
@@ -105,7 +120,7 @@ export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, sco
     }
 
     const policeExplanationData: ExplanationModalProps = {
-        title: '土木隊の説明',
+        title: t('土木隊の説明'),
         children: <PoliceExplanationComponent />,
         isOpen: modalVisibilityState.policeExplanationModal,
         onClose: () => { setModalVisibilityState({ ...modalVisibilityState, policeExplanationModal: false }) },

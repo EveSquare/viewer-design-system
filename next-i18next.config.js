@@ -1,6 +1,6 @@
 module.exports = {
     i18n: {
-        defaultLocale: 'en',
-        locales: ['ja', 'en'],
+        defaultLocale: 'ja',
+        locales: ['ja', 'en', 'ja_kana'], // TODO: ja_kana: カナ付きの日本語に対応する
     },
 };
