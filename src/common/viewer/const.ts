@@ -26,3 +26,5 @@ export const FILL_COLOR: FillColor = {
     Road: [100, 100, 100, 200],
     GasStation: [200, 200, 200, 200],
 };
+
+export const STEP_DULATION = 60;
