@@ -70,6 +70,37 @@ yarn prisma db seed
 ```
 Prisma Studioで確認するとテストデータが追加されていることが確認できる．
 
+## Docker(オプション)
+Dockerで起動する場合[Docker Desktop](https://www.docker.com/)をインストールする必要があ
+ります．
+Dockerで起動する場合データベース`postgres`を選択することが出来ます．
+`postgres`を使用する場合は`.env`ファイルを以下のように書き換えます．
+```text
+# .env
+POSTGRES_PASSWORD="password"
+POSTGRES_USER="postgres"
+DATABASE_URL="postgresql://postgres:password@db:5432/postgres?schema=public"
+```
+また，Prismaのスキーマに書かれているプロバイダーを変更する必要があります．
+```javascript
+// prisma/schema.prisma
+
+datasource db {
+  provider = "sqlite" // <- providerを"postgres"に書き換える
+  url      = env("DATABASE_URL")
+}
+```
+
+### 起動
+```shell
+docker-compose up -d
+```
+
+### 終了
+```
+docker-compose down
+```
+
 ## 動作環境
 
 - node v16.14.2
