@@ -9,8 +9,10 @@ cp .env.example .env
 ```
 
 ```txt
-# .envファイルをこのように書き換えます
+# .envファイルをこのように書き換えます(必要に応じて書き換えます)
 NEXT_PUBLIC_LOG_HOST=http://localhost:3000/
+NEXT_PUBLIC_DEFAULT_LOG_BASE_PATH=/Resources/logs/sample-logs/6
+DATABASE_URL="file:./dev.db"
 ```
 
 必要なパッケージをインストールします
@@ -39,6 +41,34 @@ yarn storybook
 ```
 yarn hygen
 ```
+
+## Prisma
+
+### Prisma によるデータベース初期化(テーブル作成)
+```shell
+yarn prisma db push
+```
+sqliteの場合`prisma/dev.db`が生成されます．
+
+### `Prisma Studio`の起動
+
+```shell
+yarn prisma studio
+> Prisma schema loaded from prisma/schema.prisma
+> Prisma Studio is up on http://localhost:5555
+```
+
+[http://localhost:5555/](http://localhost:5555/)でモデルをGUIで操作可能
+
+### テストデータの追加(Seed)
+
+```shell
+yarn prisma db seed
+> ...
+> 🌱  The seed command has been executed.
+> ✨  Done in 4.74s.
+```
+Prisma Studioで確認するとテストデータが追加されていることが確認できる．
 
 ## 動作環境
 

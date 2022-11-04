@@ -1,14 +1,14 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { Props } from './type';
 import { Badge, Box, Flex, Spacer, Stack, Text } from "@chakra-ui/react";
 import { ArrowForwardIcon } from '@chakra-ui/icons'
 import { Card } from "@/components/atoms/Card";
 import NextLink from "next/link";
 
-export const LogCard: React.FC<Props> = ({ title, description, href, tags }) => {
+export const LogCard: React.FC<Props> = ({ title, description, url, tags }) => {
     return (
         <>
-            <NextLink href={href}>
+            <NextLink href={url}>
                 <Card
                     minW={"450px"}
                     h={"165px"}
@@ -22,7 +22,7 @@ export const LogCard: React.FC<Props> = ({ title, description, href, tags }) => 
                         <Box>
                             <Stack direction='row' overflow="hidden">
                                 {tags.map((tag, i) => (
-                                    <Badge key={i} colorScheme={tag.color} fontSize='0.9rem'>{tag.name}</Badge>
+                                    <Badge key={i} colorScheme={tag.color} fontSize='0.9rem'>{tag.tag.name}</Badge>
                                 ))}
                             </Stack>
                         </Box>

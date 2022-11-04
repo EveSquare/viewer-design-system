@@ -56,7 +56,7 @@ export const LogList: React.FC<Props> = ({ logSections }) => {
                                             key={i}
                                             title={logInfo.title}
                                             description={logInfo.description}
-                                            href={logInfo.href}
+                                            url={logInfo.url}
                                             tags={logInfo.tags}
                                         />
                                     ))}

@@ -1,7 +1,14 @@
 export interface Props {
     title: string,
     description: string,
-    href: string,
-    tags: Array<{ name: string, color: string }>,
+    url: string,
+    tags: Array<Tag>,
+}
+
+export interface Tag {
+    color: string;
+    tag: {
+        name: string;
+    }
 }
 
