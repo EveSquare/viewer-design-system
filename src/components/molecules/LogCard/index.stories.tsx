@@ -21,12 +21,16 @@ export const Default = Template.bind({})
 Default.args = {
   title: "Sample01",
   description: "Sample01の説明文です。",
-  href: "/",
+  url: "/",
   tags: [{
-    name: "イベント",
+    tag: {
+      name: "イベント",
+    },
     color: "bule",
   }, {
-    name: "サンプル",
+    tag: {
+      name: "サンプル",
+    },
     color: "red",
   }],
 }
