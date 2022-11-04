@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // provider = "postgres"
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  name  String?
+}
+
+model Log {
+  id          Int       @id @default(autoincrement())
+  title       String
+  url         String
+  viewCount   Int       @default(0)
+  description String?
+  eventAt     DateTime
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  tags        LogTags[]
+}
+
+model LogTags {
+  id         Int      @id @default(autoincrement())
+  log        Log?     @relation(fields: [logId], references: [id])
+  tag        Tag?     @relation(fields: [tagId], references: [id])
+  logId      Int?
+  tagId      Int?
+  assignedAt DateTime @default(now())
+}
+
+model Tag {
+  id   Int       @id @default(autoincrement())
+  name String    @unique
+  logs LogTags[]
+}
