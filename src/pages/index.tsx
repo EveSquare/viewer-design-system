@@ -4,67 +4,56 @@ import { Props as LogCardProps } from "@/components/molecules/LogCard/type";
 import { LogSection as LogSectionProps } from "@/components/templates/LogList/type";
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { getSortedMostViewLogs } from "@/repositories/standardRepositories";
 
-const Home: NextPage = () => {
+interface Props {
+    popularLogs: LogCardProps[];
+}
 
-  const { t, i18n } = useTranslation();
+const Home: NextPage<Props> = ({ popularLogs }) => {
 
-  const popularLogs: Array<LogCardProps> = [
-    {
-      title: t("Sample01"),
-      description: t("Sample01の説明文です。"),
-      href: "/viewer",
-      tags: [{
-        name: t("イベント"),
-        color: "bule",
-      }, {
-        name: t("サンプル"),
-        color: "red",
-      }],
-    },
-    {
-      title: t("Sample02"),
-      description: t("Sample02の説明文です。"),
-      href: "/viewer",
-      tags: [{
-        name: t("イベント"),
-        color: "bule",
-      }, {
-        name: t("サンプル"),
-        color: "red",
-      }],
-    },
-    {
-      title: t("Sample03"),
-      description: t("Sample03の説明文です。"),
-      href: "/viewer",
-      tags: [{
-        name: t("イベント"),
-        color: "bule",
-      }, {
-        name: t("サンプル"),
-        color: "red"
-      }],
-    },
-  ]
+    const { t, i18n } = useTranslation();
 
-  const logSections: Array<LogSectionProps> = [
-    { sectionName: t("人気"), logs: popularLogs }
-  ]
+    // 翻訳されるようにuseTranslationを使う
+    const translatedPopularLogs = popularLogs.map(log => {
+        log.title = t(log.title);
+        log.description = t(log.description);
+        log.tags = log.tags.map(tag => {
+            tag.color = "bule";
+            tag.tag.name = t(tag.tag.name);
+            return tag;
+        });
+        return log;
+    })
 
-  return (
-    <>
-      <LogList logSections={logSections} />
-    </>
-  );
+    const logSections: Array<LogSectionProps> = [
+        { sectionName: t("人気"), logs: translatedPopularLogs }
+    ]
+
+    return (
+        <>
+            <LogList logSections={logSections} />
+        </>
+    );
 };
 
 export async function getStaticProps({ locale }: any) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['common']))
-    },
-  };
+
+    // SerializableErrorが発生するため再度パースする
+    const popularLogs = JSON.parse(JSON.stringify(await getSortedMostViewLogs()));
+
+    // 現在の言語に対応したURLに変換
+    const transLinkedPopularLogs = popularLogs.map((log: any) => {
+        log.url = `/${locale}${log.url}`;
+        return log;
+    });
+
+    return {
+        props: {
+            popularLogs: transLinkedPopularLogs,
+            ...(await serverSideTranslations(locale, ['common']))
+        },
+    };
 }
 
 export default Home;
