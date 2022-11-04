@@ -6,8 +6,8 @@ const tagData: Prisma.TagCreateInput = {
 }
 
 const logData: Prisma.LogCreateInput = {
-    title: "firstGame",
-    url: "https://www.google.com",
+    title: "Sample01",
+    url: "/viewer",
     eventAt: new Date(),
     updatedAt: new Date(),
     tags: {
