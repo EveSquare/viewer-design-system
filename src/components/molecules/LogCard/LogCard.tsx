@@ -22,7 +22,7 @@ export const LogCard: React.FC<Props> = ({ title, description, href, tags }) => 
                         <Box>
                             <Stack direction='row' overflow="hidden">
                                 {tags.map((tag, i) => (
-                                    <Badge key={i} colorScheme={tag.color} fontSize='0.9rem'>{tag.name}</Badge>
+                                    <Badge key={i} colorScheme={tag.color} fontSize='0.9rem'>{tag.tag.name}</Badge>
                                 ))}
                             </Stack>
                         </Box>
