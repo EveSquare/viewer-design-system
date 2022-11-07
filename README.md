@@ -90,6 +90,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 ```
+変わらない場合は`node_modules/.prisma/client/schema.prisma`にあるファイルと同期されていないことが問題になります．
+以下のコマンドを打ち込み，同期させる必要があります．
+```shell
+yarn prisma db push
+> The database is already in sync with the Prisma schema.
+
+> ✔ Generated Prisma Client (4.5.0 | library) to ./node_modules/@prisma/client in 97ms
+
+> ✨  Done in 2.57s.
+```
 
 ### 起動
 ```shell
