@@ -132,7 +132,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
             >
                 <DeckGLWrapper>
                     <DeckGL
-                        controller={{ inertia: false, minRotationX: 0, dragMode: "pan" }}
+                        controller={true}
                         layers={layers}
                         getTooltip={({ object }: ToolTipObject) => object && `${object.type} (${object.id})\n Position: ${object.x}, ${object.y}`}
                         views={new OrbitView()}
