@@ -53,3 +53,4 @@ export const MainViewerTemplate: React.FC<Props> = ({ children, sideBarInfo, hea
 }
 
 MainViewerTemplate.displayName = "MAINVIEWERTEMPLATE";
+MainViewerTemplate.whyDidYouRender = true;

@@ -3,7 +3,7 @@ import { Props as HeaderProps } from "@/components/organisms/Header/type";
 import { Props as AgentCardProps } from "@/components/molecules/AgentCard/type";
 import { Props as ExplanationModalProps } from "@/components/organisms/ExplanationModal/type";
 import { Props as SliderArgsProps } from "@/components/organisms/SliderKit/type";
-import { Box, useColorMode, useColorModeValue } from "@chakra-ui/react"
+import { Box, Grid, GridItem, useColorMode, useColorModeValue } from "@chakra-ui/react"
 import { GeneralSettingModal } from "@/components/organisms/GeneralSettingModal"
 import { generalSettingState as generalSettingStateInitial } from "@/factories/generalSettingStateFactory"
 import React, { useEffect } from "react"
@@ -15,6 +15,10 @@ import { FireExplanationComponent } from "@/factories/fireExplanationComponent";
 import { PoliceExplanationComponent } from "@/factories/policeExplanationComponent";
 import { useTranslation } from "next-i18next";
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
+import { Header } from "@/components/organisms/Header";
+import { MessageArea } from "@/components/organisms/MessageArea";
+import { SideBar } from "@/components/organisms/SideBar";
+import { SliderKit } from "@/components/organisms/SliderKit";
 
 export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, score, maxScore }) => {
     const { t, i18n } = useTranslation();
@@ -136,16 +140,46 @@ export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, sco
         }
     }, [generalSettingState.colorMode, nextMode, toggleColorMode]);
 
+    const sidebar_width = sideBarInfo.isShowing === "show" ? "300px" : "0px";
+
     return (
         <>
-            <MainViewerTemplate
-                sideBarInfo={sideBarInfo}
-                headerInfo={headerInfo}
-                characterIsShowing={generalSettingState.characterVisibility}
-                sliderArgs={sliderArgs}
-            >
-                {children ? children : <Box bg="green.700" w="100vw" h="100vh"></Box>}
-            </MainViewerTemplate>
+            <Box overflow={"hidden"} width={"100vw"} height={"100vh"} position={"relative"}>
+                <Box position="fixed">
+                    <Grid
+                        templateAreas={`"header header"
+                                        "sidebar main"`}
+                        gridTemplateRows={'65px 1fr'}
+                        gridTemplateColumns={`${sidebar_width} 1fr`}
+                        w={"100vw"}
+                        zIndex={2}
+                    >
+                        <GridItem area={'header'}>
+                            <Header {...headerInfo} />
+                        </GridItem>
+                        <GridItem area={'sidebar'}>
+                            <SideBar {...sideBarInfo} />
+                        </GridItem>
+                        <GridItem area={'main'}>
+                            {children}
+                        </GridItem>
+                    </Grid>
+                </Box>
+                <Box
+                    zIndex={3}
+                    width={"80%"}
+                    position={"absolute"}
+                    bottom={"-25px"}
+                    right={"-40px"}
+                >
+                    <MessageArea isShowing={generalSettingState.characterVisibility} />
+                </Box>
+                <Box bg="bg" zIndex={3} position="absolute" bottom={0} width="100vw">
+                    <Box px={10}>
+                        <SliderKit {...sliderArgs} />
+                    </Box>
+                </Box>
+            </Box>
             <GeneralSettingModal
                 isOpen={modalVisibilityState.generalSettingModal}
                 state={generalSettingState}
@@ -159,3 +193,4 @@ export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, sco
         </>
     )
 }
+MainViewer.whyDidYouRender = true;
