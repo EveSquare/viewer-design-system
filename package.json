@@ -34,7 +34,8 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
     "rimraf": "^3.0.2",
-    "styled-components": "^5.3.5"
+    "styled-components": "^5.3.5",
+    "why-did-you-render": "^1.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.19.0",
@@ -51,6 +52,7 @@
     "@types/react": "18.0.20",
     "@types/react-dom": "18.0.6",
     "@types/styled-components": "^5.1.26",
+    "@welldone-software/why-did-you-render": "^7.0.1",
     "babel-loader": "^8.2.5",
     "chromatic": "^6.9.0",
     "eslint": "8.23.1",
