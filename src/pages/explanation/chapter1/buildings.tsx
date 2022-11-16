@@ -15,25 +15,25 @@ export const Buildings: React.FC = () => {
                 align='stretch'
             >
                 <ImageCard
-                    src="/Resources/img/building.svg"
+                    src="/Resources/img/building.png"
                     title={t("建物")}
                     description={t("多くの市民が取り残されている")}
                 />
                 <ImageCard
-                    src="/Resources/img/shelter.svg"
+                    src="/Resources/img/shelter.png"
                     title={t("避難所")}
                     description={t("全ての市民の避難場所")}
                 />
                 <ImageCard
-                    src="/Resources/img/road.svg"
+                    src="/Resources/img/road.png"
                     title={t("道路")}
                     description={t("市民やロボットが使用する通路")}
                 />
-                {/* <ImageCard
-                        src="/Resources/img/road.svg"
-                        title="瓦礫"
-                        description="通路を塞ぎ、市民やロボットの通行の妨げとなる"
-                    /> */}
+                <ImageCard
+                    src="/Resources/img/debris.png"
+                    title={t("瓦礫")}
+                    description={t("通路を塞ぎ、市民やロボットの通行の妨げとなる")}
+                />
             </VStack>
         </>
     )
