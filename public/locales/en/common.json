@@ -71,5 +71,10 @@
     "市民の紹介": "Civilian Introduction",
     "市民は避難所に着くことを目指します。緑色で表示されます。": "Civilians aim to reach the shelter. They are indicated in green.",
     "自力で避難所まで向かう": "Go to the shelter on your own.",
-    "イベント": "Event"
+    "イベント": "Event",
+    "瓦礫": "Debris",
+    "通路を塞ぎ、市民やロボットの通行の妨げとなる": "Blocking aisles and obstructing the passage of citizens and robots.",
+    "市民には負傷度があります。負傷度は色の変化によって見ることができます。": "Citizens have an injury level. Injury level can be seen by a change in color.",
+    "負傷度が高いほど緑色から黒色へ近づきます。": "The higher the degree of injury, the more it approaches green to black.",
+    "負傷度により色の変化を表した画像": "Image showing color changes according to the degree of injury"
 }
