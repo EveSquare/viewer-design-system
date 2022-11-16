@@ -84,18 +84,16 @@ class BuildingsLayer {
     if (entity.type === "Building") {
       const entityDetail: Entity | undefined = this.rescuelog.world.buildings.find((v) => v.id === entity.id);
       switch (true) {
-        case entityDetail?.broken === 100:
-          return BROKEN.LEVEL_1;
         case (entityDetail?.broken || 0) >= 80:
-          return BROKEN.LEVEL_2;
+          return BROKEN.LEVEL_1;
         case (entityDetail?.broken || 0) >= 60:
-          return BROKEN.LEVEL_3;
+          return BROKEN.LEVEL_2;
         case (entityDetail?.broken || 0) >= 40:
-          return BROKEN.LEVEL_4;
+          return BROKEN.LEVEL_3;
         case (entityDetail?.broken || 0) >= 20:
+          return BROKEN.LEVEL_4;
+        case (entityDetail?.broken || 0) < 20:
           return BROKEN.LEVEL_5;
-        default:
-          return [0, 0, 0, 0];
       }
     }
     return this.FILL_COLOR[entity.type];
