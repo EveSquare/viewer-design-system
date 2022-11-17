@@ -76,5 +76,8 @@
     "通路を塞ぎ、市民やロボットの通行の妨げとなる": "Blocking aisles and obstructing the passage of citizens and robots.",
     "市民には負傷度があります。負傷度は色の変化によって見ることができます。": "Citizens have an injury level. Injury level can be seen by a change in color.",
     "負傷度が高いほど緑色から黒色へ近づきます。": "The higher the degree of injury, the more it approaches green to black.",
-    "負傷度により色の変化を表した画像": "Image showing color changes according to the degree of injury"
+    "負傷度により色の変化を表した画像": "Image showing color changes according to the degree of injury",
+    "建物には倒壊度があります。倒壊度は色の変化によって見ることができます。": "Buildings have a degree of collapse. The degree of collapse can be seen by a change in color.",
+    "倒壊度は5段階で表わされています。左から倒壊度1最後が倒壊度5となります。": "The degree of collapse is expressed in five levels. From left to right: collapsibility 1, the last being collapsibility 5.",
+    "建物の倒壊度を5段階で表した建物の画像5つがならんでいる": "Five images of buildings, each representing a building's degree of collapse on a five-point scale, are lined up in a row."
 }
