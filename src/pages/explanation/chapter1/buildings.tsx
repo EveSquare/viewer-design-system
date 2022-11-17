@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
+import Image from "next/image";
 import { ExplanationPage } from "@/components/pages/ExplanationPage";
-import { Heading, VStack } from "@chakra-ui/react";
+import { Heading, VStack, Text } from "@chakra-ui/react";
 import { ImageCard } from "@/components/molecules/ImageCard";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -35,6 +36,14 @@ export const Buildings: React.FC = () => {
                     description={t("通路を塞ぎ、市民やロボットの通行の妨げとなる")}
                 />
             </VStack>
+            <Text mt={6}>{t("建物には倒壊度があります。倒壊度は色の変化によって見ることができます。")}</Text>
+            <Text>{t('倒壊度は5段階で表わされています。左から倒壊度1最後が倒壊度5となります。')}</Text>
+            <Image
+                src="/Resources/img/building_broken_level_group.png"
+                width={600}
+                height={120}
+                alt={t("建物の倒壊度を5段階で表した建物の画像5つがならんでいる")}
+            ></Image>
         </>
     )
 }
