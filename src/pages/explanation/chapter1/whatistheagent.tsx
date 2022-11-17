@@ -4,6 +4,7 @@ import { Box, Heading, Text, VStack } from "@chakra-ui/react";
 import { ImageCard } from "@/components/molecules/ImageCard";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import Image from 'next/image'
 
 export const WhatIsTheAgent: React.FC = () => {
     const { t, i18n } = useTranslation();
@@ -42,6 +43,14 @@ export const WhatIsTheAgent: React.FC = () => {
                 src="/Resources/img/civilian.svg"
                 title={t("市民")}
                 description={t("自力で避難所まで向かう")}
+            />
+            <Text>{t('市民には負傷度があります。負傷度は色の変化によって見ることができます。')}</Text>
+            <Text>{t('負傷度が高いほど緑色から黒色へ近づきます。')}</Text>
+            <Image
+                src="/Resources/img/civilian_Injury.png"
+                width={600}
+                height={120}
+                alt={t('負傷度により色の変化を表した画像')}
             />
         </>
     )
