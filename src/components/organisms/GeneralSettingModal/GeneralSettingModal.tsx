@@ -1,7 +1,7 @@
 import { Box, Button, FormControl, FormHelperText, FormLabel, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Radio, RadioGroup, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 import { Props } from './type'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 import { SectionBar } from "@/components/atoms/SectionBar";
 
 export const GeneralSettingModal: React.FC<Props> = ({ onClose, isOpen, size, state, setState }) => {
@@ -28,8 +28,8 @@ export const GeneralSettingModal: React.FC<Props> = ({ onClose, isOpen, size, st
                                     value={state.colorMode}
                                 >
                                     <Stack>
-                                        <Radio value='light'>{t('ライト')}</Radio>
-                                        <Radio value='dark'>{t('ダーク')}</Radio>
+                                        <Radio value='light'>{t('ライトモード')}</Radio>
+                                        <Radio value='dark'>{t('ダークモード')}</Radio>
                                     </Stack>
                                 </RadioGroup>
                                 <FormHelperText>{t('画面の色を変更できます')}</FormHelperText>

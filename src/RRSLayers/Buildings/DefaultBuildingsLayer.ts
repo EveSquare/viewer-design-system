@@ -1,6 +1,6 @@
-import { MapInfo, Record } from "@/common/viewer/type";
+import { AreaInfo, Entity, MapInfo, Record } from "@/common/viewer/type";
 import { FillColor } from "@/common/viewer/type";
-import { FILL_COLOR } from "@/common/viewer/const";
+import { BROKEN, FILL_COLOR } from "@/common/viewer/const";
 import { COORDINATE_SYSTEM } from "@deck.gl/core";
 import { PolygonLayer } from "@deck.gl/layers";
 
@@ -37,7 +37,7 @@ class BuildingsLayer {
             v.type === "Refuge" ||
             v.type === "GasStation"
         )
-        .map((v: any) => {
+        .map((v: AreaInfo) => {
           let d = v.edges.map((vv: any) => [
             np.getX(vv.start.x),
             np.getY(vv.start.y),
@@ -50,7 +50,7 @@ class BuildingsLayer {
             x: v.x,
             y: v.y,
             contour: d,
-            color: this.FILL_COLOR[v.type],
+            color: this.getColor(v),
             elevation:
               v.type === "Refuge" ? 1 : Math.floor((v.id % 10) * 0.6) + 3,
           };
@@ -78,6 +78,25 @@ class BuildingsLayer {
     }
 
     return this.layer;
+  }
+
+  getColor(entity: AreaInfo) {
+    if (entity.type === "Building") {
+      const entityDetail: Entity | undefined = this.rescuelog.world.buildings.find((v) => v.id === entity.id);
+      switch (true) {
+        case (entityDetail?.broken || 0) >= 80:
+          return BROKEN.LEVEL_1;
+        case (entityDetail?.broken || 0) >= 60:
+          return BROKEN.LEVEL_2;
+        case (entityDetail?.broken || 0) >= 40:
+          return BROKEN.LEVEL_3;
+        case (entityDetail?.broken || 0) >= 20:
+          return BROKEN.LEVEL_4;
+        case (entityDetail?.broken || 0) < 20:
+          return BROKEN.LEVEL_5;
+      }
+    }
+    return this.FILL_COLOR[entity.type];
   }
 }
 export default BuildingsLayer;

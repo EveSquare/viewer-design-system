@@ -14,21 +14,25 @@
     "chromatic": "npx chromatic --project-token=CHROMATIC_PROJECT_TOKEN",
     "clean": "rimraf .next out"
   },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.9",
     "@chakra-ui/react": "^2.3.2",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@loaders.gl/json": "^3.2.9",
+    "@prisma/client": "4.5.0",
     "babel-plugin-styled-components": "^2.0.7",
     "deck.gl": "^8.8.10",
     "framer-motion": "^7.3.5",
     "i18next": "^21.9.1",
     "next": "12.3.0",
     "protobufjs": "^7.1.2",
+    "next-i18next": "^12.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-i18next": "^11.18.6",
     "react-icons": "^4.4.0",
     "rimraf": "^3.0.2",
     "styled-components": "^5.3.5"
@@ -44,7 +48,7 @@
     "@storybook/manager-webpack5": "^6.5.12",
     "@storybook/react": "6.5.12",
     "@storybook/testing-library": "^0.0.13",
-    "@types/node": "18.7.18",
+    "@types/node": "^18.11.9",
     "@types/react": "18.0.20",
     "@types/react-dom": "18.0.6",
     "@types/styled-components": "^5.1.26",
@@ -55,10 +59,12 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-storybook": "^0.6.4",
     "hygen": "^6.2.11",
+    "prisma": "^4.5.0",
     "sb": "6.5.12",
     "storybook-addon-designs": "^6.3.1",
     "storybook-addon-performance": "^0.16.1",
     "storybook-i18n": "^1.1.4",
+    "ts-node": "^10.9.1",
     "tsconfig-paths-webpack-plugin": "^4.0.0",
     "typescript": "4.8.3"
   }

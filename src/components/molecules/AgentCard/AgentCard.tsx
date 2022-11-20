@@ -3,8 +3,10 @@ import { Card } from "@/components/atoms/Card";
 import { Box, Heading, Text } from "@chakra-ui/react";
 import React from "react";
 import { Props } from "./type"
+import { useTranslation } from "next-i18next";
 
 export const AgentCard: React.FC<Props> = (props) => {
+    const { t, i18n } = useTranslation();
     return (
         <>
             <Card
@@ -12,7 +14,7 @@ export const AgentCard: React.FC<Props> = (props) => {
                 w="100%"
                 display="flex"
                 alignItems="center"
-                title={`クリックすると${props.title}の詳細が表示されます`}
+                title={t("AgentCardTitle", { title: props.title })}
                 onClick={props.onClick}
             >
                 <Box m={["1.5rem", "0.8rem"]} >

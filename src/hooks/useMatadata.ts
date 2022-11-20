@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { LOG_BASE_PATH } from "@/common/viewer/const";
-import getConfig from "next/config";
 import { load } from '@loaders.gl/core';
 import { JSONLoader } from '@loaders.gl/json';
 
@@ -8,7 +6,7 @@ import { JSONLoader } from '@loaders.gl/json';
 async function useMetadata() {
 
     const host = process.env.NEXT_PUBLIC_LOG_HOST;
-    const metaUrl = new URL(LOG_BASE_PATH + "/meta.json", host).href;
+    const metaUrl = new URL(process.env.NEXT_PUBLIC_DEFAULT_LOG_BASE_PATH + "/meta.json", host).href;
     const metaData = await load(metaUrl, JSONLoader);
 
     const [mapdata, setMapdata] = useState(metaData);

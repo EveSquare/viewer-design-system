@@ -84,7 +84,7 @@ export interface AreaInfo {
     // この地形情報を持つEntityのID
     id: number
     // この地形情報の示す種類
-    type: 'Building' | 'Road'
+    type: 'Building' | 'Road' | 'Refuge' | 'GasStation'
     // 地図上でのX座標
     x: number
     // 地図上でのY座標
@@ -210,5 +210,8 @@ export interface IconMapping {
 }
 
 export interface FillColor {
-    Building: number[]; Refuge: number[]; GasStation: number[];
+    Building: number[];
+    Refuge: number[];
+    Road: number[];
+    GasStation: number[];
 }

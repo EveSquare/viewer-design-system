@@ -1,4 +1,4 @@
-import { AGENT_COLOR, ICON_MAPPING } from "@/common/viewer/const";
+import { AGENT_COLOR, FILL_COLOR, ICON_MAPPING } from "@/common/viewer/const";
 import { MapInfo, AgentColor, IconMapping, Record } from "@/common/viewer/type";
 import { COORDINATE_SYSTEM } from "@deck.gl/core";
 import { PolygonLayer } from "@deck.gl/layers";
@@ -61,7 +61,7 @@ class RoadsLayer {
         lineWidthMinPixels: 1,
         getPolygon: (d: any) => d.contour,
         getElevation: 0,
-        getFillColor: [230, 230, 230],
+        getFillColor: FILL_COLOR.Road,
         getLineColor: [80, 80, 80],
         getLineWidth: 1,
         coordinateSystem: COORDINATE_SYSTEM.CARTESIAN,

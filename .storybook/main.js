@@ -29,6 +29,10 @@ module.exports = {
     config.externals = {
       Live2DCubismCore: 'Live2DCubismCore',
     };
+    config.resolve.fallback = {
+      path: false,
+      fs: false,
+    };
     return config;
   },
 };

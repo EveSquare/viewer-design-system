@@ -4,8 +4,10 @@ import { Center, HStack, Link, Text } from "@chakra-ui/react";
 import React from "react";
 import { Props } from './type';
 import NextLink from "next/link";
+import { useTranslation } from "next-i18next";
 
 export const LinkCard: React.FC<Props> = ({ prependIcon, title, href, ...props }) => {
+    const { t, i18n } = useTranslation();
     return (
         <>
             <NextLink href={href} passHref>
@@ -18,7 +20,7 @@ export const LinkCard: React.FC<Props> = ({ prependIcon, title, href, ...props }
                         borderWidth="1px"
                         borderRadius="lg"
                         boxShadow="md"
-                        title={`クリックすると別ページで「${title}」の詳細が表示されます`}
+                        title={t("LinkCardTitle", { title: title })}
                     >
                         <Center>
                             <HStack spacing={3}>

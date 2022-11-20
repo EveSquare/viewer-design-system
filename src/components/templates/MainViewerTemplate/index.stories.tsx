@@ -2,7 +2,7 @@ import { ComponentMeta, ComponentStory } from "@storybook/react"
 import { withDesign } from "storybook-addon-designs"
 import { MainViewerTemplate } from "./"
 import { headerInfo } from "src/factories/headerInfoFactory"
-import { sliderArgs } from "@/factories/sliderArgsFantory"
+import { sliderArgs } from "@/factories/sliderArgsFactory"
 import { Box } from "@chakra-ui/react";
 import { sideBarInfo } from "@/factories/sideBarInfoFactory"
 

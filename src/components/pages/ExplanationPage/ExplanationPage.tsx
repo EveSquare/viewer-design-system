@@ -2,35 +2,35 @@ import { HeaderBase } from "@/components/atoms/HeaderBase";
 import { IconText } from "@/components/atoms/IconText";
 import { Section } from "@/components/atoms/Section";
 import { Logo } from "@/components/organisms/Logo";
-import { Box, Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
 import React from "react";
 import { RiPoliceCarLine } from 'react-icons/ri';
-import { QuestionOutlineIcon } from '@chakra-ui/icons';
 import { Props } from './type';
-
+import { useTranslation } from "next-i18next";
 
 export const ExplanationPage: React.FC<Props> = ({ children, pageKey }) => {
+    const { t, i18n } = useTranslation();
 
     const sideBarInfo = [
         {
             key: "chapter1",
             href: "/explanation/chapter1",
-            text: "競技の説明",
+            text: t("競技の説明"),
             icon: RiPoliceCarLine,
             sections: [
                 {
                     key: 'whatistherrs',
-                    text: "はじめに１：RRSとは",
+                    text: t("はじめに１：RRSとは"),
                     href: "/explanation/chapter1/whatisrrs",
                 },
                 {
                     key: 'whatistheagent',
-                    text: "はじめに２：エージェントとは",
+                    text: t("はじめに２：エージェントとは"),
                     href: "/explanation/chapter1/whatistheagent",
                 },
                 {
                     key: 'buildings',
-                    text: "はじめに３：建物等について",
+                    text: t("はじめに３：建物等について"),
                     href: "/explanation/chapter1/buildings",
                 }
             ]

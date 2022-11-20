@@ -1,14 +1,15 @@
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
-import React, { useEffect, useState } from "react";
-import { load } from "@loaders.gl/core";
-import { JSONLoader } from "@loaders.gl/json";
-import { Props, ToolTipObject } from "../../common/viewer/type";
-import { LOG_BASE_PATH } from "../../common/viewer/const";
+import React, { useEffect, useState } from 'react';
+import { load } from '@loaders.gl/core';
+import { JSONLoader } from '@loaders.gl/json';
+import { Props, ToolTipObject } from '@/common/viewer/type';
+import { STEP_DULATION } from '@/common/viewer/const';
 import { DeckGLWrapper } from "@/components/atoms/DeckGLWrapper";
 import { ChildProps as ChildSliderArgsProps } from "@/components/organisms/SliderKit/type";
 import { OrbitView } from "@deck.gl/core";
 import DeckGL from "@deck.gl/react";
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import useAnimation from "@/hooks/useAnimation";
 import useRescueLog from "@/hooks/useRescueLog";
@@ -25,7 +26,6 @@ const MainViewer = dynamic(
 );
 
 const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
-  const stepDuration = 60;
   const maxsteps = metaData.maxTimeStep;
   const maxScore = Math.round(metaData.scores[0] * 100) / 100;
 
@@ -43,7 +43,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
 
   const { time, step, isPause, setStep, setTime, setIsPause } =
     useAnimation(maxsteps);
-  const {rescuelog, setRescuelog} = useRescueLog(rescueLogData);
+  const { rescuelog, setRescuelog } = useRescueLog(rescueLogData);
   const { score, setScore } = useScore(maxScore);
   const [isFinished, setIsFinished] = useState(false);
 
@@ -68,26 +68,23 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
       setSliderKitState({ ...sliderKitState, value: value, isPlaying: false });
       setIsPause(!false);
       setStep(value);
-      setTime(value * stepDuration);
+      setTime(value * STEP_DULATION);
     },
-    onChangeEnd: () => {},
+    onChangeEnd: () => { },
     onClickPlayButton: () => {
       setSliderKitState({
         ...sliderKitState,
         isPlaying: !sliderKitState.isPlaying,
       });
       setIsPause(sliderKitState.isPlaying);
-      if (isPause === false) {
-        setTime(step * stepDuration);
-      }
+      setTime(step * STEP_DULATION);
     },
   };
 
   const onStepUpdate = () => {
     async function fetchData() {
       const host = process.env.NEXT_PUBLIC_LOG_HOST;
-      const featch_url = new URL(LOG_BASE_PATH + `/full/${step + 1}.json`, host)
-        .href;
+      const featch_url = new URL(process.env.NEXT_PUBLIC_DEFAULT_LOG_BASE_PATH + `/full/${step + 1}.json`, host).href;
       const log = await load(featch_url, JSONLoader);
       setRescuelog(log);
     }
@@ -96,14 +93,14 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
       console.log("finished");
     } else {
       fetchData();
-    }
+    };
   };
 
   const onRescueLogUpdate = () => {
-    // agentsLayer.setRescueLog(rescuelog);
-    // buildingsLayer.setRescueLog(rescuelog);
-    // roadsLayer.setRescueLog(rescuelog);
-    // blockadesLayer.setRescueLog(rescuelog);
+    agentsLayer.setRescueLog(rescuelog);
+    buildingsLayer.setRescueLog(rescuelog);
+    roadsLayer.setRescueLog(rescuelog);
+    blockadesLayer.setRescueLog(rescuelog);
   };
 
   useEffect(() => {
@@ -129,11 +126,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
   }, [rescuelog]);
 
   return (
-    <div
-      onContextMenu={(e) => {
-        e.preventDefault();
-      }}
-    >
+    <div onContextMenu={(e) => { e.preventDefault(); }}>
       <MainViewer
         childSliderKitState={sliderArgs}
         score={score}
@@ -141,12 +134,9 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
       >
         <DeckGLWrapper>
           <DeckGL
-            controller={{ inertia: false, minRotationX: 0, dragMode: "pan" }}
+            controller={true}
             layers={layers}
-            getTooltip={({ object }: ToolTipObject) =>
-              object &&
-              `${object.type} (${object.id})\n Position: ${object.x}, ${object.y}`
-            }
+            getTooltip={({ object }: ToolTipObject) => object && `${object.type} (${object.id})\n Position: ${object.x}, ${object.y}`}
             views={new OrbitView()}
             viewState={viewState}
             onViewStateChange={({ viewState }: any) => {
@@ -163,24 +153,26 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
   );
 };
 
-export async function getStaticProps() {
+export async function getStaticProps({ locale }: any) {
   const host = process.env.NEXT_PUBLIC_LOG_HOST;
 
-  const mapUrl = new URL(LOG_BASE_PATH + "/map.json", host).href;
+  const mapUrl = new URL(process.env.NEXT_PUBLIC_DEFAULT_LOG_BASE_PATH + "/map.json", host).href;
   const mapData = await load(mapUrl, JSONLoader);
 
-  const rescueLogDataUrl = new URL(LOG_BASE_PATH + "/full/1.json", host).href;
+  const rescueLogDataUrl = new URL(process.env.NEXT_PUBLIC_DEFAULT_LOG_BASE_PATH + "/full/1.json", host).href;
   const rescueLogData = await load(rescueLogDataUrl, JSONLoader);
 
-  const metaUrl = new URL(LOG_BASE_PATH + "/meta.json", host).href;
+  const metaUrl = new URL(process.env.NEXT_PUBLIC_DEFAULT_LOG_BASE_PATH + "/meta.json", host).href;
   const metaData = await load(metaUrl, JSONLoader);
   return {
     props: {
       mapData,
       rescueLogData,
       metaData,
+      ...(await serverSideTranslations(locale, ['common']))
     },
   };
 }
+
 
 export default Viewer;
