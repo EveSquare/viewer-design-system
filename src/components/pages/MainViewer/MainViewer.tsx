@@ -65,6 +65,11 @@ export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, sco
             prependIcon: <QuestionOutlineIcon w={5} h={5} />,
             title: t('エージェントとは'),
             href: '/explanation/chapter1/whatistheagent'
+        },
+        {
+            prependIcon: <QuestionOutlineIcon w={5} h={5} />,
+            title: '操作方法',
+            href: '/explanation/howtouse',
         }
     ]
 
