@@ -3,11 +3,10 @@ import Image from "next/image";
 import { ExplanationPage } from "@/components/pages/ExplanationPage";
 import { Heading, VStack, Text } from "@chakra-ui/react";
 import { ImageCard } from "@/components/molecules/ImageCard";
-import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-export-i18n";
 
 export const UseExplainationModal: React.FC = () => {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     return (
         <>
             <Heading mb={"2rem"}>{t("説明モーダル操作")}</Heading>
@@ -33,14 +32,5 @@ const UseExplainationModalPage: NextPage = () => {
         </>
     )
 }
-
-export async function getStaticProps({ locale }: any) {
-    return {
-        props: {
-            ...(await serverSideTranslations(locale, ['common']))
-        },
-    };
-}
-
 
 export default UseExplainationModalPage;

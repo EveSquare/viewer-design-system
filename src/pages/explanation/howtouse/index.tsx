@@ -1,6 +1,5 @@
 import { ExplanationPage } from "@/components/pages/ExplanationPage";
 import type { NextPage } from "next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { UseMap } from "./map";
 import { UseSlider } from "./slider";
 import { UseToolTip } from "./tooltip";
@@ -24,14 +23,6 @@ const HowtoUse: NextPage = () => {
             </ExplanationPage>
         </>
     )
-}
-
-export async function getStaticProps({ locale }: any) {
-    return {
-        props: {
-            ...(await serverSideTranslations(locale, ['common']))
-        },
-    };
 }
 
 export default HowtoUse;

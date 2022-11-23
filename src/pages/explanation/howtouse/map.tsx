@@ -2,11 +2,10 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import { ExplanationPage } from "@/components/pages/ExplanationPage";
 import { Heading, Text, Box } from "@chakra-ui/react";
-import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-export-i18n";
 
 export const UseMap: React.FC = () => {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     return (
         <>
             <Heading mb={"2rem"}>{t("マップ操作")}</Heading>
@@ -40,14 +39,6 @@ const UseMapPage: NextPage = () => {
             </ExplanationPage>
         </>
     )
-}
-
-export async function getStaticProps({ locale }: any) {
-    return {
-        props: {
-            ...(await serverSideTranslations(locale, ['common']))
-        },
-    };
 }
 
 

@@ -1,9 +1,9 @@
 import { ImageCard } from "@/components/molecules/ImageCard";
 import { Text } from "@chakra-ui/react";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-export-i18n";
 
 export const AmbulanceExplanationComponent = () => {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     return (
         <>
             <Text mb={4}>

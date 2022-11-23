@@ -2,11 +2,10 @@ import type { NextPage } from "next";
 import { ExplanationPage } from "@/components/pages/ExplanationPage";
 import { Box, Heading, List, ListIcon, ListItem, Text } from "@chakra-ui/react";
 import { MdCheckCircle } from 'react-icons/md';
-import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-export-i18n";
 
 export const WhatIsRRS: React.FC = () => {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     return (
         <>
             <Heading mb={"2rem"}>{t("RRSとは")}</Heading>
@@ -44,14 +43,5 @@ const WhatIsRRSPage: NextPage = () => {
         </>
     )
 }
-
-export async function getStaticProps({ locale }: any) {
-    return {
-        props: {
-            ...(await serverSideTranslations(locale, ['common']))
-        },
-    };
-}
-
 
 export default WhatIsRRSPage;
