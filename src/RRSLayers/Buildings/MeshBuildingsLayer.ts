@@ -58,11 +58,12 @@ class MeshBuildingsLayer {
       this.layer = new SimpleMeshLayer({
         id: "building",
         data: buildings,
-        mesh: '/Resources/models/Lowpolybuildings.obj',
+        mesh: '/Resources/models/building.obj',
         loaders: [OBJLoader],
-        texture: '/Resources/models/Marcapiede_normal.png',
-        pickable: true,
-        getOrientation: (d: any) => [0, Math.random() * 180, 0],
+        texture: '/Resources/models/wall_2.jpg',
+        // pickable: true,
+        getScale: [2, 2, 2],
+        getOrientation: (d: any) => [0, 180, 0],
       });
 
       this.prevStep = this.rescuelog.time;
