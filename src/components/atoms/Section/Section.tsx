@@ -2,15 +2,16 @@ import { Box, Text, useColorModeValue, Link } from "@chakra-ui/react";
 import React from "react";
 import { Props } from './type';
 import NextLink from "next/link";
+import { useLanguageQuery } from 'next-export-i18n';
 
 export const Section: React.FC<Props> = ({ text, href, isSelected }) => {
 
     const themeColor = useColorModeValue("black", "white");
-
+    const [query] = useLanguageQuery();
 
     return (
         <>
-            <NextLink href={href} passHref>
+            <NextLink href={{ pathname: href, query: query }} passHref>
                 <Link textDecoration={"none"}>
                     <Box
                         as="li"

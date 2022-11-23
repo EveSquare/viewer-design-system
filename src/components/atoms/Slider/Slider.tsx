@@ -1,7 +1,7 @@
 import React from "react";
 import { Props } from './type'
 import { RiPoliceCarLine } from 'react-icons/ri';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from "next-export-i18n";
 import {
     Slider as CSlider,
     SliderTrack,
@@ -14,7 +14,7 @@ import {
 export const Slider: React.FC<Props> = ({ min, max, value, onChange, isDisabled, onChangeEnd }) => {
     const [showTooltip, setShowTooltip] = React.useState(false)
 
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     return (
         <>
             <CSlider

@@ -5,10 +5,10 @@ import { SectionBar } from "@/components/atoms/SectionBar";
 import { AgentCard } from "@/components/molecules/AgentCard";
 import { LinkCard } from "@/components/molecules/LinkCard";
 import { Props } from "./type";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-export-i18n";
 
 export const SideBar: React.FC<Props> = ({ agentDatas, linkDatas, isShowing }) => {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     return (
         <>
             <Container

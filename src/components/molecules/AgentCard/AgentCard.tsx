@@ -3,10 +3,10 @@ import { Card } from "@/components/atoms/Card";
 import { Box, Heading, Text } from "@chakra-ui/react";
 import React from "react";
 import { Props } from "./type"
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-export-i18n";
 
 export const AgentCard: React.FC<Props> = (props) => {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     return (
         <>
             <Card

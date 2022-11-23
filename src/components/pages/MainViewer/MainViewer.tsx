@@ -13,11 +13,11 @@ import { CivilianExplanationComponent } from "@/factories/civilianExplanationCom
 import { AmbulanceExplanationComponent } from "@/factories/ambulanceExplanationComponent";
 import { FireExplanationComponent } from "@/factories/fireExplanationComponent";
 import { PoliceExplanationComponent } from "@/factories/policeExplanationComponent";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-export-i18n";
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
 
 export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, score, maxScore }) => {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     const [generalSettingState, setGeneralSettingState] = React.useState(generalSettingStateInitial);
     const [modalVisibilityState, setModalVisibilityState] = React.useState({
@@ -68,7 +68,7 @@ export const MainViewer: React.FC<Props> = ({ children, childSliderKitState, sco
         },
         {
             prependIcon: <QuestionOutlineIcon w={5} h={5} />,
-            title: '操作方法',
+            title: t('操作方法'),
             href: '/explanation/howtouse',
         }
     ]

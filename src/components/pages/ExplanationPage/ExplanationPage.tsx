@@ -7,10 +7,10 @@ import React from "react";
 import { RiPoliceCarLine } from 'react-icons/ri';
 import { TbHandClick } from 'react-icons/tb';
 import { Props } from './type';
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-export-i18n";
 
 export const ExplanationPage: React.FC<Props> = ({ children, pageKey }) => {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     const sideBarInfo = [
         {
@@ -20,7 +20,7 @@ export const ExplanationPage: React.FC<Props> = ({ children, pageKey }) => {
             icon: RiPoliceCarLine,
             sections: [
                 {
-                    key: 'whatistherrs',
+                    key: 'whatisrrs',
                     text: t("はじめに１：RRSとは"),
                     href: "/explanation/chapter1/whatisrrs",
                 },
