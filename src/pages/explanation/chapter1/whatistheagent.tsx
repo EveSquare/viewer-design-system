@@ -2,12 +2,11 @@ import type { NextPage } from "next";
 import { ExplanationPage } from "@/components/pages/ExplanationPage";
 import { Box, Heading, Text, VStack } from "@chakra-ui/react";
 import { ImageCard } from "@/components/molecules/ImageCard";
-import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-export-i18n";
 import Image from 'next/image'
 
 export const WhatIsTheAgent: React.FC = () => {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     return (
         <>
             <Heading mb={"2rem"}>{t("人工知能ロボット(エージェント)の紹介")}</Heading>
@@ -66,14 +65,5 @@ const WhatIsTheAgentPage: NextPage = () => {
         </>
     )
 }
-
-export async function getStaticProps({ locale }: any) {
-    return {
-        props: {
-            ...(await serverSideTranslations(locale, ['common']))
-        },
-    };
-}
-
 
 export default WhatIsTheAgentPage;

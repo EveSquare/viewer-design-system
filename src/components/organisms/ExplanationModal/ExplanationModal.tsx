@@ -2,10 +2,10 @@ import { AgentIcon } from "@/components/atoms/AgentIcon";
 import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text } from "@chakra-ui/react";
 import React from "react";
 import { Props } from './type'
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from "next-export-i18n";
 
 export const ExplanationModal: React.FC<Props> = ({ title, closeButtonText, children, isOpen, onClose, size, agentType }) => {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     return (
         <>

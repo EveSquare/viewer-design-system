@@ -6,10 +6,10 @@ import { Logo } from "@/components/organisms/Logo";
 import { HeaderBase } from "@/components/atoms/HeaderBase";
 import { Icon } from '@chakra-ui/react';
 import { MdOutlineInfo } from 'react-icons/md';
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-export-i18n";
 
 export const Header: React.FC<Props> = ({ stepCount, stepTooltip, score, maxScore, scoreTooltip, onOpenSetting, isShowing }) => {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     return (
         <>
             {isShowing == "show" ?

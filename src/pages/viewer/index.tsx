@@ -9,7 +9,6 @@ import { DeckGLWrapper } from "@/components/atoms/DeckGLWrapper";
 import { ChildProps as ChildSliderArgsProps } from "@/components/organisms/SliderKit/type";
 import { OrbitView } from "@deck.gl/core";
 import DeckGL from "@deck.gl/react";
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import useAnimation from "@/hooks/useAnimation";
 import useScore from "@/hooks/useScore";
@@ -151,7 +150,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
     );
 };
 
-export async function getStaticProps({ locale }: any) {
+export async function getStaticProps() {
     const host = process.env.NEXT_PUBLIC_LOG_HOST;
 
     const mapUrl = new URL(process.env.NEXT_PUBLIC_DEFAULT_LOG_BASE_PATH + "/map.json", host).href;
@@ -167,7 +166,6 @@ export async function getStaticProps({ locale }: any) {
             mapData,
             rescueLogData,
             metaData,
-            ...(await serverSideTranslations(locale, ['common']))
         },
     };
 }
