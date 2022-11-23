@@ -18,6 +18,7 @@ import DefaultAgentsLayer from "@/RRSLayers/Agents/DefaultAgentsLayer";
 import DefaultBuildingsLayer from "@/RRSLayers/Buildings/DefaultBuildingsLayer";
 import DefaultRoadsLayer from "@/RRSLayers/Roads/DefaultRoadsLayer";
 import DefaultBlockadesLayer from "@/RRSLayers/Blockades/DefaultBlockadesLayer";
+import MeshBuildingsLayer from "@/RRSLayers/Buildings/MeshBuildingsLayer";
 
 const MainViewer = dynamic(
     () => import("src/components/pages/MainViewer").then((cmp) => cmp.MainViewer),
@@ -46,7 +47,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
     const [isFinished, setIsFinished] = useState(false);
     const [rescuelog, setRescueLog] = useState(rescueLogData);
 
-    const buildingsLayer = new DefaultBuildingsLayer(mapData, rescuelog);
+    const buildingsLayer = new MeshBuildingsLayer(mapData, rescuelog);
     const roadsLayer = new DefaultRoadsLayer(mapData, rescuelog);
     const blockadesLayer = new DefaultBlockadesLayer(mapData, rescuelog);
     const agentsLayer = new DefaultAgentsLayer(mapData, rescuelog);
