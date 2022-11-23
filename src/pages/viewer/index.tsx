@@ -18,6 +18,7 @@ import DefaultAgentsLayer from "@/RRSLayers/Agents/DefaultAgentsLayer";
 import DefaultBuildingsLayer from "@/RRSLayers/Buildings/DefaultBuildingsLayer";
 import DefaultRoadsLayer from "@/RRSLayers/Roads/DefaultRoadsLayer";
 import DefaultBlockadesLayer from "@/RRSLayers/Blockades/DefaultBlockadesLayer";
+import parseRCRSLog from "@/lib/parseRCRSLog";
 
 const MainViewer = dynamic(
     () => import("src/components/pages/MainViewer").then((cmp) => cmp.MainViewer),
@@ -96,10 +97,10 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
     };
 
     const onRescueLogUpdate = () => {
-        agentsLayer.setRescueLog(rescuelog);
-        buildingsLayer.setRescueLog(rescuelog);
-        roadsLayer.setRescueLog(rescuelog);
-        blockadesLayer.setRescueLog(rescuelog);
+        // agentsLayer.setRescueLog(rescuelog);
+        // buildingsLayer.setRescueLog(rescuelog);
+        // roadsLayer.setRescueLog(rescuelog);
+        // blockadesLayer.setRescueLog(rescuelog);
     };
 
     useEffect(() => {
@@ -122,6 +123,18 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
     useEffect(() => {
         onRescueLogUpdate();
     }, [rescuelog]);
+
+    useEffect(() => {
+        async function fetchData() {
+            const host = process.env.NEXT_PUBLIC_LOG_HOST;
+            const featchUrl = new URL("/Resources/logs/sample-logs/1-1/" + `${step + 1}`, host).href;
+            const binary = await fetch(featchUrl);
+            const arrayBuffer = await binary.arrayBuffer();
+            const buffer = Buffer.from(arrayBuffer);
+            parseRCRSLog(buffer);
+        }
+        fetchData();
+    }, [step]);
 
     return (
         <div onContextMenu={(e) => { e.preventDefault(); }}>
