@@ -42,7 +42,7 @@ export const MainViewerTemplate: React.FC<Props> = ({ children, sideBarInfo, hea
                 >
                     <MessageArea isShowing={characterIsShowing} />
                 </Box>
-                <Box bg="bg" zIndex={3} position="absolute" bottom={0} width="100vw">
+                <Box bg="bg" zIndex={3} position="fixed" bottom={0} width="100vw">
                     <Box px={10}>
                         <SliderKit {...sliderArgs} />
                     </Box>
