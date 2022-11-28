@@ -122,6 +122,16 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
         onRescueLogUpdate();
     }, [rescuelog]);
 
+    const resetViewState = () => {
+        setViewState({
+            ...viewState,
+            target: [0, 0, 0],
+            rotationX: 30,
+            rotationOrbit: 0,
+            zoom: 0.5,
+        });
+    }
+
     return (
         <div onContextMenu={(e) => { e.preventDefault(); }}>
             <MainViewer
@@ -129,7 +139,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
                 score={score}
                 maxScore={maxScore}
             >
-                <DeckGLWrapper>
+                <DeckGLWrapper onResetAction={() => { resetViewState() }}>
                     <DeckGL
                         controller={true}
                         layers={layers}
