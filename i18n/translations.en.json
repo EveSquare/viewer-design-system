@@ -102,5 +102,7 @@
     "説明モーダル操作の説明の画像": "Explanation Modal Operation Explanation Image",
     "表示設定では、以下の項目について設定をおこなうことができます。": "In the display settings, the following items can be configured",
     "カラーモードの設定では、ダークモードとライトモードの切り替えができます。": "Color mode setting allows you to switch between dark mode and light mode.",
-    "ダークモードとライトモードの切り替えを行う動画": "The motion to switch between dark mode and light mode"
+    "ダークモードとライトモードの切り替えを行う動画": "The motion to switch between dark mode and light mode",
+    "マップを初期位置に戻す": "Restore the map to its initial position",
+    "表示をリセット": "Reset Display"
 }
