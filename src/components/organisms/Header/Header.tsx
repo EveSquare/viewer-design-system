@@ -7,6 +7,7 @@ import { HeaderBase } from "@/components/atoms/HeaderBase";
 import { Icon } from '@chakra-ui/react';
 import { MdOutlineInfo } from 'react-icons/md';
 import { useTranslation } from "next-export-i18n";
+import { isMobile } from "react-device-detect";
 
 export const Header: React.FC<Props> = ({ stepCount, stepTooltip, score, maxScore, scoreTooltip, onOpenSetting, isShowing }) => {
     const { t } = useTranslation();
@@ -14,9 +15,14 @@ export const Header: React.FC<Props> = ({ stepCount, stepTooltip, score, maxScor
         <>
             {isShowing == "show" ?
                 <HeaderBase bg="bg">
-                    <Box m={2}>
-                        <Logo />
-                    </Box>
+                    {/* モバイル端末では幅が狭いためロゴを非表示にし，SCOREをSTEPを見えるようにする */}
+                    {isMobile ?
+                        <></>
+                        :
+                        <Box m={2}>
+                            <Logo />
+                        </Box>
+                    }
                     <Box>
                         <Tooltip
                             label={stepTooltip}
