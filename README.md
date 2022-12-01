@@ -12,7 +12,6 @@ cp .env.example .env
 # .envファイルをこのように書き換えます(必要に応じて書き換えます)
 NEXT_PUBLIC_LOG_HOST=http://localhost:3000/
 NEXT_PUBLIC_DEFAULT_LOG_BASE_PATH=/Resources/logs/sample-logs/6
-DATABASE_URL="file:./dev.db"
 ```
 
 必要なパッケージをインストールします
@@ -41,6 +40,8 @@ yarn storybook
 ```
 yarn hygen
 ```
+
+## Dockerによる環境
 
 ### 起動
 ```shell
