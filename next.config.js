@@ -15,6 +15,8 @@ const nextConfig = {
     domains: ["raw.githubusercontent.com"],
     unoptimized: true
   },
+  // basePath: "/viewer",
+  // assetPrefix: "/viewer",
 }
 
 module.exports = nextConfig
