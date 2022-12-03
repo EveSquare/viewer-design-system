@@ -5,11 +5,12 @@ import { Logo } from "@/components/organisms/Logo";
 import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
 import React from "react";
 import { RiPoliceCarLine } from 'react-icons/ri';
+import { TbHandClick } from 'react-icons/tb';
 import { Props } from './type';
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-export-i18n";
 
 export const ExplanationPage: React.FC<Props> = ({ children, pageKey }) => {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     const sideBarInfo = [
         {
@@ -19,7 +20,7 @@ export const ExplanationPage: React.FC<Props> = ({ children, pageKey }) => {
             icon: RiPoliceCarLine,
             sections: [
                 {
-                    key: 'whatistherrs',
+                    key: 'whatisrrs',
                     text: t("はじめに１：RRSとは"),
                     href: "/explanation/chapter1/whatisrrs",
                 },
@@ -35,6 +36,39 @@ export const ExplanationPage: React.FC<Props> = ({ children, pageKey }) => {
                 }
             ]
         },
+        {
+            key: "howtouse",
+            href: "/explanation/howtouse",
+            text: t("操作方法"),
+            icon: TbHandClick,
+            sections: [
+                {
+                    key: 'map',
+                    text: t("マップ操作"),
+                    href: "/explanation/howtouse/map",
+                },
+                {
+                    key: 'slider',
+                    text: t("スライダー操作"),
+                    href: "/explanation/howtouse/slider",
+                },
+                {
+                    key: 'tooltip',
+                    text: t("ツールチップ操作"),
+                    href: "/explanation/howtouse/tooltip",
+                },
+                {
+                    key: 'explainationmodal',
+                    text: t("説明モーダル操作"),
+                    href: "/explanation/howtouse/explainationmodal",
+                },
+                {
+                    key: 'displaysetting',
+                    text: t("表示設定"),
+                    href: "/explanation/howtouse/displaysetting",
+                }
+            ]
+        }
         // {
         //     key: "chapter2",
         //     text: "競技の流れ",

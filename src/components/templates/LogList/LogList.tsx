@@ -4,10 +4,10 @@ import { Box, Center, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import { HeaderBase } from "@/components/atoms/HeaderBase";
 import { Logo } from "@/components/organisms/Logo";
 import { LogCard } from "@/components/molecules/LogCard";
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from "next-export-i18n";
 
 export const LogList: React.FC<Props> = ({ logSections }) => {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     return (
         <>
             <Box>

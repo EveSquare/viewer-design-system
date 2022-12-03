@@ -2,12 +2,14 @@ import React from "react";
 import { Props } from './type';
 import { Flex, Icon, Text, Link } from "@chakra-ui/react";
 import NextLink from "next/link";
+import { useLanguageQuery } from 'next-export-i18n';
 
 export const IconText: React.FC<Props> = ({ icon, text, iconSize, fontSize, textMarginLeft, href }) => {
+    const [query] = useLanguageQuery();
     return (
         <>
             {href ?
-                <NextLink href={href as string} passHref>
+                <NextLink href={{ pathname: href as string, query: query }} passHref>
                     <Link>
                         <Flex
                             alignItems="bottom"

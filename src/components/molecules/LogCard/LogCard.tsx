@@ -4,11 +4,13 @@ import { Badge, Box, Flex, Spacer, Stack, Text } from "@chakra-ui/react";
 import { ArrowForwardIcon } from '@chakra-ui/icons'
 import { Card } from "@/components/atoms/Card";
 import NextLink from "next/link";
+import { useLanguageQuery } from 'next-export-i18n';
 
 export const LogCard: React.FC<Props> = ({ title, description, url, tags }) => {
+    const [query] = useLanguageQuery();
     return (
         <>
-            <NextLink href={url}>
+            <NextLink href={{ pathname: url, query: query }}>
                 <Card
                     minW={"450px"}
                     h={"165px"}

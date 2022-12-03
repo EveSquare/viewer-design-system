@@ -12,5 +12,10 @@ export const linkDatas: Array<LinkCardProps> = [
         prependIcon: <QuestionOutlineIcon w={5} h={5} />,
         title: 'エージェントとは',
         href: '/explanation/chapter1/whatistheagent'
+    },
+    {
+        prependIcon: <QuestionOutlineIcon w={5} h={5} />,
+        title: '操作方法',
+        href: '/explanation/howtouse',
     }
 ]

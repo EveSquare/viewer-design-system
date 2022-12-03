@@ -4,13 +4,14 @@ import { Center, HStack, Link, Text } from "@chakra-ui/react";
 import React from "react";
 import { Props } from './type';
 import NextLink from "next/link";
-import { useTranslation } from "next-i18next";
+import { useTranslation, useLanguageQuery } from "next-export-i18n";
 
 export const LinkCard: React.FC<Props> = ({ prependIcon, title, href, ...props }) => {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
+    const [query] = useLanguageQuery();
     return (
         <>
-            <NextLink href={href} passHref>
+            <NextLink href={{ pathname: href, query: query }} passHref>
                 <Link
                     w="100%"
                     isExternal

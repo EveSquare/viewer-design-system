@@ -1,59 +1,39 @@
 import type { NextPage } from "next";
-import { LogList } from "@/components/templates/LogList";
-import { Props as LogCardProps } from "@/components/molecules/LogCard/type";
-import { LogSection as LogSectionProps } from "@/components/templates/LogList/type";
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { getSortedMostViewLogs } from "@/repositories/standardRepositories";
+import { useTranslation } from "next-export-i18n";
+import { Box, Grid, GridItem } from "@chakra-ui/react";
+import { HeaderBase } from "@/components/atoms/HeaderBase";
+import { Logo } from "@/components/organisms/Logo";
 
 interface Props {
-    popularLogs: LogCardProps[];
 }
 
-const Home: NextPage<Props> = ({ popularLogs }) => {
+const Home: NextPage<Props> = () => {
 
-    const { t, i18n } = useTranslation();
-
-    // 翻訳されるようにuseTranslationを使う
-    const translatedPopularLogs = popularLogs.map(log => {
-        log.title = t(log.title);
-        log.description = t(log.description);
-        log.tags = log.tags.map(tag => {
-            tag.color = "bule";
-            tag.tag.name = t(tag.tag.name);
-            return tag;
-        });
-        return log;
-    })
-
-    const logSections: Array<LogSectionProps> = [
-        { sectionName: t("人気"), logs: translatedPopularLogs }
-    ]
+    const { t } = useTranslation();
 
     return (
         <>
-            <LogList logSections={logSections} />
+            <Box>
+                <Grid
+                    templateAreas={`"header"
+                                    "main"`}
+                    gridTemplateColumns={`300px 1fr`}
+                    w={"100vw"}
+                >
+                    <GridItem area={'header'}>
+                        <HeaderBase>
+                            <Box m={2}>
+                                <Logo />
+                            </Box>
+                        </HeaderBase>
+                    </GridItem>
+                    <GridItem area={'main'}>
+
+                    </GridItem>
+                </Grid>
+            </Box>
         </>
     );
 };
-
-export async function getStaticProps({ locale }: any) {
-
-    // SerializableErrorが発生するため再度パースする
-    const popularLogs = JSON.parse(JSON.stringify(await getSortedMostViewLogs()));
-
-    // 現在の言語に対応したURLに変換
-    const transLinkedPopularLogs = popularLogs.map((log: any) => {
-        log.url = `/${locale}${log.url}`;
-        return log;
-    });
-
-    return {
-        props: {
-            popularLogs: transLinkedPopularLogs,
-            ...(await serverSideTranslations(locale, ['common']))
-        },
-    };
-}
 
 export default Home;
