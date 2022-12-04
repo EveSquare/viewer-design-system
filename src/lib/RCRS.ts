@@ -1,5 +1,10 @@
+import { LogProto, InitialConditionsLogProto } from "./proto/RCRSLogProto_pb";
+import { PropertyProto } from "./proto/RCRSProto_pb";
+import { URN_MAP } from "./RCRSURN";
+
 export class Simulation {
   worldmodels: WorldModel[] = [];
+  config: any;
   constructor() {}
   getTotalTimeSteps() {
     return Object.keys(this.worldmodels).length - 1;
@@ -18,28 +23,30 @@ export class Simulation {
     return this.worldmodels[time];
   }
 
-  processCommand(command) {
+  processCommand(command: any) {
     let time = command.getTime();
     this.getWorld(time).addCommands(command.getCommandsList());
   }
 
-  processConfig(configlog) {
+  processConfig(configlog: any) {
     this.config = configlog.getConfig().getDataMap().map_;
     //let keys = Object.keys(config);
     // get a specific value:
     //timesteps = config['kernel.timesteps'].value
   }
 
-  processInitCondition(init) {
+  processInitCondition(init: InitialConditionsLogProto) {
     let entities = init.getEntitiesList();
-    this.getWorld(0).processEntities(entities);
+    console.log("T");
+    console.log(entities);
+    // this.getWorld(0).processEntities(entities);
   }
 
-  processPerception(perception) {
+  processPerception(perception: any) {
     let time = perception.getTime();
     this.getWorld(time).addPerception(perception);
   }
-  processUpdate(update) {
+  processUpdate(update: any) {
     let time = update.getTime();
     this.getWorld(time).update(update.getChanges());
   }
@@ -51,11 +58,11 @@ export class Simulation {
 
 export class WorldModel {
   time = 0;
-  commands = [];
+  commands: any[] = [];
   changeset = null;
-  perceptions = {};
+  perceptions: { [key: string]: any } = {};
   entities: Entity[] = [];
-  entitiesByUrn = {};
+  entitiesByUrn: { [key: string]: any } = {};
 
   constructor(time: number) {
     this.time = time;
@@ -68,10 +75,10 @@ export class WorldModel {
     newWorld.refresh();
     return newWorld;
   }
-  update(changeset) {
+  update(changeset: any) {
     this.changeset = changeset;
     let changes = changeset.getChangesList();
-    changes.forEach((c) => {
+    changes.forEach((c: any) => {
       let entity = this.entities[c.getEntityid()];
       if (!entity) {
         entity = new Entity(c);
@@ -79,33 +86,33 @@ export class WorldModel {
       } else entity.update(c.getPropertiesList());
     });
     let deletedIds = changeset.getDeletesList();
-    deletedIds.forEach((id) => delete this.entities[id]);
+    deletedIds.forEach((id: any) => delete this.entities[id]);
     this.refresh();
   }
   refresh() {
     this.entitiesByUrn = {};
-    Object.keys(this.entities).forEach((eid) => {
+    Object.keys(this.entities).forEach((eid: any) => {
       let e = this.entities[eid];
       if (!this.entitiesByUrn[e.urn]) this.entitiesByUrn[e.urn] = [];
       this.entitiesByUrn[e.urn].push(e);
     });
   }
-  addCommands(commandLists) {
-    commandLists.forEach((c) => {
+  addCommands(commandLists: any) {
+    commandLists.forEach((c: any) => {
       this.commands.push(c);
       // urn = command.getUrn();
       // components = command.getComponentsMap().map_;
       // componentKeys = Object.keys(components);
     });
   }
-  processEntities(entities) {
-    entities.forEach((entityProto) => {
+  processEntities(entities: any) {
+    entities.forEach((entityProto: any) => {
       let e = new Entity(entityProto);
       this.entities[e.id] = e;
     });
     this.refresh();
   }
-  addPerception(perception) {
+  addPerception(perception: any) {
     let entityId = perception.getEntityid();
     // let Communications = perception.getCommunicationsList()
     // let changeset = perception.getVisible()
@@ -114,17 +121,20 @@ export class WorldModel {
 }
 
 export class Entity {
-  properties = {};
+  id;
+  urn;
 
-  constructor(entityProto) {
+  properties: { [key: string]: any } = {};
+
+  constructor(entityProto: any = null) {
     if (!entityProto) return;
     this.id = entityProto.getEntityid();
     this.urn = entityProto.getUrn();
     let props = entityProto.getPropertiesList();
     this.update(props);
   }
-  update(props) {
-    props.forEach((prop) => {
+  update(props: any) {
+    props.forEach((prop: any) => {
       let p = new Property(prop);
       this.properties[p.urn] = p;
     });
@@ -139,28 +149,33 @@ export class Entity {
     return newE;
   }
   toString() {
-    return `${URN.MAP[this.urn]}(${this.id})`;
+    return `${URN_MAP[this.urn]}(${this.id})`;
   }
 }
 
 export class Property {
-  constructor(propertyProto) {
+  urn;
+  isDefined;
+  value;
+  type;
+
+  constructor(propertyProto: PropertyProto) {
     this.urn = propertyProto.getUrn();
     this.isDefined = propertyProto.getDefined();
     this.value = null;
     this.type = propertyProto.getValueCase();
     switch (propertyProto.getValueCase()) {
-      case proto.PropertyProto.ValueCase.BOOLVALUE:
+      case PropertyProto.ValueCase["BOOLVALUE"]:
         this.value = propertyProto.getBoolvalue();
         break;
-      case proto.PropertyProto.ValueCase.BYTELIST:
+      case PropertyProto.ValueCase["BYTELIST"]:
         this.value = propertyProto.getBytelist();
         break;
-      case proto.PropertyProto.ValueCase.DOUBLEVALUE:
+      case PropertyProto.ValueCase["DOUBLEVALUE"]:
         this.value = propertyProto.getDoublevalue();
         break;
-      case proto.PropertyProto.ValueCase.EDGELIST:
-        this.value = propertyProto.getEdgelist().getEdgesList();
+      case PropertyProto.ValueCase["EDGELIST"]:
+        this.value = propertyProto.getEdgelist()?.getEdgesList();
         // Example Usage
         //edges.forEach(e=>{
         // 	  let startX=e.getStartx();
@@ -170,16 +185,16 @@ export class Property {
         //       let neighbour=e.getNeighbour();
         //});
         break;
-      case proto.PropertyProto.ValueCase.INTLIST:
+      case PropertyProto.ValueCase["INTLIST"]:
         this.value = propertyProto.getIntlist();
         break;
-      case proto.PropertyProto.ValueCase.INTMATRIX:
+      case PropertyProto.ValueCase["INTMATRIX"]:
         this.value = propertyProto.getIntmatrix();
         break;
-      case proto.PropertyProto.ValueCase.INTVALUE:
+      case PropertyProto.ValueCase["INTVALUE"]:
         this.value = propertyProto.getIntvalue();
         break;
-      case proto.PropertyProto.ValueCase.POINT2D:
+      case PropertyProto.ValueCase["POINT2D"]:
         this.value = propertyProto.getPoint2d();
         // Example Usage
         //let x=  value.getX();
@@ -193,7 +208,7 @@ export class Property {
   }
   toString() {
     return (
-      URN.MAP[this.urn] + ": " + (this.isDefined ? this.value : "undefined")
+      URN_MAP[this.urn] + ": " + (this.isDefined ? this.value : "undefined")
     );
   }
 }
