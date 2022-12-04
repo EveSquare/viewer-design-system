@@ -1142,6 +1142,11 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@bufbuild/protobuf@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@bufbuild/protobuf/-/protobuf-0.3.0.tgz#ef7535d4915a6fb2d96c690164d7b9c3ca761d4c"
+  integrity sha512-+s4GgUc+hW4czQVtTG8axIMNwBpaStkRoxocVgJjbn1mfIcng4csyp/arX9CP9bYZmyyCysx+S3sBqGQhMQybw==
+
 "@chakra-ui/accordion@2.0.12":
   version "2.0.12"
   resolved "https://registry.yarnpkg.com/@chakra-ui/accordion/-/accordion-2.0.12.tgz#dd260fbecb639748314f440c89052ed45006c585"
