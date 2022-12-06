@@ -1,34 +1,36 @@
-import { AreaInfo, Entity, MapInfo, Record } from "@/common/viewer/type";
+import { AreaInfo, MapInfo, Record } from "@/common/viewer/type";
 import { FillColor } from "@/common/viewer/type";
-import { BROKEN, FILL_COLOR } from "@/common/viewer/const";
+import { FILL_COLOR } from "@/common/viewer/const";
 import { COORDINATE_SYSTEM } from "@deck.gl/core";
 import { PolygonLayer } from "@deck.gl/layers";
 
 import normalizePosition from "../../lib/normalizePosition";
+import { Simulation, Entity } from "@/lib/RCRS";
 
 class BuildingsLayer {
   layer: object | null;
+  currentStep: number;
   prevStep: number;
   mapdata: MapInfo;
-  rescuelog: Record;
+  simulation: Simulation;
   FILL_COLOR: FillColor;
 
-  constructor(mapdata: MapInfo, rescuelog: Record) {
+  constructor(mapdata: MapInfo, rescuelog: Simulation) {
+    this.currentStep = 0;
     this.prevStep = 0;
     this.layer = null;
-    this.rescuelog = rescuelog;
+    this.simulation = rescuelog;
     this.mapdata = mapdata;
     this.FILL_COLOR = FILL_COLOR;
   }
 
-  setRescueLog(rescuelog: Record) {
-    this.rescuelog = rescuelog;
+  setSimulation(simulation: Simulation) {
+    this.simulation = simulation;
   }
 
-  getLayer() {
-    const currentStep = this.rescuelog.time;
-
-    if (this.layer === null || this.prevStep !== currentStep) {
+  getLayer(step: number) {
+    this.currentStep = step;
+    if (this.layer === null || step !== this.prevStep) {
       const np = new normalizePosition(this.mapdata.width, this.mapdata.height);
       const buildings = this.mapdata.entities
         .filter(
@@ -74,7 +76,7 @@ class BuildingsLayer {
         coordinateOrigin: [-122.4004935, 37.7900486, 0],
       });
 
-      this.prevStep = this.rescuelog.time;
+      this.prevStep = step;
     }
 
     return this.layer;
@@ -82,19 +84,22 @@ class BuildingsLayer {
 
   getColor(entity: AreaInfo) {
     if (entity.type === "Building") {
-      const entityDetail: Entity | undefined = this.rescuelog.world.buildings.find((v) => v.id === entity.id);
-      switch (true) {
-        case (entityDetail?.broken || 0) >= 80:
-          return BROKEN.LEVEL_1;
-        case (entityDetail?.broken || 0) >= 60:
-          return BROKEN.LEVEL_2;
-        case (entityDetail?.broken || 0) >= 40:
-          return BROKEN.LEVEL_3;
-        case (entityDetail?.broken || 0) >= 20:
-          return BROKEN.LEVEL_4;
-        case (entityDetail?.broken || 0) < 20:
-          return BROKEN.LEVEL_5;
-      }
+      const entityDetail: Entity | undefined = this.simulation.getWorld(this.currentStep).entities.find((v) => {
+        return v.id === entity.id;
+      });
+      // TODO
+      // switch (true) {
+      //   case (entityDetail?.broken || 0) >= 80:
+      //     return BROKEN.LEVEL_1;
+      //   case (entityDetail?.broken || 0) >= 60:
+      //     return BROKEN.LEVEL_2;
+      //   case (entityDetail?.broken || 0) >= 40:
+      //     return BROKEN.LEVEL_3;
+      //   case (entityDetail?.broken || 0) >= 20:
+      //     return BROKEN.LEVEL_4;
+      //   case (entityDetail?.broken || 0) < 20:
+      //     return BROKEN.LEVEL_5;
+      // }
     }
     return this.FILL_COLOR[entity.type];
   }
