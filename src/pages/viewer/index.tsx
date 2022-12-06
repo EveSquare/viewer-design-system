@@ -88,8 +88,10 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
         host
       ).href;
 
-      //TODO: fetchUrlからログをフェッチする
-      const log = null;
+      //TODO: 0が0ステップ目のログではないのでバグってる（0はConfigのログ入ってる）
+      const log = await fetch(fetchUrl).then(res => res.arrayBuffer()).then(buf => {
+        return new Uint8Array(buf);
+      });
       simulation.process(log);
     }
     if (step === maxsteps - 1) {
