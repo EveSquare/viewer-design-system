@@ -4,7 +4,7 @@ import { BROKEN, FILL_COLOR } from "@/common/viewer/const";
 import { COORDINATE_SYSTEM } from "@deck.gl/core";
 import { PolygonLayer } from "@deck.gl/layers";
 
-import normalizePosition from "../../lib/normalizePosition";
+import normalizePosition from "@/lib/normalizePosition";
 import { Simulation, Entity } from "@/lib/RCRS";
 import { URN_MAP } from "@/lib/RCRSURN";
 import { EdgeProto } from "@/lib/proto/RCRSProto_pb";
@@ -15,23 +15,17 @@ class BuildingsLayer {
   currentStep: number;
   prevStep: number;
   mapdata: MapInfo;
-  simulation: Simulation;
   FILL_COLOR: FillColor;
 
-  constructor(mapdata: MapInfo, rescuelog: Simulation) {
+  constructor(mapdata: MapInfo) {
     this.currentStep = 0;
     this.prevStep = 0;
     this.layer = null;
-    this.simulation = rescuelog;
     this.mapdata = mapdata;
     this.FILL_COLOR = FILL_COLOR;
   }
 
-  setSimulation(simulation: Simulation) {
-    this.simulation = simulation;
-  }
-
-  getLayer(step: number) {
+  getLayer(step: number, simulation: Simulation) {
     this.currentStep = step;
 
     if (this.layer === null || this.currentStep !== this.prevStep) {
@@ -39,7 +33,7 @@ class BuildingsLayer {
       const np = new normalizePosition(this.mapdata.width, this.mapdata.height);
 
       const buildingURN = URN_MAP["BUILDING"];
-      const entities = this.simulation.getWorld(this.currentStep).entities;
+      const entities = simulation.getWorld(this.currentStep).entities;
 
       const buildings = entities
         .filter((entitity) => {

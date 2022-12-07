@@ -27,11 +27,7 @@ class RoadsLayer {
     this.ICON_MAPPING = ICON_MAPPING;
   }
 
-  setSimulation(simulation: Simulation) {
-    this.simulation = simulation;
-  }
-
-  getLayer(step: number) {
+  getLayer(step: number, simulation: Simulation) {
     this.currentStep = step;
 
     if (this.layer === null || this.prevStep !== this.currentStep) {
@@ -39,7 +35,7 @@ class RoadsLayer {
       const np = new normalizePosition(this.mapdata.width, this.mapdata.height);
 
       const roadURN = URN_MAP["ROAD"];
-      const entities = this.simulation.getWorld(this.currentStep).entities;
+      const entities = simulation.getWorld(this.currentStep).entities;
 
       const roads = entities
         .filter((entity) => {
