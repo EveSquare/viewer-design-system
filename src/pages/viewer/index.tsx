@@ -18,6 +18,7 @@ import DefaultBuildingsLayer from "@/RRSLayers/Buildings/DefaultBuildingsLayer";
 import DefaultRoadsLayer from "@/RRSLayers/Roads/DefaultRoadsLayer";
 import DefaultBlockadesLayer from "@/RRSLayers/Blockades/DefaultBlockadesLayer";
 import { Simulation } from "@/lib/RCRS";
+import BuildingsLayer from "@/RRSLayers/Buildings/DefaultBuildingsLayer";
 
 const MainViewer = dynamic(
   () => import("src/components/pages/MainViewer").then((cmp) => cmp.MainViewer),
@@ -46,7 +47,9 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
   const [isFinished, setIsFinished] = useState(false);
   const [simulation, setSimulation] = useState(new Simulation());
 
-  const buildingsLayer = new DefaultBuildingsLayer(mapData, simulation);
+  const [buildingsLayer, setBuildingsLayer] = useState(
+    new DefaultBuildingsLayer(mapData, simulation)
+  );
   // const roadsLayer = new DefaultRoadsLayer(mapData, simulation);
   // const blockadesLayer = new DefaultBlockadesLayer(mapData, simulation);
   // const agentsLayer = new DefaultAgentsLayer(mapData, simulation);
@@ -89,9 +92,11 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
       ).href;
 
       //TODO: 0が0ステップ目のログではないのでバグってる（0はConfigのログ入ってる）
-      const log = await fetch(fetchUrl).then(res => res.arrayBuffer()).then(buf => {
-        return new Uint8Array(buf);
-      });
+      const log = await fetch(fetchUrl)
+        .then((res) => res.arrayBuffer())
+        .then((buf) => {
+          return new Uint8Array(buf);
+        });
       simulation.process(log);
     }
     if (step === maxsteps - 1) {
@@ -118,10 +123,10 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
   useEffect(() => {
     if (time % (STEP_DULATION / 10) === 0) {
       setLayers([
-        // buildingsLayer.getLayer(),
-        // roadsLayer.getLayer(),
-        // blockadesLayer.getLayer(),
-        // agentsLayer.getLayer(time),
+          buildingsLayer.getLayer(step),
+        //   roadsLayer.getLayer(),
+        //   blockadesLayer.getLayer(),
+        //   agentsLayer.getLayer(time),
       ]);
     }
   }, [time]);

@@ -1,11 +1,14 @@
 import { AreaInfo, MapInfo, Record } from "@/common/viewer/type";
 import { FillColor } from "@/common/viewer/type";
-import { FILL_COLOR } from "@/common/viewer/const";
+import { BROKEN, FILL_COLOR } from "@/common/viewer/const";
 import { COORDINATE_SYSTEM } from "@deck.gl/core";
 import { PolygonLayer } from "@deck.gl/layers";
 
 import normalizePosition from "../../lib/normalizePosition";
 import { Simulation, Entity } from "@/lib/RCRS";
+import { URN_MAP } from "@/lib/RCRSURN";
+import { EdgeProto } from "@/lib/proto/RCRSProto_pb";
+import { cookieStorageManager } from "@chakra-ui/react";
 
 class BuildingsLayer {
   layer: object | null;
@@ -30,32 +33,45 @@ class BuildingsLayer {
 
   getLayer(step: number) {
     this.currentStep = step;
-    if (this.layer === null || step !== this.prevStep) {
+
+    if (this.layer === null || this.currentStep !== this.prevStep) {
+      console.time("Buildings");
       const np = new normalizePosition(this.mapdata.width, this.mapdata.height);
-      const buildings = this.mapdata.entities
-        .filter(
-          (v: any) =>
-            v.type === "Building" ||
-            v.type === "Refuge" ||
-            v.type === "GasStation"
-        )
-        .map((v: AreaInfo) => {
-          let d = v.edges.map((vv: any) => [
-            np.getX(vv.start.x),
-            np.getY(vv.start.y),
-            0,
-          ]);
-          d.push([np.getX(v.edges[0].start.x), np.getY(v.edges[0].start.y), 0]); // push first vertex
-          return {
-            type: v.type,
-            id: v.id,
-            x: v.x,
-            y: v.y,
-            contour: d,
-            color: this.getColor(v),
-            elevation:
-              v.type === "Refuge" ? 1 : Math.floor((v.id % 10) * 0.6) + 3,
-          };
+
+      const buildingURN = URN_MAP["BUILDING"];
+      const entities = this.simulation.getWorld(this.currentStep).entities;
+
+      const buildings = entities
+        .filter((entitity) => {
+          return entitity.urn !== null && entitity.urn === buildingURN;
+        })
+        .map((buildingEntity) => {
+          let edgesProps = buildingEntity.properties[URN_MAP["EDGES"]];
+          let contour = [];
+          if (edgesProps.isDefined) {
+            contour = edgesProps.value.value.edges.map((vv: EdgeProto) => {
+              return [np.getX(vv.startX), np.getY(vv.startY), 0];
+            });
+            contour.push([
+              np.getX(edgesProps.value.value.edges[0].startX),
+              np.getY(edgesProps.value.value.edges[0].startY),
+              0,
+            ]); // push first vertex
+
+            if (!buildingEntity.urn || !buildingEntity.id) {
+              return;
+            }
+
+            return {
+              type: URN_MAP[buildingEntity.urn],
+              id: buildingEntity.id,
+              x: buildingEntity.properties[URN_MAP["X"]].value.value,
+              y: buildingEntity.properties[URN_MAP["Y"]].value.value,
+              contour: contour,
+              color: this.getColor(buildingEntity),
+              elevation: Math.floor((buildingEntity.id % 10) * 0.6) + 3,
+            };
+          }
         });
 
       this.layer = new PolygonLayer({
@@ -76,32 +92,35 @@ class BuildingsLayer {
         coordinateOrigin: [-122.4004935, 37.7900486, 0],
       });
 
-      this.prevStep = step;
+      this.prevStep = this.currentStep;
+
+      console.timeEnd("Buildings");
     }
 
     return this.layer;
   }
 
-  getColor(entity: AreaInfo) {
-    if (entity.type === "Building") {
-      const entityDetail: Entity | undefined = this.simulation.getWorld(this.currentStep).entities.find((v) => {
-        return v.id === entity.id;
-      });
-      // TODO
-      // switch (true) {
-      //   case (entityDetail?.broken || 0) >= 80:
-      //     return BROKEN.LEVEL_1;
-      //   case (entityDetail?.broken || 0) >= 60:
-      //     return BROKEN.LEVEL_2;
-      //   case (entityDetail?.broken || 0) >= 40:
-      //     return BROKEN.LEVEL_3;
-      //   case (entityDetail?.broken || 0) >= 20:
-      //     return BROKEN.LEVEL_4;
-      //   case (entityDetail?.broken || 0) < 20:
-      //     return BROKEN.LEVEL_5;
-      // }
+  getColor(entity: Entity) {
+    // const entityDetail: Entity | undefined = this.simulation.getWorld(this.currentStep).entities.find((v) => {
+    //   return v.id === entity.id;
+    // });
+    const brokenness = entity.properties[URN_MAP["BROKENNESS"]].value.value;
+    console.log(brokenness);
+    if (typeof brokenness === "undefined") {
+      return;
     }
-    return this.FILL_COLOR[entity.type];
+    switch (true) {
+      case brokenness >= 80:
+        return BROKEN.LEVEL_1;
+      case brokenness >= 60:
+        return BROKEN.LEVEL_2;
+      case brokenness >= 40:
+        return BROKEN.LEVEL_3;
+      case brokenness >= 20:
+        return BROKEN.LEVEL_4;
+      default:
+        return BROKEN.LEVEL_5;
+    }
   }
 }
 export default BuildingsLayer;

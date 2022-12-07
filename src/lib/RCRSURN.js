@@ -146,5 +146,11 @@ export const URN_MAP = Object.assign(
   ...Object.keys(URN.ControlMSG).map((p) => ({ [URN.ControlMSG[p]]: p })),
   ...Object.keys(URN.ComponentControlMSG).map((p) => ({
     [URN.ComponentControlMSG[p]]: p,
-  }))
+  })),
+  ...Object.keys(URN.Entity).map((p) => ({ [p]: URN.Entity[p]})),
+  ...Object.keys(URN.Property).map((p) => ({ [p]: URN.Property[p]})),
+  ...Object.keys(URN.Command).map((p) => ({ [p]: URN.Command[p]})),
+  ...Object.keys(URN.ComponentCommand).map((p) => ({ [p]: URN.ComponentCommand[p]})),
+  ...Object.keys(URN.ControlMSG).map((p) => ({ [p]: URN.ControlMSG[p]})),
+  ...Object.keys(URN.ComponentControlMSG).map((p) => ({ [p]: URN.ComponentControlMSG[p]})),
 );

@@ -86,6 +86,7 @@ export class Simulation {
 
   processInitCondition(init: InitialConditionsLogProto) {
     let entities = init.entities;
+    console.log("init entities list size: ", entities.length);
     this.getWorld(0).processEntities(entities);
   }
 
@@ -124,23 +125,36 @@ export class WorldModel {
     this.changeset = changeset;
     let changes = changeset.changes;
     changes.forEach((c) => {
-      let entity = this.entities[c.entityID];
+      let entity = this.entities.find((v) => {
+        return v.id === c.entityID;
+      });
       if (!entity) {
         entity = new Entity(c);
         if (entity.id !== null) {
-          this.entities[entity.id] = entity;
+          this.entities.push(entity);
         }
-      } else entity.update(c.properties);
+      } else {
+        entity.update(c.properties);
+      }
     });
+
+    //delete deleted entities from entity list
     let deletedIds = changeset.deletes;
-    deletedIds.forEach((id: any) => delete this.entities[id]);
+    this.entities = this.entities.filter((v) => {
+      if (v.id !== null) {
+        return !deletedIds.includes(v.id);
+      }
+    });
+
     this.refresh();
   }
   refresh() {
     this.entitiesByUrn = {};
     Object.keys(this.entities).forEach((eid: any) => {
-      let e = this.entities[eid];
-      if (e.urn === null) {
+      let e = this.entities.find((v) => {
+        return v.id === eid;
+      });
+      if (!e || e.urn === null) {
         return;
       }
       if (!this.entitiesByUrn[e.urn]) {
@@ -158,10 +172,10 @@ export class WorldModel {
     });
   }
   processEntities(entities: EntityProto[]) {
-    entities.forEach((entityProto) => {
-      let e = new Entity(entityProto);
+    entities.forEach((entities) => {
+      let e = new Entity(entities);
       if (e.id !== null) {
-        this.entities[e.id] = e;
+        this.entities.push(e);
       }
     });
     this.refresh();
