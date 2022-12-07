@@ -121,29 +121,28 @@ export class WorldModel {
     newWorld.refresh();
     return newWorld;
   }
-update(changeset: ChangeSetProto) {
+  update(changeset: ChangeSetProto) {
     this.changeset = changeset;
     let changes = changeset.changes;
-    changes.forEach((c) => {
-      let entity = this.entities.find((v) => {
-        return v.id === c.entityID;
-      });
-      if (!entity) {
-        entity = new Entity(c);
-        if (entity.id !== null) {
-          this.entities.push(entity);
-        }
-      } else {
-        entity.update(c.properties);
-      }
-    });
 
-    //delete deleted entities from entity list
-    let deletedIds = changeset.deletes;
-    this.entities = this.entities.filter((v) => {
-      if (v.id !== null) {
-        return !deletedIds.includes(v.id);
+    changes.forEach((changedEntity) => {
+      //upsert changed entites
+      const idx = this.entities.findIndex((e) => {
+        e.id === changedEntity.entityID;
+      });
+      if (idx > -1) {
+        this.entities[idx].update(changedEntity.properties);
+      } else {
+        this.entities.push(new Entity(changedEntity));
       }
+
+      //delete deleted entities from entity list
+      let deletedIds = changeset.deletes;
+      this.entities = this.entities.filter((v) => {
+        if (v.id !== null) {
+          return !deletedIds.includes(v.id);
+        }
+      });
     });
 
     this.refresh();
