@@ -53,8 +53,9 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
   const [roadsLayer, setRoadsLayer] = useState(
     new DefaultRoadsLayer(mapData, simulation)
   );
-  // const roadsLayer = new DefaultRoadsLayer(mapData, simulation);
-  // const blockadesLayer = new DefaultBlockadesLayer(mapData, simulation);
+  const [blockadesLayer, setBlockadesLayer] = useState(
+    new DefaultBlockadesLayer(mapData, simulation)
+  );
   // const agentsLayer = new DefaultAgentsLayer(mapData, simulation);
 
   const [sliderKitState, setSliderKitState] = React.useState({
@@ -90,7 +91,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
     async function fetchData() {
       const host = process.env.NEXT_PUBLIC_LOG_HOST;
       const fetchUrl = new URL(
-        `/Resources/logs/sample-logs/1-1/${step + 1}`,
+        `/Resources/logs/sample-logs/1-2/${step + 1}`,
         host
       ).href;
 
@@ -110,13 +111,6 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
     }
   };
 
-  const onSimulationUpdate = () => {
-    // agentsLayer.setRescueLog(rescuelog);
-    buildingsLayer.setSimulation(simulation);
-    roadsLayer.setSimulation(simulation);
-    // blockadesLayer.setRescueLog(rescuelog);
-  };
-
   useEffect(() => {
     onStepUpdate();
     setSliderKitState({ ...sliderKitState, value: step });
@@ -126,17 +120,13 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
   useEffect(() => {
     if (time % (STEP_DULATION / 10) === 0) {
       setLayers([
-        buildingsLayer.getLayer(step),
-        roadsLayer.getLayer(step),
-        //   blockadesLayer.getLayer(),
+        buildingsLayer.getLayer(step, simulation),
+        roadsLayer.getLayer(step, simulation),
+        blockadesLayer.getLayer(step, simulation),
         //   agentsLayer.getLayer(time),
       ]);
     }
   }, [time]);
-
-  useEffect(() => {
-    onSimulationUpdate();
-  }, [simulation]);
 
   const resetViewState = () => {
     setViewState({
