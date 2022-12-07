@@ -9,24 +9,18 @@ import { URN_MAP } from "@/lib/RCRSURN";
 
 class AgentsLayer {
   mapdata: MapInfo;
-  simulation: Simulation;
   AGENT_COLOR: AgentColor;
   ICON_MAPPING: IconMapping;
   prevPos: Point[];
 
-  constructor(mapdata: MapInfo, simulation: Simulation) {
-    this.simulation = simulation;
+  constructor(mapdata: MapInfo) {
     this.mapdata = mapdata;
     this.AGENT_COLOR = AGENT_COLOR;
     this.ICON_MAPPING = ICON_MAPPING;
     this.prevPos = [];
   }
 
-  setSimulation(simulation: Simulation) {
-    this.simulation = simulation;
-  }
-
-  getLayer(step: number, time: number) {
+  getLayer(step: number, time: number, simulation: Simulation) {
     const np = new normalizePosition(this.mapdata.width, this.mapdata.height);
 
     const urnList = [
@@ -35,7 +29,7 @@ class AgentsLayer {
       URN_MAP["AMBULANCE_TEAM"],
       URN_MAP["POLICE_FORCE"],
     ];
-    const agents = this.simulation
+    const agents = simulation
       .getWorld(step)
       .entities.filter((entity) => {
         return urnList.includes(entity.urn);

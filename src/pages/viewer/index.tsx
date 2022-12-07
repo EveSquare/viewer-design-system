@@ -48,15 +48,14 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
   const [simulation, setSimulation] = useState(new Simulation());
 
   const [buildingsLayer, setBuildingsLayer] = useState(
-    new DefaultBuildingsLayer(mapData, simulation)
+    new DefaultBuildingsLayer(mapData)
   );
-  const [roadsLayer, setRoadsLayer] = useState(
-    new DefaultRoadsLayer(mapData, simulation)
-  );
-  // const roadsLayer = new DefaultRoadsLayer(mapData, simulation);
-  // const blockadesLayer = new DefaultBlockadesLayer(mapData, simulation);
+  const [roadsLayer, setRoadsLayer] = useState(new DefaultRoadsLayer(mapData));
   const [agentsLayer, setAgentsLayer] = useState(
-    new DefaultAgentsLayer(mapData, simulation)
+    new DefaultAgentsLayer(mapData)
+  );
+  const [blockadesLayer, setBlockadesLayer] = useState(
+    new DefaultBlockadesLayer(mapData)
   );
 
   const [sliderKitState, setSliderKitState] = React.useState({
@@ -77,7 +76,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
       setStep(value);
       setTime(value * STEP_DULATION);
     },
-    onChangeEnd: () => { },
+    onChangeEnd: () => {},
     onClickPlayButton: () => {
       setSliderKitState({
         ...sliderKitState,
@@ -92,7 +91,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
     async function fetchData() {
       const host = process.env.NEXT_PUBLIC_LOG_HOST;
       const fetchUrl = new URL(
-        `/Resources/logs/sample-logs/1-1/${step + 1}`,
+        `/Resources/logs/sample-logs/1-2/${step + 1}`,
         host
       ).href;
 
@@ -112,13 +111,6 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
     }
   };
 
-  const onSimulationUpdate = () => {
-    agentsLayer.setSimulation(simulation);
-    buildingsLayer.setSimulation(simulation);
-    roadsLayer.setSimulation(simulation);
-    // blockadesLayer.setRescueLog(rescuelog);
-  };
-
   useEffect(() => {
     onStepUpdate();
     setSliderKitState({ ...sliderKitState, value: step });
@@ -128,17 +120,13 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
   useEffect(() => {
     if (time % (STEP_DULATION / 10) === 0) {
       setLayers([
-        buildingsLayer.getLayer(step),
-        roadsLayer.getLayer(step),
-        //   blockadesLayer.getLayer(),
-        agentsLayer.getLayer(step, time),
+        buildingsLayer.getLayer(step, simulation),
+        roadsLayer.getLayer(step, simulation),
+        blockadesLayer.getLayer(step, simulation),
+        agentsLayer.getLayer(step, time, simulation),
       ]);
     }
   }, [time]);
-
-  useEffect(() => {
-    onSimulationUpdate();
-  }, [simulation]);
 
   const resetViewState = () => {
     setViewState({

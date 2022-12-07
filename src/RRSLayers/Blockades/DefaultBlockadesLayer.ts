@@ -1,3 +1,5 @@
+import { URN_MAP } from '@/lib/RCRSURN';
+import { Simulation } from './../../lib/RCRS';
 import { COORDINATE_SYSTEM } from "@deck.gl/core";
 import { PolygonLayer } from "@deck.gl/layers";
 
@@ -7,30 +9,33 @@ import { MapInfo, Record } from "../../common/viewer/type";
 class BlockadesLayer {
   layer: object | null;
   prevStep: number;
+  currentStep: number;
   mapdata: MapInfo;
-  rescuelog: Record;
 
-  constructor(mapdata: MapInfo, rescuelog: Record) {
+  constructor(mapdata: MapInfo) {
     this.prevStep = 0;
+    this.currentStep = 0;
     this.layer = null;
-    this.rescuelog = rescuelog;
     this.mapdata = mapdata;
   }
 
-  setRescueLog(rescuelog: Record) {
-    this.rescuelog = rescuelog;
-  }
+  getLayer(step: number, simulation: Simulation) {
+    this.currentStep = step;
 
-  getLayer() {
-    const currentStep = this.rescuelog.time;
-
-    if (this.layer === null || this.prevStep !== currentStep) {
+    if (this.layer === null || this.prevStep !== this.currentStep) {
+      console.time("Blockades");
       const np = new normalizePosition(this.mapdata.width, this.mapdata.height);
-      const blockades = this.rescuelog.world.blockades
-        .filter((v: any) => {
-          return v.deleted !== true;
+
+      const blockadeURN = URN_MAP["BLOCKADE"];
+      const entities = simulation.getWorld(this.currentStep).entities;
+
+      const blockades = entities
+        .filter((entity) => {
+          return entity.urn !== null && entity.urn === blockadeURN;
         })
         .map((v: any) => {
+          //
+          let coutour = [];
           let d = v.apexes.map((vv: any) => [np.getX(vv.x), np.getY(vv.y), 0]);
           d.push([np.getX(v.apexes[0].x), np.getY(v.apexes[0].y), 0]); // push first vertex
           return {
@@ -60,7 +65,9 @@ class BlockadesLayer {
         coordinateSystem: COORDINATE_SYSTEM.CARTESIAN,
         coordinateOrigin: [-122.4004935, 37.7900486, 0],
       });
-      this.prevStep = this.rescuelog.time;
+      this.prevStep = this.currentStep;
+
+      console.timeEnd("Blockades");
     }
 
     return this.layer;
