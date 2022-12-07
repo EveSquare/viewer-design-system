@@ -55,7 +55,9 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
   );
   // const roadsLayer = new DefaultRoadsLayer(mapData, simulation);
   // const blockadesLayer = new DefaultBlockadesLayer(mapData, simulation);
-  // const agentsLayer = new DefaultAgentsLayer(mapData, simulation);
+  const [agentsLayer, setAgentsLayer] = useState(
+    new DefaultAgentsLayer(mapData, simulation)
+  );
 
   const [sliderKitState, setSliderKitState] = React.useState({
     isPlaying: true,
@@ -111,7 +113,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
   };
 
   const onSimulationUpdate = () => {
-    // agentsLayer.setRescueLog(rescuelog);
+    agentsLayer.setSimulation(simulation);
     buildingsLayer.setSimulation(simulation);
     roadsLayer.setSimulation(simulation);
     // blockadesLayer.setRescueLog(rescuelog);
@@ -129,7 +131,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
         buildingsLayer.getLayer(step),
         roadsLayer.getLayer(step),
         //   blockadesLayer.getLayer(),
-        //   agentsLayer.getLayer(time),
+        agentsLayer.getLayer(step, time),
       ]);
     }
   }, [time]);

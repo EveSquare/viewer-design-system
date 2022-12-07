@@ -38,12 +38,19 @@ class BuildingsLayer {
       console.time("Buildings");
       const np = new normalizePosition(this.mapdata.width, this.mapdata.height);
 
-      const buildingURN = URN_MAP["BUILDING"];
+      const buildingURN = [
+        URN_MAP["BUILDING"],
+        URN_MAP["REFUGE"],
+        URN_MAP["GAS_STATION"],
+        URN_MAP["FIRE_STATION"],
+        URN_MAP["AMBULANCE_CENTRE"],
+        URN_MAP["POLICE_OFFICE"],
+      ];
       const entities = this.simulation.getWorld(this.currentStep).entities;
 
       const buildings = entities
-        .filter((entitity) => {
-          return entitity.urn !== null && entitity.urn === buildingURN;
+        .filter((entity) => {
+          return entity.urn !== null && buildingURN.includes(entity.urn);
         })
         .map((buildingEntity) => {
           let edgesProps = buildingEntity.properties[URN_MAP["EDGES"]];
@@ -101,11 +108,10 @@ class BuildingsLayer {
   }
 
   getColor(entity: Entity) {
-    // const entityDetail: Entity | undefined = this.simulation.getWorld(this.currentStep).entities.find((v) => {
-    //   return v.id === entity.id;
-    // });
+    if (entity.urn === URN_MAP["REFUGE"]) {
+      return [0, 255, 0]
+    }
     const brokenness = entity.properties[URN_MAP["BROKENNESS"]].value.value;
-    console.log(brokenness);
     if (typeof brokenness === "undefined") {
       return;
     }

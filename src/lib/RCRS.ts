@@ -121,7 +121,7 @@ export class WorldModel {
     newWorld.refresh();
     return newWorld;
   }
-  update(changeset: ChangeSetProto) {
+update(changeset: ChangeSetProto) {
     this.changeset = changeset;
     let changes = changeset.changes;
     changes.forEach((c) => {

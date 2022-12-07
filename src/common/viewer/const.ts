@@ -10,10 +10,10 @@ export const INITIAL_VIEW_STATE = {
 };
 
 export const AGENT_COLOR: AgentColor = {
-    "TacticsPolice": [0, 0, 255],
-    "TacticsFire": [255, 0, 0],
-    "TacticsAmbulance": [255, 255, 255],
-    "Civilian": [0, 255, 0],
+    "POLICE_FORCE": [0, 0, 255],
+    "FIRE_BRIGADE": [255, 0, 0],
+    "AMBULANCE_TEAM": [255, 255, 255],
+    "CIVILIAN": [0, 255, 0],
 }
 
 export const ICON_MAPPING: IconMapping = {
