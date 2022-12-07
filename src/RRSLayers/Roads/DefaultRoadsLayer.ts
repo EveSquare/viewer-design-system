@@ -1,53 +1,77 @@
+import { Simulation } from '@/lib/RCRS';
 import { AGENT_COLOR, FILL_COLOR, ICON_MAPPING } from "@/common/viewer/const";
 import { MapInfo, AgentColor, IconMapping, Record } from "@/common/viewer/type";
 import { COORDINATE_SYSTEM } from "@deck.gl/core";
 import { PolygonLayer } from "@deck.gl/layers";
 
 import normalizePosition from "../../lib/normalizePosition";
+import { URN_MAP } from "@/lib/RCRSURN";
+import { EdgeProto } from "@/lib/proto/RCRSProto_pb";
 
 class RoadsLayer {
   layer: object | null;
   prevStep: number;
+  currentStep: number;
   mapdata: MapInfo;
-  rescuelog: Record;
+  simulation: Simulation;
   AGENT_COLOR: AgentColor;
   ICON_MAPPING: IconMapping;
 
-  constructor(mapdata: MapInfo, rescuelog: Record) {
+  constructor(mapdata: MapInfo, simulation: Simulation) {
     this.prevStep = 0;
+    this.currentStep = 0;
     this.layer = null;
-    this.rescuelog = rescuelog;
+    this.simulation = simulation;
     this.mapdata = mapdata;
     this.AGENT_COLOR = AGENT_COLOR;
     this.ICON_MAPPING = ICON_MAPPING;
   }
 
-  setRescueLog(rescuelog: Record) {
-    this.rescuelog = rescuelog;
+  setSimulation(simulation: Simulation) {
+    this.simulation = simulation;
   }
 
-  getLayer() {
-    const currentStep = this.rescuelog.time;
+  getLayer(step: number) {
+    this.currentStep = step;
 
-    if (this.layer === null || this.prevStep !== currentStep) {
+    if (this.layer === null || this.prevStep !== this.currentStep) {
+      console.time("Roads");
       const np = new normalizePosition(this.mapdata.width, this.mapdata.height);
 
-      const roads = this.mapdata.entities
-        .filter((v) => v.type === "Road" || "Hydrant")
-        .map((v) => {
-          let d = v.edges.map((vv) => [
-            np.getX(vv.start.x),
-            np.getY(vv.start.y),
-            0,
-          ]);
-          d.push([np.getX(v.edges[0].start.x), np.getY(v.edges[0].start.y), 0]); // push first vertex
-          return {
-            type: v.type,
-            id: v.id,
-            x: v.x,
-            y: v.y,
-            contour: d,
-          };
+      const roadURN = URN_MAP["ROAD"];
+      const entities = this.simulation.getWorld(this.currentStep).entities;
+
+      const roads = entities
+        .filter((entity) => {
+          return entity.urn !== null && entity.urn === roadURN;
+        })
+        .map((roadEntity) => {
+          let edgesProps = roadEntity.properties[URN_MAP["EDGES"]];
+          let contour = [];
+
+          if (edgesProps.isDefined) {
+            contour = edgesProps.value.value.edges.map((vv: EdgeProto) => {
+              return [np.getX(vv.startX), np.getY(vv.startY), 0];
+            });
+
+            contour.push([
+              np.getX(edgesProps.value.value.edges[0].startX),
+              np.getY(edgesProps.value.value.edges[0].startY),
+              0,
+            ]);
+
+            if (!roadEntity.urn || !roadEntity.id) {
+              return;
+            }
+
+            return {
+              type: URN_MAP[roadEntity.urn],
+              id: roadEntity.id,
+              x: roadEntity.properties[URN_MAP["X"]].value.value,
+              y: roadEntity.properties[URN_MAP["Y"]].value.value,
+              contour: contour,
+            };
+          }
         });
 
       this.layer = new PolygonLayer({
@@ -68,8 +92,9 @@ class RoadsLayer {
         coordinateOrigin: [-122.4004935, 37.7900486, 0],
       });
 
-      this.prevStep = this.rescuelog.time;
+      this.prevStep = this.currentStep;
 
+      console.timeEnd("Roads");
     }
     return this.layer;
   }

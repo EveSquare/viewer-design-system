@@ -50,6 +50,9 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
   const [buildingsLayer, setBuildingsLayer] = useState(
     new DefaultBuildingsLayer(mapData, simulation)
   );
+  const [roadsLayer, setRoadsLayer] = useState(
+    new DefaultRoadsLayer(mapData, simulation)
+  );
   // const roadsLayer = new DefaultRoadsLayer(mapData, simulation);
   // const blockadesLayer = new DefaultBlockadesLayer(mapData, simulation);
   // const agentsLayer = new DefaultAgentsLayer(mapData, simulation);
@@ -72,7 +75,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
       setStep(value);
       setTime(value * STEP_DULATION);
     },
-    onChangeEnd: () => {},
+    onChangeEnd: () => { },
     onClickPlayButton: () => {
       setSliderKitState({
         ...sliderKitState,
@@ -110,7 +113,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
   const onSimulationUpdate = () => {
     // agentsLayer.setRescueLog(rescuelog);
     buildingsLayer.setSimulation(simulation);
-    // roadsLayer.setRescueLog(rescuelog);
+    roadsLayer.setSimulation(simulation);
     // blockadesLayer.setRescueLog(rescuelog);
   };
 
@@ -123,8 +126,8 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
   useEffect(() => {
     if (time % (STEP_DULATION / 10) === 0) {
       setLayers([
-          buildingsLayer.getLayer(step),
-        //   roadsLayer.getLayer(),
+        buildingsLayer.getLayer(step),
+        roadsLayer.getLayer(step),
         //   blockadesLayer.getLayer(),
         //   agentsLayer.getLayer(time),
       ]);
