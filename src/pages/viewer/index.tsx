@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
 import { load } from "@loaders.gl/core";
 import { JSONLoader } from "@loaders.gl/json";
-import { Props, ToolTipObject } from "@/common/viewer/type";
+import { LayerEntity, Props, ToolTipObject } from "@/common/viewer/type";
 import { STEP_DULATION } from "@/common/viewer/const";
 import { DeckGLWrapper } from "@/components/atoms/DeckGLWrapper";
 import { ChildProps as ChildSliderArgsProps } from "@/components/organisms/SliderKit/type";
@@ -18,7 +18,7 @@ import DefaultBuildingsLayer from "@/RRSLayers/Buildings/DefaultBuildingsLayer";
 import DefaultRoadsLayer from "@/RRSLayers/Roads/DefaultRoadsLayer";
 import DefaultBlockadesLayer from "@/RRSLayers/Blockades/DefaultBlockadesLayer";
 import { Simulation } from "@/lib/RCRS";
-import BuildingsLayer from "@/RRSLayers/Buildings/DefaultBuildingsLayer";
+import { useTranslation } from "next-export-i18n";
 
 const MainViewer = dynamic(
   () => import("src/components/pages/MainViewer").then((cmp) => cmp.MainViewer),
@@ -26,6 +26,8 @@ const MainViewer = dynamic(
 );
 
 const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
+  const { t } = useTranslation();
+
   const maxsteps = metaData.maxTimeStep;
   const maxScore = Math.round(metaData.scores[0] * 100) / 100;
 
@@ -76,7 +78,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
       setStep(value);
       setTime(value * STEP_DULATION);
     },
-    onChangeEnd: () => {},
+    onChangeEnd: () => { },
     onClickPlayButton: () => {
       setSliderKitState({
         ...sliderKitState,
@@ -138,6 +140,28 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
     });
   };
 
+  function getToolTip(object: LayerEntity) {
+    if (!object) return;
+
+    switch (object.type) {
+      case "REFUGE":
+        const bedCapacity = Array(object.bedCapacity).fill("🛏️");
+        const occupiedBeds = Array(object.occupiedBeds).fill("🛌");
+        const waitingListSize = Array(object.waitingListSize).fill("👥");
+        // const refillCapacity = Array(object.refillCapacity).fill("🚰");
+
+        const bedInfo = Object.assign(bedCapacity, occupiedBeds).join(" | ");
+        const waitingListInfo = waitingListSize.join(" | ");
+
+        return `${t("ベッド空き状況")}(${occupiedBeds.length}/${bedCapacity.length})
+                ${bedInfo}
+                ${t("待ち人数")}(${waitingListSize.length}${t("人")})
+                ${waitingListInfo}`;
+      default:
+        return `${object.type} (${object.id})\n Position: ${object.x}, ${object.y}`
+    }
+  }
+
   return (
     <div
       onContextMenu={(e) => {
@@ -157,10 +181,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
           <DeckGL
             controller={true}
             layers={layers}
-            getTooltip={({ object }: ToolTipObject) =>
-              object &&
-              `${object.type} (${object.id})\n Position: ${object.x}, ${object.y}`
-            }
+            getTooltip={({ object }: ToolTipObject) => getToolTip(object)}
             views={new OrbitView()}
             viewState={viewState}
             onViewStateChange={({ viewState }: any) => {

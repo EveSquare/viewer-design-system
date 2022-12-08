@@ -193,7 +193,7 @@ export interface Animation {
 }
 
 export interface ToolTipObject {
-    object: Entity
+    object: LayerEntity
 }
 
 
@@ -215,3 +215,32 @@ export interface FillColor {
     Road: number[];
     GasStation: number[];
 }
+
+interface BaseLayerEntity {
+    id: number;
+    type: string;
+    x: number;
+    y: number;
+}
+
+export interface LayerEntity extends BaseLayerEntity {
+    color?: number[] | string;
+    coordinates?: number[];
+    contour?: number[];
+    elevation?: number;
+    floors?: number;
+    buildingAttributes?: number;
+    fieryness?: number;
+    brokenness?: number;
+    buildingCode?: number;
+    buildingAreaGround?: number;
+    buildingAreaTotal?: number;
+    edges?: Edge[];
+    importance?: number;
+    capacity?: number;
+    bedCapacity?: number;
+    occupiedBeds?: number;
+    refillCapacity?: number;
+    waitingListSize?: number;
+}
+
