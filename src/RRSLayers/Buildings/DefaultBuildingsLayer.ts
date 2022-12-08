@@ -1,4 +1,4 @@
-import { AreaInfo, MapInfo, Record } from "@/common/viewer/type";
+import { LayerEntity, MapInfo } from "@/common/viewer/type";
 import { FillColor } from "@/common/viewer/type";
 import { BROKEN, FILL_COLOR } from "@/common/viewer/const";
 import { COORDINATE_SYSTEM } from "@deck.gl/core";
@@ -8,7 +8,6 @@ import normalizePosition from "@/lib/normalizePosition";
 import { Simulation, Entity } from "@/lib/RCRS";
 import { URN_MAP } from "@/lib/RCRSURN";
 import { EdgeProto } from "@/lib/proto/RCRSProto_pb";
-import { cookieStorageManager } from "@chakra-ui/react";
 
 class BuildingsLayer {
   layer: object | null;
@@ -63,15 +62,29 @@ class BuildingsLayer {
               return;
             }
 
-            return {
+            const buildingObject: LayerEntity = {
               type: URN_MAP[buildingEntity.urn],
               id: buildingEntity.id,
-              x: buildingEntity.properties[URN_MAP["X"]].value.value,
-              y: buildingEntity.properties[URN_MAP["Y"]].value.value,
+              x: this.getValue(buildingEntity, "X"),
+              y: this.getValue(buildingEntity, "Y"),
               contour: contour,
               color: this.getColor(buildingEntity),
               elevation: Math.floor((buildingEntity.id % 10) * 0.6) + 3,
-            };
+            }
+
+            if (buildingEntity.urn === URN_MAP["REFUGE"]) {
+              buildingObject.floors = this.getValue(buildingEntity, "FLOORS");
+              buildingObject.capacity = this.getValue(buildingEntity, "CAPACITY");
+              buildingObject.brokenness = this.getValue(buildingEntity, "BROKENNESS");
+              buildingObject.importance = this.getValue(buildingEntity, "IMPORTANCE");
+              buildingObject.capacity = this.getValue(buildingEntity, "CAPACITY");
+              buildingObject.bedCapacity = this.getValue(buildingEntity, "BED_CAPACITY");
+              buildingObject.occupiedBeds = this.getValue(buildingEntity, "OCCUPIED_BEDS");
+              buildingObject.refillCapacity = this.getValue(buildingEntity, "REFILL_CAPACITY");
+              buildingObject.waitingListSize = this.getValue(buildingEntity, "WAITING_LIST_SIZE");
+            }
+
+            return buildingObject;
           }
         });
 
@@ -121,6 +134,10 @@ class BuildingsLayer {
       default:
         return BROKEN.LEVEL_5;
     }
+  }
+
+  getValue(layerObject: Entity, urnName: string) {
+    return layerObject.properties[URN_MAP[urnName]].value.value;
   }
 }
 export default BuildingsLayer;
