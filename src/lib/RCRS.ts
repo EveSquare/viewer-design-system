@@ -201,7 +201,7 @@ export class WorldModel {
       { totalHP: 0, aliveCivilians: 0 },
     );
 
-    return aliveCivilians * Math.exp(-5 * (1 - (totalHP / (aliveCivilians * MAX))));
+    return aliveCivilians * Math.exp(-5 * (1 - (totalHP / (aliveCivilians * MAX)))) || 0;
   }
 }
 
