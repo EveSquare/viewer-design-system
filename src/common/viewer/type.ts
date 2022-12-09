@@ -242,5 +242,6 @@ export interface LayerEntity extends BaseLayerEntity {
     occupiedBeds?: number;
     refillCapacity?: number;
     waitingListSize?: number;
+    hp?: number;
 }
 

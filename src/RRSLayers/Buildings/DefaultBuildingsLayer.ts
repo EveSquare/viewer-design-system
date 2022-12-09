@@ -70,12 +70,12 @@ class BuildingsLayer {
               contour: contour,
               color: this.getColor(buildingEntity),
               elevation: Math.floor((buildingEntity.id % 10) * 0.6) + 3,
+              brokenness: this.getValue(buildingEntity, "BROKENNESS"),
             }
 
             if (buildingEntity.urn === URN_MAP["REFUGE"]) {
               buildingObject.floors = this.getValue(buildingEntity, "FLOORS");
               buildingObject.capacity = this.getValue(buildingEntity, "CAPACITY");
-              buildingObject.brokenness = this.getValue(buildingEntity, "BROKENNESS");
               buildingObject.importance = this.getValue(buildingEntity, "IMPORTANCE");
               buildingObject.capacity = this.getValue(buildingEntity, "CAPACITY");
               buildingObject.bedCapacity = this.getValue(buildingEntity, "BED_CAPACITY");
