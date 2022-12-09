@@ -47,6 +47,7 @@ class AgentsLayer {
           y: agent.properties[URN_MAP["Y"]].value.value,
           color: this.getColor(agent),
           coordinates: [np.getX(posX), np.getY(posY), 10],
+          hp: agent.properties[URN_MAP["HP"]].value.value,
         };
       });
 
