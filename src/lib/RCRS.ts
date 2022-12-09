@@ -18,7 +18,7 @@ import { URN_MAP } from "./RCRSURN";
 export class Simulation {
   worldmodels: WorldModel[] = [];
   config: any;
-  constructor() {}
+  constructor() { }
 
   getTotalTimeSteps() {
     return Object.keys(this.worldmodels).length - 1;
@@ -149,18 +149,12 @@ export class WorldModel {
   }
   refresh() {
     this.entitiesByUrn = {};
-    Object.keys(this.entities).forEach((eid: any) => {
-      let e = this.entities.find((v) => {
-        return v.id === eid;
-      });
-      if (!e || e.urn === null) {
-        return;
-      }
-      if (!this.entitiesByUrn[e.urn]) {
-        this.entitiesByUrn[e.urn] = [];
-        this.entitiesByUrn[e.urn].push(e);
-      }
-    });
+    const entitiesWithUrn = this.entities.filter((v) => v.urn !== null);
+
+    this.entitiesByUrn = entitiesWithUrn.reduce((acc: any, cur: any) => {
+      acc[cur.urn] = cur;
+      return acc;
+    }, {});
   }
   addCommands(commandLists: any) {
     commandLists.forEach((c: any) => {
