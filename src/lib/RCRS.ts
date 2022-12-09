@@ -1,3 +1,4 @@
+import { MAX } from "@/common/viewer/const";
 import {
   LogProto,
   InitialConditionsLogProto,
@@ -38,6 +39,10 @@ export class Simulation {
   }
   getConfig() {
     return this.config;
+  }
+
+  getScore(time: number) {
+    return this.worldmodels[time].getScore();
   }
 
   process(binLog: Uint8Array) {
@@ -178,6 +183,25 @@ export class WorldModel {
     // let Communications = perception.getCommunicationsList()
     // let changeset = perception.getVisible()
     this.perceptions[entityId] = perception;
+  }
+
+  getScore() {
+    const civilians = this.entities.filter((entity: Entity) => entity.urn !== null && entity.urn === URN_MAP["CIVILIAN"]);
+    const { totalHP, aliveCivilians } = civilians.reduce(
+      (acc: any, cur: Entity) => {
+        const hp = cur.properties[URN_MAP["HP"]];
+        if (hp.isDefined) {
+          acc.totalHP += hp.value.value;
+          if (hp.value.value > 0) {
+            acc.aliveCivilians += 1;
+          }
+        }
+        return acc;
+      },
+      { totalHP: 0, aliveCivilians: 0 },
+    );
+
+    return aliveCivilians * Math.exp(-5 * (1 - (totalHP / (aliveCivilians * MAX)))) || 0;
   }
 }
 
