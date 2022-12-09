@@ -116,7 +116,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
   useEffect(() => {
     onStepUpdate();
     setSliderKitState({ ...sliderKitState, value: step });
-    setScore(metaData.scores[step]);
+    setScore(simulation.getWorld(step).getScore());
   }, [step]);
 
   useEffect(() => {
