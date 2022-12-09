@@ -36,3 +36,6 @@ export const BROKEN = {
     LEVEL_4: [213, 64, 43, 200],
     LEVEL_5: [79, 20, 19, 200],
 }
+
+// スコア
+export const MAX = 10000;
