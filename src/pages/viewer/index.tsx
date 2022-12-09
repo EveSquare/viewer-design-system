@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { load } from "@loaders.gl/core";
 import { JSONLoader } from "@loaders.gl/json";
 import { LayerEntity, Props, ToolTipObject } from "@/common/viewer/type";
-import { STEP_DULATION } from "@/common/viewer/const";
+import { MAX, STEP_DULATION } from "@/common/viewer/const";
 import { DeckGLWrapper } from "@/components/atoms/DeckGLWrapper";
 import { ChildProps as ChildSliderArgsProps } from "@/components/organisms/SliderKit/type";
 import { OrbitView } from "@deck.gl/core";
@@ -157,6 +157,45 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
                 ${bedInfo}
                 ${t("待ち人数")}(${waitingListSize.length}${t("人")})
                 ${waitingListInfo}`;
+      case "CIVILIAN":
+        const getHPBar = (hp: number) => {
+          const rate = hp / MAX * 100;
+          let result = '';
+          for (let i = 0; i < 10; i++) {
+            if (rate >= (i + 1) * 10) {
+              result += "❤️";
+            } else {
+              result += "🖤";
+            }
+          }
+          return result;
+        }
+        return `${t("市民")}　${object.hp}/${MAX}
+                ${t("残りHP")}:${getHPBar(object.hp as number)}
+              `;
+      case "BUILDING":
+        const getBrokenessLevel = (object: LayerEntity) => {
+          const brokenness = object.brokenness;
+          if (typeof brokenness === "undefined") {
+            return 0;
+          }
+          switch (true) {
+            case brokenness >= 80:
+              return 1;
+            case brokenness >= 60:
+              return 2;
+            case brokenness >= 40:
+              return 3;
+            case brokenness >= 20:
+              return 4;
+            default:
+              return 5;
+          }
+        }
+        const brokenLevel = getBrokenessLevel(object);
+        return `${t("建物")}
+                ${t("倒壊度")}: ${"🏚️".repeat(brokenLevel)} ${t("レベル")}${brokenLevel}
+                `;
       default:
         return `${object.type} (${object.id})\n Position: ${object.x}, ${object.y}`
     }
