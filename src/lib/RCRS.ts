@@ -190,7 +190,7 @@ export class WorldModel {
     const { totalHP, aliveCivilians } = civilians.reduce(
       (acc: any, cur: Entity) => {
         const hp = cur.properties[URN_MAP["HP"]];
-        if (hp.isDefined) {
+        if (hp?.isDefined) {
           acc.totalHP += hp.value.value;
           if (hp.value.value > 0) {
             acc.aliveCivilians += 1;
