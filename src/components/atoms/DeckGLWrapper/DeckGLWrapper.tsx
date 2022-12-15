@@ -13,8 +13,9 @@ export const DeckGLWrapper: React.FC<Props> = ({ children, onResetAction }) => {
     return (
         <>
             <Box
-                height={"100%"}
-                width={"100%"}
+                // ヘッダとスライダー分の高さを引く
+                height={"calc(100vh - 65px - 45px)"}
+                width={"100vw"}
             >
                 <Box
                     position={"relative"}
