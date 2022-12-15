@@ -6,9 +6,10 @@ import { JSONLoader } from '@loaders.gl/json';
 import { Props, ToolTipObject } from '@/common/viewer/type';
 import { STEP_DULATION } from '@/common/viewer/const';
 import { DeckGLWrapper } from "@/components/atoms/DeckGLWrapper";
-import { ChildProps as ChildSliderArgsProps } from "@/components/organisms/SliderKit/type";
+import { Props as SliderArgsProps } from "@/components/organisms/SliderKit/type";
 import { OrbitView } from "@deck.gl/core";
 import DeckGL from "@deck.gl/react";
+import { generalSettingState as generalSettingStateInitial } from "@/factories/generalSettingStateFactory"
 
 import useAnimation from "@/hooks/useAnimation";
 import useScore from "@/hooks/useScore";
@@ -17,6 +18,11 @@ import DefaultAgentsLayer from "@/RRSLayers/Agents/DefaultAgentsLayer";
 import DefaultBuildingsLayer from "@/RRSLayers/Buildings/DefaultBuildingsLayer";
 import DefaultRoadsLayer from "@/RRSLayers/Roads/DefaultRoadsLayer";
 import DefaultBlockadesLayer from "@/RRSLayers/Blockades/DefaultBlockadesLayer";
+import { useTranslation } from "next-export-i18n";
+import { Header } from "@/components/organisms/Header";
+import { SideBar } from "@/components/organisms/SideBar";
+import { Box } from "@chakra-ui/react";
+import { SliderKit } from "@/components/organisms/SliderKit";
 
 const MainViewer = dynamic(
     () => import("src/components/pages/MainViewer").then((cmp) => cmp.MainViewer),
@@ -24,6 +30,7 @@ const MainViewer = dynamic(
 );
 
 const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
+    const { t } = useTranslation();
     const maxsteps = metaData.maxTimeStep;
     const maxScore = Math.round(metaData.scores[0] * 100) / 100;
 
@@ -57,9 +64,12 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
         max: maxsteps,
     });
 
-    const sliderArgs: ChildSliderArgsProps = {
+    const [generalSettingState, setGeneralSettingState] = React.useState(generalSettingStateInitial);
+
+    const sliderArgs: SliderArgsProps = {
         isPlaying: sliderKitState.isPlaying,
         isDisabled: sliderKitState.isDisabled,
+        isShowing: generalSettingState.sliderKitVisibility,
         value: sliderKitState.value,
         max: sliderKitState.max - 1, // +1をフェッチしているため表示上は-1する
         onChange: (value: number) => {
@@ -78,6 +88,24 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
             setTime(step * STEP_DULATION);
         },
     };
+
+    const [modalVisibilityState, setModalVisibilityState] = React.useState({
+        civilianExplanationModal: false,
+        ambulanceExplanationModal: false,
+        fireExplanationModal: false,
+        policeExplanationModal: false,
+        generalSettingModal: false,
+    });
+
+    const headerInfo: any = {
+        stepCount: sliderArgs.value,
+        stepTooltip: t('救助活動の経過時間を表します'),
+        score: score,
+        maxScore: maxScore,
+        scoreTooltip: t('市民の負傷度合いによってスコアが減算されます'),
+        isShowing: generalSettingState.headerVisibility,
+        onOpenSetting: () => { setModalVisibilityState({ ...modalVisibilityState, generalSettingModal: true }) },
+    }
 
     const onStepUpdate = () => {
         async function fetchData() {
@@ -134,28 +162,28 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
 
     return (
         <div onContextMenu={(e) => { e.preventDefault(); }}>
-            <MainViewer
-                childSliderKitState={sliderArgs}
-                score={score}
-                maxScore={maxScore}
-            >
-                <DeckGLWrapper onResetAction={() => { resetViewState() }}>
-                    <DeckGL
-                        controller={true}
-                        layers={layers}
-                        getTooltip={({ object }: ToolTipObject) => object && `${object.type} (${object.id})\n Position: ${object.x}, ${object.y}`}
-                        views={new OrbitView()}
-                        viewState={viewState}
-                        onViewStateChange={({ viewState }: any) => {
-                            // Z軸方向の操作は無効にする
-                            viewState.target = [viewState.target[0], viewState.target[1], 0];
+            <Header {...headerInfo} />
+            <DeckGLWrapper onResetAction={() => { resetViewState() }}>
+                <DeckGL
+                    controller={true}
+                    layers={layers}
+                    getTooltip={({ object }: ToolTipObject) => object && `${object.type} (${object.id})\n Position: ${object.x}, ${object.y}`}
+                    views={new OrbitView()}
+                    viewState={viewState}
+                    onViewStateChange={({ viewState }: any) => {
+                        // Z軸方向の操作は無効にする
+                        viewState.target = [viewState.target[0], viewState.target[1], 0];
 
-                            setViewState(viewState);
-                        }}
-                        onError={(e: Error) => console.error(e)}
-                    ></DeckGL>
-                </DeckGLWrapper>
-            </MainViewer>
+                        setViewState(viewState);
+                    }}
+                    onError={(e: Error) => console.error(e)}
+                ></DeckGL>
+            </DeckGLWrapper>
+            <Box bg="bg" zIndex={3} position="fixed" bottom={0} width="100vw">
+                <Box px={10}>
+                    <SliderKit {...sliderArgs} />
+                </Box>
+            </Box>
         </div>
     );
 };
