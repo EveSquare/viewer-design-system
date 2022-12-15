@@ -1,4 +1,4 @@
-import { Simulation } from '@/lib/RCRS';
+import { Simulation } from "@/lib/RCRS";
 import { AGENT_COLOR, FILL_COLOR, ICON_MAPPING } from "@/common/viewer/const";
 import { MapInfo, AgentColor, IconMapping, Record } from "@/common/viewer/type";
 import { COORDINATE_SYSTEM } from "@deck.gl/core";
@@ -26,71 +26,79 @@ class RoadsLayer {
   }
 
   getLayer(step: number, simulation: Simulation) {
-    this.currentStep = step;
+    return new Promise((resolve, reject) => {
+      (async () => {
+        this.currentStep = step;
 
-    if (this.layer === null || this.prevStep !== this.currentStep) {
-      console.time("Roads");
-      const np = new normalizePosition(this.mapdata.width, this.mapdata.height);
+        if (this.layer === null || this.prevStep !== this.currentStep) {
+          console.time("Roads");
+          const np = new normalizePosition(
+            this.mapdata.width,
+            this.mapdata.height
+          );
 
-      const roadURN = URN_MAP["ROAD"];
-      const entities = simulation.getWorld(this.currentStep).entities;
+          const roadURN = URN_MAP["ROAD"];
+          const world = await simulation.getWorld(this.currentStep);
+          const entities = world.entities;
 
-      const roads = entities
-        .filter((entity) => {
-          return entity.urn !== null && entity.urn === roadURN;
-        })
-        .map((roadEntity) => {
-          let edgesProps = roadEntity.properties[URN_MAP["EDGES"]];
-          let contour = [];
+          const roads = entities
+            .filter((entity) => {
+              return entity.urn !== null && entity.urn === roadURN;
+            })
+            .map((roadEntity) => {
+              let edgesProps = roadEntity.properties[URN_MAP["EDGES"]];
+              let contour = [];
 
-          if (edgesProps.isDefined) {
-            contour = edgesProps.value.value.edges.map((vv: EdgeProto) => {
-              return [np.getX(vv.startX), np.getY(vv.startY), 0];
+              if (edgesProps.isDefined) {
+                contour = edgesProps.value.value.edges.map((vv: EdgeProto) => {
+                  return [np.getX(vv.startX), np.getY(vv.startY), 0];
+                });
+
+                contour.push([
+                  np.getX(edgesProps.value.value.edges[0].startX),
+                  np.getY(edgesProps.value.value.edges[0].startY),
+                  0,
+                ]);
+
+                if (!roadEntity.urn || !roadEntity.id) {
+                  return;
+                }
+
+                return {
+                  type: URN_MAP[roadEntity.urn],
+                  id: roadEntity.id,
+                  x: roadEntity.properties[URN_MAP["X"]].value.value,
+                  y: roadEntity.properties[URN_MAP["Y"]].value.value,
+                  contour: contour,
+                };
+              }
             });
 
-            contour.push([
-              np.getX(edgesProps.value.value.edges[0].startX),
-              np.getY(edgesProps.value.value.edges[0].startY),
-              0,
-            ]);
+          this.layer = new PolygonLayer({
+            id: "road",
+            data: roads,
+            extruded: true,
+            pickable: true,
+            stroked: true,
+            filled: true,
+            wireframe: true,
+            lineWidthMinPixels: 1,
+            getPolygon: (d: any) => d.contour,
+            getElevation: 0,
+            getFillColor: FILL_COLOR.Road,
+            getLineColor: [80, 80, 80],
+            getLineWidth: 1,
+            coordinateSystem: COORDINATE_SYSTEM.CARTESIAN,
+            coordinateOrigin: [-122.4004935, 37.7900486, 0],
+          });
 
-            if (!roadEntity.urn || !roadEntity.id) {
-              return;
-            }
+          this.prevStep = this.currentStep;
 
-            return {
-              type: URN_MAP[roadEntity.urn],
-              id: roadEntity.id,
-              x: roadEntity.properties[URN_MAP["X"]].value.value,
-              y: roadEntity.properties[URN_MAP["Y"]].value.value,
-              contour: contour,
-            };
-          }
-        });
-
-      this.layer = new PolygonLayer({
-        id: "road",
-        data: roads,
-        extruded: true,
-        pickable: true,
-        stroked: true,
-        filled: true,
-        wireframe: true,
-        lineWidthMinPixels: 1,
-        getPolygon: (d: any) => d.contour,
-        getElevation: 0,
-        getFillColor: FILL_COLOR.Road,
-        getLineColor: [80, 80, 80],
-        getLineWidth: 1,
-        coordinateSystem: COORDINATE_SYSTEM.CARTESIAN,
-        coordinateOrigin: [-122.4004935, 37.7900486, 0],
-      });
-
-      this.prevStep = this.currentStep;
-
-      console.timeEnd("Roads");
-    }
-    return this.layer;
+          console.timeEnd("Roads");
+        }
+        resolve(this.layer);
+      })();
+    });
   }
 }
 export default RoadsLayer;

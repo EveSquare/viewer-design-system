@@ -19,23 +19,45 @@ import { URN_MAP } from "./RCRSURN";
 export class Simulation {
   worldmodels: WorldModel[] = [];
   config: any;
-  constructor() { }
+  constructor() {}
 
   getTotalTimeSteps() {
-    return Object.keys(this.worldmodels).length - 1;
-  }
-  getWorld(time: number) {
-    if (!this.worldmodels[time]) {
-      if (time == 0) this.worldmodels[time] = new WorldModel(0);
-      else if (this.worldmodels[time - 1])
-        this.worldmodels[time] = this.worldmodels[time - 1].cloneForNextCycle();
-      else {
-        alert(
-          `No information exist for cycle ${time - 1} but requested for ${time}`
-        );
-      }
+    if (typeof this.worldmodels !== "undefined") {
+      return this.worldmodels.length - 1;
     }
-    return this.worldmodels[time];
+    return -1;
+  }
+  getWorld(time: number): Promise<WorldModel> {
+    return new Promise((resolve, reject) => {
+      (async () => {
+        if (!this.worldmodels[time]) {
+          // Create New WorldModel
+          if (time == 0) {
+            this.worldmodels[time] = new WorldModel(0);
+          } else if (this.worldmodels[time - 1]) {
+            //clone
+            const prevStepClone = await this.worldmodels[
+              time - 1
+            ].cloneForNextCycle();
+
+            if (prevStepClone) {
+              this.worldmodels[time] = prevStepClone;
+            } else {
+              console.error("Clone Faild");
+              throw new Error("Clone Faild");
+            }
+          } else {
+            alert(
+              `No information exist for cycle ${
+                time - 1
+              } but requested for ${time}`
+            );
+          }
+        }
+
+        resolve(this.worldmodels[time]);
+      })();
+    });
   }
   getConfig() {
     return this.config;
@@ -45,65 +67,120 @@ export class Simulation {
     return this.worldmodels[time].getScore();
   }
 
-  process(binLog: Uint8Array) {
-    const decoded_log: LogProto = LogProto.fromBinary(new Uint8Array(binLog));
+  process(binLog: Uint8Array): Promise<void> {
+    return new Promise((resolve, reject) => {
+      (async () => {
+        const decoded_log: LogProto = LogProto.fromBinary(
+          new Uint8Array(binLog)
+        );
 
-    switch (decoded_log.log.case) {
-      case "start":
-        console.log("Start Record is Find");
-        break;
-      case "command":
-        console.log("Command Record is Find");
-        this.processCommand(decoded_log.log.value);
-        break;
-      case "config":
-        console.log("Config Record is Find");
-        this.processConfig(decoded_log.log.value);
-        break;
-      case "initialCondition":
-        console.log("Initialcondition Record is Find");
-        this.processInitCondition(decoded_log.log.value);
-        break;
-      case "update":
-        console.log("Update Record is Find");
-        this.processUpdate(decoded_log.log.value);
-        break;
-      case "perception":
-        console.log("Perception Record is Find");
-        break;
-      case "end":
-        console.log("End Record is Find");
-        break;
-    }
+        switch (decoded_log.log.case) {
+          case "start":
+            console.log("Start Record is Find");
+            resolve();
+            break;
+          case "command":
+            console.log("Command Record is Find");
+            await this.processCommand(decoded_log.log.value);
+            resolve();
+            break;
+          case "config":
+            console.log("Config Record is Find");
+            await this.processConfig(decoded_log.log.value);
+            resolve();
+            break;
+          case "initialCondition":
+            console.log("Initialcondition Record is Find");
+            await this.processInitCondition(decoded_log.log.value);
+            resolve();
+            break;
+          case "update":
+            console.log("Update Record is Find");
+            await this.processUpdate(decoded_log.log.value);
+            resolve();
+            break;
+          case "perception":
+            console.log("Perception Record is Find");
+            resolve();
+            break;
+          case "end":
+            console.log("End Record is Find");
+            resolve();
+            break;
+        }
+      })();
+    });
   }
 
   processCommand(command: CommandLogProto) {
-    let time = command.time;
-    this.getWorld(time).addCommands(command.commands);
+    return new Promise((resolve, reject) => {
+      (async () => {
+        let time = command.time;
+        const world = await this.getWorld(time);
+        if (world) {
+          world.addCommands(command.commands);
+          resolve(true);
+        } else {
+          throw new Error("ERR!");
+        }
+      })();
+    });
   }
 
-  processConfig(configlog: ConfigLogProto) {
-    this.config = configlog.config?.data;
-    //let keys = Object.keys(config);
-    // get a specific value:
-    //timesteps = config['kernel.timesteps'].value
+  async processConfig(configlog: ConfigLogProto) {
+    return new Promise((resolve, reject) => {
+      this.config = configlog.config?.data;
+      //let keys = Object.keys(config);
+      // get a specific value:
+      //timesteps = config['kernel.timesteps'].value
+      resolve(true);
+    });
   }
 
   processInitCondition(init: InitialConditionsLogProto) {
-    let entities = init.entities;
-    console.log("init entities list size: ", entities.length);
-    this.getWorld(0).processEntities(entities);
+    return new Promise((resolve, reject) => {
+      (async () => {
+        let entities = init.entities;
+        console.log("init entities list size: ", entities.length);
+        const world = await this.getWorld(0);
+        if (world) {
+          world.processEntities(entities);
+          resolve(true);
+        } else {
+          throw new Error("ERR!");
+        }
+      })();
+    });
   }
 
   processPerception(perception: PerceptionLogProto) {
-    let time = perception.time;
-    this.getWorld(time).addPerception(perception);
+    return new Promise((resolve, reject) => {
+      (async () => {
+        let time = perception.time;
+        const world = await this.getWorld(time);
+        if (world) {
+          world.addPerception(perception);
+          resolve(true);
+        } else {
+          throw new Error("ERR!");
+        }
+      })();
+    });
   }
-  processUpdate(update: UpdatesLogProto) {
-    let time = update.time;
-    if (typeof update.changes !== "undefined") {
-      this.getWorld(time).update(update.changes);
-    }
+
+  async processUpdate(update: UpdatesLogProto) {
+    return new Promise((resolve, reject) => {
+      (async () => {
+        const time = update.time;
+        const world = await this.getWorld(time);
+        if (world && typeof update.changes !== "undefined") {
+          world.update(update.changes);
+          resolve(true);
+        } else {
+          throw new Error("ERR!");
+        }
+      })();
+    });
   }
 }
 
@@ -114,26 +191,31 @@ export class WorldModel {
   perceptions: { [key: string]: any } = {};
   entities: Entity[] = [];
   entitiesByUrn: { [key: string]: any } = {};
+  isUpdated = false;
+  isCommandsSet = false;
 
   constructor(time: number) {
     this.time = time;
   }
-  cloneForNextCycle() {
-    let newWorld = new WorldModel(this.time + 1);
-    Object.keys(this.entities).forEach((eid) => {
-      newWorld.entities[Number(eid)] = this.entities[Number(eid)].clone();
+  cloneForNextCycle(): Promise<WorldModel | null> {
+    return new Promise((resolve, reject) => {
+      let newWorld = new WorldModel(this.time + 1);
+      Object.keys(this.entities).forEach((eid) => {
+        newWorld.entities[Number(eid)] = this.entities[Number(eid)].clone();
+      });
+      newWorld.refresh();
+      resolve(newWorld);
     });
-    newWorld.refresh();
-    return newWorld;
   }
   update(changeset: ChangeSetProto) {
     this.changeset = changeset;
     let changes = changeset.changes;
 
     changes.forEach((changedEntity) => {
+      const id = changedEntity.entityID;
       //upsert changed entites
       const idx = this.entities.findIndex((e) => {
-        e.id === changedEntity.entityID;
+        return e.id === id;
       });
       if (idx > -1) {
         this.entities[idx].update(changedEntity.properties);
@@ -141,13 +223,15 @@ export class WorldModel {
         this.entities.push(new Entity(changedEntity));
       }
 
-      //delete deleted entities from entity list
-      let deletedIds = changeset.deletes;
-      this.entities = this.entities.filter((v) => {
-        if (v.id !== null) {
-          return !deletedIds.includes(v.id);
-        }
-      });
+      // //delete deleted entities from entity list
+      // let deletedIds = changeset.deletes;
+      // this.entities = this.entities.filter((v) => {
+      //   if (v.id !== null) {
+      //     return !deletedIds.includes(v.id);
+      //   }
+      // });
+
+      this.isUpdated = true;
     });
 
     this.refresh();
@@ -168,6 +252,8 @@ export class WorldModel {
       // components = command.getComponentsMap().map_;
       // componentKeys = Object.keys(components);
     });
+
+    this.isCommandsSet = true;
   }
   processEntities(entities: EntityProto[]) {
     entities.forEach((entities) => {
@@ -186,7 +272,10 @@ export class WorldModel {
   }
 
   getScore() {
-    const civilians = this.entities.filter((entity: Entity) => entity.urn !== null && entity.urn === URN_MAP["CIVILIAN"]);
+    const civilians = this.entities.filter(
+      (entity: Entity) =>
+        entity.urn !== null && entity.urn === URN_MAP["CIVILIAN"]
+    );
     const { totalHP, aliveCivilians } = civilians.reduce(
       (acc: any, cur: Entity) => {
         const hp = cur.properties[URN_MAP["HP"]];
@@ -198,10 +287,13 @@ export class WorldModel {
         }
         return acc;
       },
-      { totalHP: 0, aliveCivilians: 0 },
+      { totalHP: 0, aliveCivilians: 0 }
     );
 
-    return aliveCivilians * Math.exp(-5 * (1 - (totalHP / (aliveCivilians * MAX)))) || 0;
+    return (
+      aliveCivilians * Math.exp(-5 * (1 - totalHP / (aliveCivilians * MAX))) ||
+      0
+    );
   }
 }
 

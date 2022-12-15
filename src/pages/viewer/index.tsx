@@ -19,6 +19,7 @@ import DefaultRoadsLayer from "@/RRSLayers/Roads/DefaultRoadsLayer";
 import DefaultBlockadesLayer from "@/RRSLayers/Blockades/DefaultBlockadesLayer";
 import { Simulation } from "@/lib/RCRS";
 import { useTranslation } from "next-export-i18n";
+import useLog from "@/hooks/useLog";
 
 const MainViewer = dynamic(
   () => import("src/components/pages/MainViewer").then((cmp) => cmp.MainViewer),
@@ -46,9 +47,8 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
   const { time, step, isPause, setStep, setTime, setIsPause } =
     useAnimation(maxsteps);
   const { score, setScore } = useScore(maxScore);
-  const [isFinished, setIsFinished] = useState(false);
-  const [simulation, setSimulation] = useState(new Simulation());
-
+  const { simulation, setSimulation, setLogMaxStepToLoad, isLoading } =
+    useLog();
   const [buildingsLayer, setBuildingsLayer] = useState(
     new DefaultBuildingsLayer(mapData)
   );
@@ -61,7 +61,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
   );
 
   const [sliderKitState, setSliderKitState] = React.useState({
-    isPlaying: true,
+    isPlaying: false,
     isDisabled: false,
     value: 0,
     max: maxsteps,
@@ -78,7 +78,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
       setStep(value);
       setTime(value * STEP_DULATION);
     },
-    onChangeEnd: () => { },
+    onChangeEnd: () => {},
     onClickPlayButton: () => {
       setSliderKitState({
         ...sliderKitState,
@@ -89,44 +89,44 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
     },
   };
 
-  const onStepUpdate = () => {
-    async function fetchData() {
-      const host = process.env.NEXT_PUBLIC_LOG_HOST;
-      const fetchUrl = new URL(
-        `/Resources/logs/sample-logs/1-2/${step + 1}`,
-        host
-      ).href;
-
-      //TODO: 0が0ステップ目のログではないのでバグってる（0はConfigのログ入ってる）
-      const log = await fetch(fetchUrl)
-        .then((res) => res.arrayBuffer())
-        .then((buf) => {
-          return new Uint8Array(buf);
-        });
-      simulation.process(log);
-    }
-    if (step === maxsteps - 1) {
-      setIsFinished(true);
-      console.log("finished");
-    } else {
-      fetchData();
-    }
-  };
-
   useEffect(() => {
-    onStepUpdate();
+    const processedTimeStep = simulation.getTotalTimeSteps();
+
+    // 次に読み込むステップ読み込めていなかったら再生を一時停止する
+    if (step === processedTimeStep + 1) {
+      setIsPause(true);
+    }
+
+    // ステップ数が読み込みステップより大きいときは、ステップを戻す
+    if (step > processedTimeStep + 1) {
+      setStep(step - 1);
+      setIsPause(true);
+      return;
+    }
+
+    //ログの読み込み（引数で指定したステップまで読み込む）
+    setLogMaxStepToLoad(step);
+
     setSliderKitState({ ...sliderKitState, value: step });
-    setScore(simulation.getWorld(step).getScore());
+
+    let score = 0;
+    simulation.getWorld(step).then((world) => {
+      score = world.getScore();
+      setScore(score);
+    });
   }, [step]);
 
   useEffect(() => {
     if (time % (STEP_DULATION / 10) === 0) {
-      setLayers([
-        buildingsLayer.getLayer(step, simulation),
-        roadsLayer.getLayer(step, simulation),
-        blockadesLayer.getLayer(step, simulation),
-        agentsLayer.getLayer(step, time, simulation),
-      ]);
+      (async () => {
+        let layer = [];
+        layer.push(await buildingsLayer.getLayer(step, simulation))
+        layer.push(await agentsLayer.getLayer(step, time, simulation));
+        layer.push(await roadsLayer.getLayer(step, simulation));
+        layer.push(await blockadesLayer.getLayer(step, simulation));
+
+        setLayers(layer);
+      })();
     }
   }, [time]);
 
@@ -153,14 +153,16 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
         const bedInfo = Object.assign(bedCapacity, occupiedBeds).join(" | ");
         const waitingListInfo = waitingListSize.join(" | ");
 
-        return `${t("ベッド空き状況")}(${occupiedBeds.length}/${bedCapacity.length})
+        return `${t("ベッド空き状況")}(${occupiedBeds.length}/${
+          bedCapacity.length
+        })
                 ${bedInfo}
                 ${t("待ち人数")}(${waitingListSize.length}${t("人")})
                 ${waitingListInfo}`;
       case "CIVILIAN":
         const getHPBar = (hp: number) => {
-          const rate = hp / MAX * 100;
-          let result = '';
+          const rate = (hp / MAX) * 100;
+          let result = "";
           for (let i = 0; i < 10; i++) {
             if (rate >= (i + 1) * 10) {
               result += "❤️";
@@ -169,7 +171,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
             }
           }
           return result;
-        }
+        };
         return `${t("市民")}　${object.hp}/${MAX}
                 ${t("残りHP")}:${getHPBar(object.hp as number)}
               `;
@@ -191,13 +193,15 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
             default:
               return 5;
           }
-        }
+        };
         const brokenLevel = getBrokenessLevel(object);
         return `${t("建物")}
-                ${t("倒壊度")}: ${"🏚️".repeat(brokenLevel)} ${t("レベル")}${brokenLevel}
+                ${t("倒壊度")}: ${"🏚️".repeat(brokenLevel)} ${t(
+          "レベル"
+        )}${brokenLevel}
                 `;
       default:
-        return `${object.type} (${object.id})\n Position: ${object.x}, ${object.y}`
+        return `${object.type} (${object.id})\n Position: ${object.x}, ${object.y}`;
     }
   }
 

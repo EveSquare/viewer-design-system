@@ -12,10 +12,10 @@ function useAnimation(maxsteps: number) {
   const animationSpeed = 1;
   const loopLength = STEP_DULATION * maxsteps;
 
-  const animate = useCallback(() => {
+  const animate =() => {
     setTime((t) => (t + animationSpeed) % loopLength);
     animation.id = window.requestAnimationFrame(animate);
-  }, [animation]);
+  };
 
   useEffect(() => {
     animation.id = window.requestAnimationFrame(animate);

@@ -21,84 +21,98 @@ class AgentsLayer {
   }
 
   getLayer(step: number, time: number, simulation: Simulation) {
-    const np = new normalizePosition(this.mapdata.width, this.mapdata.height);
+    return new Promise((resolve, reject) => {
 
-    const urnList = [
-      URN_MAP["CIVILIAN"],
-      URN_MAP["FIRE_BRIGADE"],
-      URN_MAP["AMBULANCE_TEAM"],
-      URN_MAP["POLICE_FORCE"],
-    ];
-    const agents = simulation
-      .getWorld(step)
-      .entities.filter((entity) => {
-        return urnList.includes(entity.urn);
-      })
-      .map((agent) => {
-        if (!agent.urn) return;
+      (async () => {
+        const np = new normalizePosition(
+          this.mapdata.width,
+          this.mapdata.height
+        );
 
-        const posX = agent.properties[URN_MAP["X"]].value.value;
-        const posY = agent.properties[URN_MAP["Y"]].value.value;
+        const urnList = [
+          URN_MAP["CIVILIAN"],
+          URN_MAP["FIRE_BRIGADE"],
+          URN_MAP["AMBULANCE_TEAM"],
+          URN_MAP["POLICE_FORCE"],
+        ];
 
-        return {
-          id: `${agent.id}`,
-          type: URN_MAP[agent.urn],
-          x: agent.properties[URN_MAP["X"]].value.value,
-          y: agent.properties[URN_MAP["Y"]].value.value,
-          color: this.getColor(agent),
-          coordinates: [np.getX(posX), np.getY(posY), 10],
-          hp: agent.properties[URN_MAP["HP"]].value.value,
-        };
-      });
+        const world = await simulation.getWorld(step);
+        const entities = world.entities;
 
-    // const agents = this.rescuelog.world.agents.map((v, i) => {
-    //   const milliStep = (time / 6) % 10;
-    //   v.history?.shift(); // よくわからんけど、配列の最初の値がおかしいので削除する
+        const agents = entities
+          .filter((entity) => {
+            return urnList.includes(entity.urn);
+          })
+          .map((agent) => {
+            if (!agent.urn) return;
 
-    //   let pos: Point = { x: v.x || 0, y: v.y || 0 };
-    //   if (typeof this.prevPos[i] === "undefined" || this.prevPos[i].x !== pos.x) {
-    //     //TODO: Refactoring
-    //     let historyIdx = 0;
-    //     if (typeof v.history !== "undefined") {
-    //       const l = v.history?.length;
-    //       historyIdx = milliStep < l ? milliStep : l;
-    //     }
+            const posX = agent.properties[URN_MAP["X"]].value.value;
+            const posY = agent.properties[URN_MAP["Y"]].value.value;
 
-    //     if (
-    //       typeof v.history !== "undefined" &&
-    //       typeof v.history[historyIdx] !== "undefined"
-    //     ) {
-    //       pos.x = v.history[historyIdx].x;
-    //       pos.y = v.history[historyIdx].y;
-    //     }
+            return {
+              id: `${agent.id}`,
+              type: URN_MAP[agent.urn],
+              x: agent.properties[URN_MAP["X"]].value.value,
+              y: agent.properties[URN_MAP["Y"]].value.value,
+              color: this.getColor(agent),
+              coordinates: [np.getX(posX), np.getY(posY), 10],
+              hp: agent.properties[URN_MAP["HP"]].value.value,
+            };
+          });
 
-    //   }
+        // const agents = this.rescuelog.world.agents.map((v, i) => {
+        //   const milliStep = (time / 6) % 10;
+        //   v.history?.shift(); // よくわからんけど、配列の最初の値がおかしいので削除する
 
-    //   this.prevPos[i] = pos;
-    //   return {
-    //     id: v.id,
-    //     type: v.type,
-    //     x: v.x,
-    //     y: v.y,
-    //     color: this.AGENT_COLOR[v.type],
-    //     coordinates: [np.getX(pos.x), np.getY(pos.y), 10],
-    //   };
-    // });
+        //   let pos: Point = { x: v.x || 0, y: v.y || 0 };
+        //   if (typeof this.prevPos[i] === "undefined" || this.prevPos[i].x !== pos.x) {
+        //     //TODO: Refactoring
+        //     let historyIdx = 0;
+        //     if (typeof v.history !== "undefined") {
+        //       const l = v.history?.length;
+        //       historyIdx = milliStep < l ? milliStep : l;
+        //     }
 
-    return new IconLayer({
-      id: "agents",
-      data: agents,
-      pickable: true,
-      iconAtlas: "/Resources/img/icon-atlas.png",
-      iconMapping: this.ICON_MAPPING,
-      getIcon: (d: any) => "marker",
-      sizeScale: 15,
-      getPosition: (d: any) => d.coordinates,
-      getSize: (d: any) => 1,
-      getColor: (d: any) => d.color,
-      transitions: {
-        getPosition: 300,
-      },
+        //     if (
+        //       typeof v.history !== "undefined" &&
+        //       typeof v.history[historyIdx] !== "undefined"
+        //     ) {
+        //       pos.x = v.history[historyIdx].x;
+        //       pos.y = v.history[historyIdx].y;
+        //     }
+
+        //   }
+
+        //   this.prevPos[i] = pos;
+        //   return {
+        //     id: v.id,
+        //     type: v.type,
+        //     x: v.x,
+        //     y: v.y,
+        //     color: this.AGENT_COLOR[v.type],
+        //     coordinates: [np.getX(pos.x), np.getY(pos.y), 10],
+        //   };
+        // });
+
+        const layer = new IconLayer({
+          id: "agents",
+          data: agents,
+          pickable: true,
+          iconAtlas: "/Resources/img/icon-atlas.png",
+          iconMapping: this.ICON_MAPPING,
+          getIcon: (d: any) => "marker",
+          sizeScale: 15,
+          getPosition: (d: any) => d.coordinates,
+          getSize: (d: any) => 1,
+          getColor: (d: any) => d.color,
+          transitions: {
+            getPosition: 300,
+          },
+        });
+
+        resolve(layer);
+
+      })();
     });
   }
 
