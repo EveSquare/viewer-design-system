@@ -13,14 +13,12 @@ class BuildingsLayer {
   layer: object | null;
   currentStep: number;
   prevStep: number;
-  mapdata: MapInfo;
   FILL_COLOR: FillColor;
 
-  constructor(mapdata: MapInfo) {
+  constructor() {
     this.currentStep = 0;
     this.prevStep = 0;
     this.layer = null;
-    this.mapdata = mapdata;
     this.FILL_COLOR = FILL_COLOR;
   }
 
@@ -30,10 +28,7 @@ class BuildingsLayer {
         this.currentStep = step;
         if (this.layer === null || this.currentStep !== this.prevStep) {
           console.time("Buildings");
-          const np = new normalizePosition(
-            this.mapdata.width,
-            this.mapdata.height
-          );
+          const np = new normalizePosition(0, 0); //TODO
 
           const buildingURN = [
             URN_MAP["BUILDING"],

@@ -7,10 +7,6 @@ export interface Props {
      */
     children: React.ReactNode;
     /**
-     * スライダーの状態
-     */
-    childSliderKitState: ChildSliderArgsProps;
-    /**
      * スコアの状態
      */
     score: number;

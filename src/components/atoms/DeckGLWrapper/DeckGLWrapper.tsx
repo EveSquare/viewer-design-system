@@ -13,8 +13,8 @@ export const DeckGLWrapper: React.FC<Props> = ({ children, onResetAction }) => {
     return (
         <>
             <Box
-                height={"100%"}
-                width={"100%"}
+                height={"100vh"}
+                width={"100vw"}
             >
                 <Box
                     position={"relative"}

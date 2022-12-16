@@ -12,15 +12,13 @@ class RoadsLayer {
   layer: object | null;
   prevStep: number;
   currentStep: number;
-  mapdata: MapInfo;
   AGENT_COLOR: AgentColor;
   ICON_MAPPING: IconMapping;
 
-  constructor(mapdata: MapInfo) {
+  constructor() {
     this.prevStep = 0;
     this.currentStep = 0;
     this.layer = null;
-    this.mapdata = mapdata;
     this.AGENT_COLOR = AGENT_COLOR;
     this.ICON_MAPPING = ICON_MAPPING;
   }
@@ -32,10 +30,7 @@ class RoadsLayer {
 
         if (this.layer === null || this.prevStep !== this.currentStep) {
           console.time("Roads");
-          const np = new normalizePosition(
-            this.mapdata.width,
-            this.mapdata.height
-          );
+          const np = new normalizePosition(0, 0); //TODO
 
           const roadURN = URN_MAP["ROAD"];
           const world = await simulation.getWorld(this.currentStep);

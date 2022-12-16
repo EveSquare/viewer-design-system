@@ -8,13 +8,11 @@ import { Entity, Simulation } from "@/lib/RCRS";
 import { URN_MAP } from "@/lib/RCRSURN";
 
 class AgentsLayer {
-  mapdata: MapInfo;
   AGENT_COLOR: AgentColor;
   ICON_MAPPING: IconMapping;
   prevPos: Point[];
 
-  constructor(mapdata: MapInfo) {
-    this.mapdata = mapdata;
+  constructor() {
     this.AGENT_COLOR = AGENT_COLOR;
     this.ICON_MAPPING = ICON_MAPPING;
     this.prevPos = [];
@@ -22,12 +20,8 @@ class AgentsLayer {
 
   getLayer(step: number, time: number, simulation: Simulation) {
     return new Promise((resolve, reject) => {
-
       (async () => {
-        const np = new normalizePosition(
-          this.mapdata.width,
-          this.mapdata.height
-        );
+        const np = new normalizePosition(0, 0); //TODO
 
         const urnList = [
           URN_MAP["CIVILIAN"],
@@ -111,7 +105,6 @@ class AgentsLayer {
         });
 
         resolve(layer);
-
       })();
     });
   }

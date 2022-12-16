@@ -5,7 +5,6 @@ function useLog() {
   const [simulation, setSimulation] = useState(new Simulation());
   const [lastLoadLogId, setLastLoadLogId] = useState(0);
   const [logMaxStepToLoad, setLogMaxStepToLoad] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     let id = lastLoadLogId;
@@ -49,7 +48,6 @@ function useLog() {
     simulation: simulation,
     setSimulation: setSimulation,
     setLogMaxStepToLoad: setLogMaxStepToLoad,
-    isLoading: isLoading,
   };
 }
 export default useLog;
