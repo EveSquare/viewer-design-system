@@ -78,7 +78,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
       setStep(value);
       setTime(value * STEP_DULATION);
     },
-    onChangeEnd: () => {},
+    onChangeEnd: () => { },
     onClickPlayButton: () => {
       setSliderKitState({
         ...sliderKitState,
@@ -140,6 +140,21 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
     });
   };
 
+  const ZOOM_RATE = 0.1;
+  const zoomInViewState = () => {
+    setViewState({
+      ...viewState,
+      zoom: viewState.zoom + ZOOM_RATE,
+    });
+  };
+
+  const zoomOutViewState = () => {
+    setViewState({
+      ...viewState,
+      zoom: viewState.zoom - ZOOM_RATE,
+    });
+  };
+
   function getToolTip(object: LayerEntity) {
     if (!object) return;
 
@@ -153,9 +168,8 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
         const bedInfo = Object.assign(bedCapacity, occupiedBeds).join(" | ");
         const waitingListInfo = waitingListSize.join(" | ");
 
-        return `${t("ベッド空き状況")}(${occupiedBeds.length}/${
-          bedCapacity.length
-        })
+        return `${t("ベッド空き状況")}(${occupiedBeds.length}/${bedCapacity.length
+          })
                 ${bedInfo}
                 ${t("待ち人数")}(${waitingListSize.length}${t("人")})
                 ${waitingListInfo}`;
@@ -217,9 +231,9 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
         maxScore={maxScore}
       >
         <DeckGLWrapper
-          onResetAction={() => {
-            resetViewState();
-          }}
+          onResetAction={resetViewState}
+          onZoomInAction={zoomInViewState}
+          onZoomOutAction={zoomOutViewState}
         >
           <DeckGL
             controller={true}
