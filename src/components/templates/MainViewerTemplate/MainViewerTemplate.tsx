@@ -33,7 +33,7 @@ export const MainViewerTemplate: React.FC<Props> = ({ children, sideBarInfo, hea
                         </GridItem>
                     </Grid>
                 </Box>
-                <Box
+                {/* <Box
                     zIndex={3}
                     width={"80%"}
                     position={"absolute"}
@@ -41,7 +41,7 @@ export const MainViewerTemplate: React.FC<Props> = ({ children, sideBarInfo, hea
                     right={"-40px"}
                 >
                     <MessageArea isShowing={characterIsShowing} />
-                </Box>
+                </Box> */}
                 <Box bg="bg" zIndex={3} position="fixed" bottom={0} width="100vw">
                     <Box px={10}>
                         <SliderKit {...sliderArgs} />
