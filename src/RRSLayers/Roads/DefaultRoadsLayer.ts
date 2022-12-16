@@ -1,10 +1,10 @@
 import { Simulation } from "@/lib/RCRS";
 import { AGENT_COLOR, FILL_COLOR, ICON_MAPPING } from "@/common/viewer/const";
-import { MapInfo, AgentColor, IconMapping, Record } from "@/common/viewer/type";
+import { MapInfo, AgentColor, IconMapping } from "@/common/viewer/type";
 import { COORDINATE_SYSTEM } from "@deck.gl/core";
 import { PolygonLayer } from "@deck.gl/layers";
 
-import normalizePosition from "../../lib/normalizePosition";
+import normalizePosition from "@/lib/normalizePosition";
 import { URN_MAP } from "@/lib/RCRSURN";
 import { EdgeProto } from "@/lib/proto/RCRSProto_pb";
 
