@@ -2,11 +2,12 @@ import { Box, Button, Icon, useColorModeValue, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Props } from "./type";
 import { IoIosRefresh } from "react-icons/io";
+import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { useTranslation } from "next-export-i18n";
 
-export const DeckGLWrapper: React.FC<Props> = ({ children, onResetAction }) => {
+export const DeckGLWrapper: React.FC<Props> = ({ children, onResetAction, onZoomInAction, onZoomOutAction }) => {
 
-    const [isResetButtonHovered, setIsResetButtonHovered] = useState(false);
+    const [isButtonHovered, setIsButtonHovered] = useState(false);
     const iconColor = useColorModeValue("black", "white");
     const { t } = useTranslation();
 
@@ -19,14 +20,13 @@ export const DeckGLWrapper: React.FC<Props> = ({ children, onResetAction }) => {
                 <Box
                     position={"relative"}
                     zIndex={1}
-                    onMouseEnter={() => setIsResetButtonHovered(true)}
-                    onMouseLeave={() => setIsResetButtonHovered(false)}
+                    onMouseEnter={() => setIsButtonHovered(true)}
+                    onMouseLeave={() => setIsButtonHovered(false)}
                 >
                     <Box
                         position={"absolute"}
                         right={"10px"}
                         top={"10px"}
-                        transition={"all 1s 0s ease"}
                     >
                         <Button
                             aria-label={t('マップを初期位置に戻す')}
@@ -34,7 +34,35 @@ export const DeckGLWrapper: React.FC<Props> = ({ children, onResetAction }) => {
                             onClick={onResetAction}
                         >
                             <Icon as={IoIosRefresh} color={iconColor} />
-                            {isResetButtonHovered ? <Text ml={1}>{t("表示をリセット")}</Text> : <></>}
+                            {isButtonHovered && <Text ml={1}>{t("表示をリセット")}</Text>}
+                        </Button>
+                    </Box>
+                    <Box
+                        position={"absolute"}
+                        right={"10px"}
+                        top={"50px"}
+                    >
+                        <Button
+                            aria-label={t('マップ拡大')}
+                            title={t('マップ拡大')}
+                            onClick={onZoomInAction}
+                        >
+                            <Icon as={AiOutlinePlus} color={iconColor} />
+                            {isButtonHovered && <Text ml={1}>{t("マップを拡大")}</Text>}
+                        </Button>
+                    </Box>
+                    <Box
+                        position={"absolute"}
+                        right={"10px"}
+                        top={"90px"}
+                    >
+                        <Button
+                            aria-label={t('マップ縮小')}
+                            title={t('マップ縮小')}
+                            onClick={onZoomOutAction}
+                        >
+                            <Icon as={AiOutlineMinus} color={iconColor} />
+                            {isButtonHovered && <Text ml={1}>{t("マップを縮小")}</Text>}
                         </Button>
                     </Box>
                 </Box>
