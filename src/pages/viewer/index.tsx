@@ -16,6 +16,7 @@ import RRSViewer from "@/components/pages/RRSViewer/RRSViewer";
 import Slider from "@/components/pages/Slider/Slider";
 import SideBarComponent from "@/components/pages/SideBarComponent/SideBarComponent";
 import HeaderComponent from "@/components/pages/HeaderComponent/HeaderComponent";
+import { Box } from "@chakra-ui/react";
 
 const MainViewer = dynamic(
   () => import("src/components/pages/MainViewer").then((cmp) => cmp.MainViewer),
@@ -59,7 +60,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
   }, [step]);
 
   return (
-    <>
+    <Box position="fixed" top={0} left={0} width="100vw" height="100vh" overflow="hidden">
       <HeaderComponent step={step} score={score} maxScore={maxScore} />
       <RRSViewer
         simulation={simulation}
@@ -76,7 +77,7 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
         setStep={setStep}
         setTime={setTime}
       />
-    </>
+    </Box>
   );
 };
 export default Viewer;

@@ -42,7 +42,7 @@ const HeaderComponent = ({ ...props }: Props) => {
 
   return (
     <Box
-      id="SideBar"
+      id="Header"
       width="100vw"
       position="fixed"
       left="0"
