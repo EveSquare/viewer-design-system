@@ -4,109 +4,145 @@ import { AGENT_COLOR, ICON_MAPPING } from "@/common/viewer/const";
 import { AgentColor, IconMapping, Point } from "@/common/viewer/type";
 import { MapInfo, Record } from "@/common/viewer/type";
 import normalizePosition from "@/lib/normalizePosition";
-import { Entity, Simulation } from "@/lib/RCRS";
+import { Entity, Simulation, WorldModel } from "@/lib/RCRS";
 import { URN_MAP } from "@/lib/RCRSURN";
+import { BreadcrumbLinkProps } from "@chakra-ui/react";
 
 class AgentsLayer {
+  layer: object | null;
+  prevStep: number;
+  currentStep: number;
+  prevPos: Point[];
   AGENT_COLOR: AgentColor;
   ICON_MAPPING: IconMapping;
-  prevPos: Point[];
 
   constructor() {
+    this.layer = null;
+    this.prevStep = 0;
+    this.currentStep = 0;
+    this.prevPos = [];
     this.AGENT_COLOR = AGENT_COLOR;
     this.ICON_MAPPING = ICON_MAPPING;
-    this.prevPos = [];
   }
 
-  getLayer(step: number, time: number, simulation: Simulation) {
+  getLayer(step: number, time: number, simulation: Simulation, filter: any) {
     return new Promise((resolve, reject) => {
       (async () => {
-        const np = new normalizePosition(0, 0); //TODO
-
-        const urnList = [
-          URN_MAP["CIVILIAN"],
-          URN_MAP["FIRE_BRIGADE"],
-          URN_MAP["AMBULANCE_TEAM"],
-          URN_MAP["POLICE_FORCE"],
-        ];
-
+        this.currentStep = step;
         const world = await simulation.getWorld(step);
-        const entities = world.entities;
 
-        const agents = entities
-          .filter((entity) => {
-            return urnList.includes(entity.urn);
-          })
-          .map((agent) => {
-            if (!agent.urn) return;
+        if (world !== null) {
+          const np = new normalizePosition(0, 0); //TODO
 
-            const posX = agent.properties[URN_MAP["X"]].value.value;
-            const posY = agent.properties[URN_MAP["Y"]].value.value;
+          const type = filter.agents.type;
+          let urnList: any[] = [];
+          if (type.ambulance) {
+            urnList.push(URN_MAP["AMBULANCE_TEAM"]);
+          }
+          if (type.police) {
+            urnList.push(URN_MAP["POLICE_FORCE"]);
+          }
+          if (type.fire) {
+            urnList.push(URN_MAP["FIRE_BRIGADE"]);
+          }
+          if (type.civilian) {
+            urnList.push(URN_MAP["CIVILIAN"]);
+          }
 
-            return {
-              id: `${agent.id}`,
-              type: URN_MAP[agent.urn],
-              x: agent.properties[URN_MAP["X"]].value.value,
-              y: agent.properties[URN_MAP["Y"]].value.value,
-              color: this.getColor(agent),
-              coordinates: [np.getX(posX), np.getY(posY), 10],
-              hp: agent.properties[URN_MAP["HP"]].value.value,
-            };
+          const entities = world.entities;
+
+          const milliStep = (time / 6) % 10;
+          const agents = entities
+            .filter((entity) => {
+              return urnList.includes(entity.urn);
+            })
+            .filter((entity) => {
+              if (filter.agents.id) {
+                return entity.id === filter.agents.id;
+              } else {
+                return true;
+              }
+            })
+            .map((agent) => {
+              if (!agent.urn) return;
+
+              let posX = agent.properties[URN_MAP["X"]].value.value;
+              let posY = agent.properties[URN_MAP["Y"]].value.value;
+
+              // const hist: number[] =
+              //   agent.properties[URN_MAP["POSITION_HISTORY"]].value.value
+              //     ?.values;
+              // if (!!hist && !!hist[milliStep - 1]) {
+              //   const idx = (milliStep - 1) * 2;
+              //   posX = hist[idx];
+              //   posY = hist[idx + 1];
+              // }
+
+              let position = undefined;
+              const positionEntity = entities.find((v) => {
+                return (
+                  v.id === agent.properties[URN_MAP["POSITION"]].value.value
+                );
+              });
+              if (!!positionEntity && !!positionEntity.urn) {
+                position = URN_MAP[positionEntity.urn];
+              }
+
+              return {
+                id: `${agent.id}`,
+                type: URN_MAP[agent.urn],
+                position: position,
+                x: agent.properties[URN_MAP["X"]].value.value,
+                y: agent.properties[URN_MAP["Y"]].value.value,
+                color: this.getColor(agent),
+                coordinates: [
+                  np.getX(posX),
+                  np.getY(posY),
+                  this.getHeight(position),
+                ],
+                hp: agent.properties[URN_MAP["HP"]].value.value,
+              };
+            });
+
+          const layer = new IconLayer({
+            id: "agents",
+            data: agents,
+            pickable: true,
+            iconAtlas: "/Resources/img/icon-atlas.png",
+            iconMapping: this.ICON_MAPPING,
+            getIcon: (d: any) => "marker",
+            sizeScale: 15,
+            getPosition: (d: any) => d.coordinates,
+            getSize: (d: any) => 1,
+            getColor: (d: any) => d.color,
+            transitions: {
+              getPosition: 300,
+            },
           });
 
-        // const agents = this.rescuelog.world.agents.map((v, i) => {
-        //   const milliStep = (time / 6) % 10;
-        //   v.history?.shift(); // よくわからんけど、配列の最初の値がおかしいので削除する
+          this.prevStep = this.currentStep;
 
-        //   let pos: Point = { x: v.x || 0, y: v.y || 0 };
-        //   if (typeof this.prevPos[i] === "undefined" || this.prevPos[i].x !== pos.x) {
-        //     //TODO: Refactoring
-        //     let historyIdx = 0;
-        //     if (typeof v.history !== "undefined") {
-        //       const l = v.history?.length;
-        //       historyIdx = milliStep < l ? milliStep : l;
-        //     }
-
-        //     if (
-        //       typeof v.history !== "undefined" &&
-        //       typeof v.history[historyIdx] !== "undefined"
-        //     ) {
-        //       pos.x = v.history[historyIdx].x;
-        //       pos.y = v.history[historyIdx].y;
-        //     }
-
-        //   }
-
-        //   this.prevPos[i] = pos;
-        //   return {
-        //     id: v.id,
-        //     type: v.type,
-        //     x: v.x,
-        //     y: v.y,
-        //     color: this.AGENT_COLOR[v.type],
-        //     coordinates: [np.getX(pos.x), np.getY(pos.y), 10],
-        //   };
-        // });
-
-        const layer = new IconLayer({
-          id: "agents",
-          data: agents,
-          pickable: true,
-          iconAtlas: "/Resources/img/icon-atlas.png",
-          iconMapping: this.ICON_MAPPING,
-          getIcon: (d: any) => "marker",
-          sizeScale: 15,
-          getPosition: (d: any) => d.coordinates,
-          getSize: (d: any) => 1,
-          getColor: (d: any) => d.color,
-          transitions: {
-            getPosition: 300,
-          },
-        });
-
-        resolve(layer);
+          resolve(layer);
+        }
       })();
     });
+  }
+
+  getHeight(positionEntityType: string) {
+    const list = [
+      "BUILDING",
+      "REFUGE",
+      "GAS_STATION",
+      "FIRE_STATION",
+      "AMBULANCE_CENTRE",
+      "POLICE_OFFICE",
+    ];
+
+    if (list.includes(positionEntityType)) {
+      return 10;
+    } else {
+      return 2;
+    }
   }
 
   getColor(agent: Entity) {

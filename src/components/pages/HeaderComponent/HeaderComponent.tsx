@@ -6,7 +6,7 @@ import { Props as SliderArgsProps } from "@/components/organisms/SliderKit/type"
 import { Box, useColorMode, useColorModeValue } from "@chakra-ui/react";
 import { GeneralSettingModal } from "@/components/organisms/GeneralSettingModal";
 import { generalSettingState as generalSettingStateInitial } from "@/factories/generalSettingStateFactory";
-import React, { useEffect } from "react";
+import React, { memo, useEffect } from "react";
 import { ExplanationModal } from "@/components/organisms/ExplanationModal";
 import { CivilianExplanationComponent } from "@/factories/civilianExplanationComponent";
 import { AmbulanceExplanationComponent } from "@/factories/ambulanceExplanationComponent";
@@ -22,7 +22,8 @@ type Props = {
   maxScore: number;
 };
 
-const HeaderComponent = ({ ...props }: Props) => {
+// eslint-disable-next-line react/display-name
+const HeaderComponent = memo(({ ...props }: Props) => {
   const { t } = useTranslation();
 
   const headerInfo: HeaderProps = {
@@ -41,16 +42,9 @@ const HeaderComponent = ({ ...props }: Props) => {
   };
 
   return (
-    <Box
-      id="Header"
-      width="100vw"
-      position="fixed"
-      left="0"
-      top="0"
-      zIndex="2"
-    >
+    <Box id="Header" width="100vw" position="fixed" left="0" top="0" zIndex="2">
       <Header {...headerInfo} />
     </Box>
   );
-};
+});
 export default HeaderComponent;

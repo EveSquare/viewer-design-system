@@ -223,13 +223,13 @@ export class WorldModel {
         this.entities.push(new Entity(changedEntity));
       }
 
-      // //delete deleted entities from entity list
-      // let deletedIds = changeset.deletes;
-      // this.entities = this.entities.filter((v) => {
-      //   if (v.id !== null) {
-      //     return !deletedIds.includes(v.id);
-      //   }
-      // });
+      //delete deleted entities from entity list
+      let deletedIds = changeset.deletes;
+      this.entities = this.entities.filter((v) => {
+        if (v.id !== null) {
+          return !deletedIds.includes(v.id);
+        }
+      });
 
       this.isUpdated = true;
     });

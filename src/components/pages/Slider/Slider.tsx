@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 
 import { Simulation } from "@/lib/RCRS";
 import { MAX, STEP_DULATION } from "@/common/viewer/const";
@@ -17,7 +17,8 @@ type Props = {
   setTime: any;
 };
 
-const Slider = ({ ...props }: Props) => {
+// eslint-disable-next-line react/display-name
+const Slider = memo(({ ...props }: Props) => {
   const [sliderKitState, setSliderKitState] = React.useState({
     isPlaying: false,
     isDisabled: false,
@@ -59,5 +60,5 @@ const Slider = ({ ...props }: Props) => {
       </Box>
     </Box>
   );
-};
+});
 export default Slider;

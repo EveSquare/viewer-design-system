@@ -7,7 +7,7 @@ function useAnimation(maxsteps: number) {
   const [animation] = useState<Animation>({ id: 0 });
   const [time, setTime] = useState(0);
   const [step, setStep] = useState(0);
-  const [isPause, setIsPause] = useState(false);
+  const [isPause, setIsPause] = useState(true);
 
   const animationSpeed = 1;
   const loopLength = STEP_DULATION * maxsteps;

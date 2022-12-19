@@ -29,23 +29,30 @@ class BlockadesLayer {
           const world = await simulation.getWorld(this.currentStep);
           const entities = world.entities;
 
-          const blockades = entities.filter((entity) => {
-            return entity.urn !== null && entity.urn === blockadeURN;
-          });
-          // .map((v: any) => {
-          //   //
-          //   let coutour = [];
-          //   let d = v.apexes.map((vv: any) => [np.getX(vv.x), np.getY(vv.y), 0]);
-          //   d.push([np.getX(v.apexes[0].x), np.getY(v.apexes[0].y), 0]); // push first vertex
-          //   return {
-          //     type: v.type,
-          //     id: v.id,
-          //     x: v.x,
-          //     y: v.y,
-          //     contour: d,
-          //     elevation: 1,
-          //   };
-          // });
+          const blockades = entities
+            .filter((entity) => {
+              return entity.urn !== null && entity.urn === blockadeURN;
+            })
+            .map((blockadeEntity: any) => {
+              let d = [];
+              const edge: number[] =
+                blockadeEntity.properties[URN_MAP["APEXES"]].value.value.values;
+
+              if (edge.length > 0) {
+                for (let i = 0; i < edge.length; i += 2) {
+                  d.push([np.getX(edge[i]), np.getY(edge[i + 1]), 0]);
+                }
+                d.push([np.getX(edge[0]), np.getY(edge[1]), 0]); // push first vertex
+              }
+              return {
+                type: URN_MAP[blockadeEntity.urn],
+                id: blockadeEntity.id,
+                x: blockadeEntity.properties[URN_MAP["X"]].value.value,
+                y: blockadeEntity.properties[URN_MAP["X"]].value.value,
+                contour: d,
+                elevation: 1,
+              };
+            });
 
           this.layer = new PolygonLayer({
             id: "blockades",

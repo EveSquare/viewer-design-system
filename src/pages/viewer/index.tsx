@@ -13,6 +13,7 @@ import useScore from "@/hooks/useScore";
 import { useTranslation } from "next-export-i18n";
 import useLog from "@/hooks/useLog";
 import RRSViewer from "@/components/pages/RRSViewer/RRSViewer";
+import Widget from "@/components/pages/Widget/Widget";
 import Slider from "@/components/pages/Slider/Slider";
 import SideBarComponent from "@/components/pages/SideBarComponent/SideBarComponent";
 import HeaderComponent from "@/components/pages/HeaderComponent/HeaderComponent";
@@ -27,12 +28,24 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
   const { t } = useTranslation();
 
   const maxsteps = 300; //TODO
-  const maxScore = 1000; //TODO
 
   const { time, step, isPause, setStep, setTime, setIsPause } =
     useAnimation(maxsteps);
-  const { score, setScore } = useScore(maxScore);
+  const { score, setScore, maxScore, setMaxScore } = useScore(0);
   const { simulation, setSimulation, setLogMaxStepToLoad } = useLog();
+
+  const [enabledLayers, setEnabledLayers] = useState([true, true, true, true]);
+  const [filter, setFilter] = useState({
+    agents: {
+      id: null,
+      type: {
+        civilian: true,
+        police: true,
+        fire: true,
+        ambulance: true,
+      },
+    },
+  });
 
   useEffect(() => {
     const processedTimeStep = simulation.getTotalTimeSteps();
@@ -55,20 +68,33 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
     // TODO: ヘッダーのコンポーネントに移す
     //スコアの計算
     simulation.getWorld(step).then((world) => {
-      setScore(world.getScore());
+      const score = world.getScore();
+      if (maxScore === 0) {
+        setMaxScore(score);
+      }
+      setScore(score);
     });
   }, [step]);
 
   return (
-    <Box position="fixed" top={0} left={0} width="100vw" height="100vh" overflow="hidden">
+    <Box
+      position="fixed"
+      top={0}
+      left={0}
+      width="100vw"
+      height="100vh"
+      overflow="hidden"
+    >
       <HeaderComponent step={step} score={score} maxScore={maxScore} />
       <RRSViewer
         simulation={simulation}
         time={time}
         step={step}
         translation={t}
+        filter={filter}
+        enabledLayers={enabledLayers}
       />
-      <SideBarComponent />
+      {/* <SideBarComponent /> */}
       <Slider
         simulation={simulation}
         step={step}
@@ -76,6 +102,12 @@ const Viewer: NextPage<Props> = ({ mapData, rescueLogData, metaData }) => {
         setIsPause={setIsPause}
         setStep={setStep}
         setTime={setTime}
+      />
+      <Widget
+        filter={filter}
+        setFilter={setFilter}
+        enabledLayers={enabledLayers}
+        setEnabledLayers={setEnabledLayers}
       />
     </Box>
   );

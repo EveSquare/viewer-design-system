@@ -151,7 +151,7 @@ const SideBarComponent = () => {
   };
 
   return (
-    <Box id="SideBar" width="20vw" height="calc(100vh - 65px)" position="fixed" left="0" top="65px" zIndex="2">
+    <Box id="SideBar" height="calc(100vh - 65px)" position="fixed" left="0" top="65px" zIndex="2">
       <SideBar {...sideBarInfo} />
       <ExplanationModal {...civilianExplanationData} />
       <ExplanationModal {...ambulanceExplanationData} />

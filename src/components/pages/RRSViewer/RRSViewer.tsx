@@ -18,6 +18,8 @@ type Props = {
   time: number;
   step: number;
   translation: any;
+  filter: object;
+  enabledLayers: boolean[];
 };
 
 const RRSViewer = ({ ...props }: Props) => {
@@ -56,12 +58,24 @@ const RRSViewer = ({ ...props }: Props) => {
     if (props.time % (STEP_DULATION / 10) === 0) {
       (async () => {
         let layer = [];
-        layer.push(await buildingsLayer.getLayer(props.step, props.simulation));
-        layer.push(
-          await agentsLayer.getLayer(props.step, props.time, props.simulation)
-        );
-        layer.push(await roadsLayer.getLayer(props.step, props.simulation));
-        layer.push(await blockadesLayer.getLayer(props.step, props.simulation));
+        if (props.enabledLayers[0]) {
+          layer.push(
+            await agentsLayer.getLayer(props.step, props.time, props.simulation, props.filter)
+          );
+        }
+        if (props.enabledLayers[1]) {
+          layer.push(
+            await buildingsLayer.getLayer(props.step, props.simulation)
+          );
+        }
+        if (props.enabledLayers[2]) {
+          layer.push(await roadsLayer.getLayer(props.step, props.simulation));
+        }
+        if (props.enabledLayers[3]) {
+          layer.push(
+            await blockadesLayer.getLayer(props.step, props.simulation)
+          );
+        }
         setLayers(layer);
       })();
     }
