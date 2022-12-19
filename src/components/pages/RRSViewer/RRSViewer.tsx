@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import DeckGL from "@deck.gl/react";
 import { DeckGLWrapper } from "@/components/atoms/DeckGLWrapper";
@@ -44,6 +44,15 @@ const RRSViewer = ({ ...props }: Props) => {
     new DefaultBlockadesLayer()
   );
 
+  const handleViewStateChange = useCallback(
+    ({ viewState }: any) => {
+      // Z軸方向の操作は無効にする
+      viewState.target = [viewState.target[0], viewState.target[1], 0];
+      setViewState(viewState);
+    },
+    [setViewState]
+  );
+
   const resetViewState = () => {
     setViewState({
       ...viewState,
@@ -60,7 +69,12 @@ const RRSViewer = ({ ...props }: Props) => {
         let layer = [];
         if (props.enabledLayers[0]) {
           layer.push(
-            await agentsLayer.getLayer(props.step, props.time, props.simulation, props.filter)
+            await agentsLayer.getLayer(
+              props.step,
+              props.time,
+              props.simulation,
+              props.filter
+            )
           );
         }
         if (props.enabledLayers[1]) {
@@ -96,11 +110,7 @@ const RRSViewer = ({ ...props }: Props) => {
           }
           views={new OrbitView()}
           viewState={viewState}
-          onViewStateChange={({ viewState }: any) => {
-            // Z軸方向の操作は無効にする
-            viewState.target = [viewState.target[0], viewState.target[1], 0];
-            setViewState(viewState);
-          }}
+          onViewStateChange={handleViewStateChange}
           onError={(e: Error) => console.error(e)}
         ></DeckGL>
       </DeckGLWrapper>
