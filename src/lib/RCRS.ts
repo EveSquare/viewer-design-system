@@ -59,6 +59,19 @@ export class Simulation {
       })();
     });
   }
+  getMultipleStepEntities(startTime: number, count: number): Promise<Entity[][]> {
+    return new Promise((resolve, reject) => {
+      async () => {
+        let worldList = [];
+        for (let time = startTime; time < startTime + count; time++) {
+          if (this.worldmodels[time]) {
+            worldList.push(this.worldmodels[time].entities);
+          }
+        }
+        resolve(worldList);
+      };
+    });
+  }
   getConfig() {
     return this.config;
   }

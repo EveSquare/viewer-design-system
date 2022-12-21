@@ -14,7 +14,7 @@ export const DeckGLWrapper: React.FC<Props> = ({ children, onResetAction }) => {
         <>
             <Box
                 height={"100vh"}
-                width={"100vw"}
+                width={"50vw"}
             >
                 <Box
                     position={"relative"}
@@ -25,7 +25,7 @@ export const DeckGLWrapper: React.FC<Props> = ({ children, onResetAction }) => {
                     <Box
                         position={"absolute"}
                         right={"10px"}
-                        top={"10px"}
+                        top={"calc(65px + 10px)"}
                         transition={"all 1s 0s ease"}
                     >
                         <Button

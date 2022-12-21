@@ -34,7 +34,6 @@ Default.args = {
   sideBarInfo: sideBarInfo,
   headerInfo: headerInfo,
   characterIsShowing: "show",
-  sliderArgs: sliderArgs,
 }
 
 Default.parameters = {

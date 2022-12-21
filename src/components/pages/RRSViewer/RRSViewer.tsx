@@ -12,6 +12,8 @@ import DefaultAgentsLayer from "@/RRSLayers/Agents/DefaultAgentsLayer";
 import DefaultBuildingsLayer from "@/RRSLayers/Buildings/DefaultBuildingsLayer";
 import DefaultRoadsLayer from "@/RRSLayers/Roads/DefaultRoadsLayer";
 import DefaultBlockadesLayer from "@/RRSLayers/Blockades/DefaultBlockadesLayer";
+import AgentsHeatmapLayer from "@/RRSLayers/Agents/AgentsHeatmapLayer";
+import { HStack } from "@chakra-ui/react";
 
 type Props = {
   simulation: Simulation;
@@ -20,20 +22,12 @@ type Props = {
   translation: any;
   filter: object;
   enabledLayers: boolean[];
+  viewState: any;
+  setViewState: any;
 };
 
 const RRSViewer = ({ ...props }: Props) => {
   const [layers, setLayers] = useState<any>([]);
-  const [viewState, setViewState] = useState<any>({
-    width: globalThis.window?.innerWidth,
-    height: globalThis.window?.innerHeight,
-    target: [0, 0, 0],
-    rotationX: 30,
-    rotationOrbit: 0,
-    zoom: 0.5,
-    minZoom: 0,
-    maxZoom: 20,
-  });
 
   const [buildingsLayer, setBuildingsLayer] = useState(
     new DefaultBuildingsLayer()
@@ -43,19 +37,22 @@ const RRSViewer = ({ ...props }: Props) => {
   const [blockadesLayer, setBlockadesLayer] = useState(
     new DefaultBlockadesLayer()
   );
+  const [agentsHeatmapLayer, setAgentsHeatmapLayer] = useState(
+    new AgentsHeatmapLayer()
+  );
 
   const handleViewStateChange = useCallback(
     ({ viewState }: any) => {
       // Z軸方向の操作は無効にする
       viewState.target = [viewState.target[0], viewState.target[1], 0];
-      setViewState(viewState);
+      props.setViewState(viewState);
     },
-    [setViewState]
+    [props.setViewState]
   );
 
   const resetViewState = () => {
-    setViewState({
-      ...viewState,
+    props.setViewState({
+      ...props.viewState,
       target: [0, 0, 0],
       rotationX: 30,
       rotationOrbit: 0,
@@ -76,6 +73,14 @@ const RRSViewer = ({ ...props }: Props) => {
               props.filter
             )
           );
+          // layer.push(
+          //   await agentsHeatmapLayer.getLayer(
+          //     props.step,
+          //     props.time,
+          //     props.simulation,
+          //     props.filter
+          //   )
+          // );
         }
         if (props.enabledLayers[1]) {
           layer.push(
@@ -109,7 +114,7 @@ const RRSViewer = ({ ...props }: Props) => {
             getToolTip(object, props.translation)
           }
           views={new OrbitView()}
-          viewState={viewState}
+          viewState={props.viewState}
           onViewStateChange={handleViewStateChange}
           onError={(e: Error) => console.error(e)}
         ></DeckGL>
